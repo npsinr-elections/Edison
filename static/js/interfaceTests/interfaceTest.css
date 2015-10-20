@@ -1,0 +1,36 @@
+
+html {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+.poll {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    left: 100%;
+}
+
+.candidate {
+    background-color: aqua;
+    display: inline-block;
+    height: 99%;
+    width: %;
+    margin: 0.3%;
+    padding: 0px;
+}
+
+#vpf {
+    background-color:  blue;
+}
+
+
