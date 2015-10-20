@@ -159,13 +159,8 @@ function Interface() {
         j = 0,
         k = 0,
         l = 0;
-    this.dummyCandidates = [
-        'foo',
-        'bar',
-        'baz'
-    ];
     
-    this.polls = 
+    this.polls = [];
 
     this.setPollsAndCandidates = function () {
         /*add code to set this.polls to the value it needs to be, here is an example:
