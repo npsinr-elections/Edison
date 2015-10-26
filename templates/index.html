@@ -23,6 +23,159 @@
 		</div>
 	</div>
 	<div onclick="hidesidebar();" class="everythingelse">
+	<div class="navfix"></div>
+	<div class="container">
+		<div class="row">
+			<div id="option1" class="text-center well col-md-5 col-xs-12 options">
+				<span class="glyphicon glyphicon-play"></span>
+				<h2>Start Election</h2>
+			</div>
+			<div onclick="getcandidates();" id="option2" class="text-center well col-md-5 col-md-offset-2 col-xs-12 options">
+				<span class="glyphicon glyphicon-user"></span>
+				<h2>Candidate List</h2>
+			</div>
+			<div id="option3" class="text-center well col-md-5 col-xs-12 options">
+				<span class="glyphicon glyphicon-stats"></span>
+				<h2>View Previous Results</h2>
+			</div>
+			<div id="option4" class="text-center well col-md-5 col-md-offset-2 col-xs-12 options">
+				<span class="glyphicon glyphicon-wrench"></span>
+				<h2>Settings</h2>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div id="modalcontent" class="modal-body">
+        <ul class="nav nav-tabs">
+		  <li role="presentation" class="active"><a href="#SchoolElections" aria-controls="SchoolElections" data-toggle="tab">School Elections</a></li>
+		  <li role="presentation"><a href="#HouseElections" aria-controls="HouseElections" data-toggle="tab">House Elections</a></li>
+		</ul>
+		<div class="tab-content">
+   		<div role="tabpanel" class="tab-pane active fade in" id="SchoolElections">
+			<ul class="nav nav-pills nav-stacked">
+			  <li role="presentation"><a role="button" data-toggle="collapse" href="#collapsePrefect" aria-expanded="false" aria-controls="collapsePrefect">Prefect</a></li>
+				<div class="collapse" id="collapsePrefect">
+	  				<div id="PrefectCandidates" class="well">
+	  					<button type="button" class="btn btn-success">Add Prefect Candidate</button>
+	  				</div>
+  				</div>
+			  <li role="presentation"><a role="button" data-toggle="collapse" href="#collapseVPrefectM" aria-expanded="false" aria-controls="collapseVPrefectM">Vice-Prefect Male</a></li>
+			  	<div class="collapse" id="collapseVPrefectM">
+	  				<div id="VPrefectMCandidates" class="well">
+	  					<button type="button" class="btn btn-success">Add Vice-Prefect Male Candidate</button>
+	  				</div>
+  				</div>
+			  <li role="presentation"><a role="button" data-toggle="collapse" href="#collapseVPrefectF" aria-expanded="false" aria-controls="collapseVPrefectF">Vice-Prefect Female</a></li>
+			  	<div class="collapse" id="collapseVPrefectF">
+	  				<div id="VPrefectFCandidates" class="well">
+	  					<button type="button" class="btn btn-success">Add Vice-Prefect Female Candidate</button>
+	  				</div>
+  				</div>
+			</ul>
+		</div>
+		<div role="tabpanel" class="tab-pane fade" id="HouseElections">
+			<ul class="nav nav-pills nav-stacked">
+			  <li role="presentation"><a role="button" data-toggle="collapse" href="#collapseChallengers" aria-expanded="false" aria-controls="collapseChallengers">Challengers</a></li>
+			  <div class="collapse" id="collapseChallengers">
+	  				<div id="ChallengersCandidates" class="well">
+	  					<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <h3 class="panel-title">Challengers Captain Candidates</h3>
+						  </div>
+						  <div class="panel-body">
+	  					<button type="button" class="btn btn-success">Add Captain Candidate</button>
+	  					</div>
+	  					</div>
+	  					<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <h3 class="panel-title">Challengers Vice-Captain Candidates</h3>
+						  </div>
+						  <div class="panel-body">
+	  					<button type="button" class="btn btn-success">Add Vice-Captain Candidate</button>
+	  					</div>
+	  					</div>
+	  				</div>
+  				</div>
+			  <li role="presentation"><a role="button" data-toggle="collapse" href="#collapseExplorers" aria-expanded="false" aria-controls="collapseExplorers">Explorers</a></li>
+			  <div class="collapse" id="collapseExplorers">
+	  				<div id="ExplorersCandidates" class="well">
+	  					<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <h3 class="panel-title">Explorers Captain Candidates</h3>
+						  </div>
+						  <div class="panel-body">
+	  					<button type="button" class="btn btn-success">Add Captain Candidate</button>
+	  					</div>
+	  					</div>
+	  					<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <h3 class="panel-title">Explorers Vice-Captain Candidates</h3>
+						  </div>
+						  <div class="panel-body">
+	  					<button type="button" class="btn btn-success">Add Vice-Captain Candidate</button>
+	  					</div>
+	  					</div>
+	  				</div>
+  				</div>
+			  <li role="presentation"><a role="button" data-toggle="collapse" href="#collapsePioneers" aria-expanded="false" aria-controls="collapsePioneers">Pioneers</a></li>
+			  <div class="collapse" id="collapsePioneers">
+	  				<div id="PioneersCandidates" class="well">
+	  					<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <h3 class="panel-title">Pioneers Captain Candidates</h3>
+						  </div>
+						  <div class="panel-body">
+	  					<button type="button" class="btn btn-success">Add Captain Candidate</button>
+	  					</div>
+	  					</div>
+	  					<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <h3 class="panel-title">Pioneers Vice-Captain Candidates</h3>
+						  </div>
+						  <div class="panel-body">
+	  					<button type="button" class="btn btn-success">Add Vice-Captain Candidate</button>
+	  					</div>
+	  					</div>
+	  				</div>
+  				</div>
+			  <li role="presentation"><a role="button" data-toggle="collapse" href="#collapseVoyagers" aria-expanded="false" aria-controls="collapseVoyagers">Voyagers</a></li>
+			  <div class="collapse" id="collapseVoyagers">
+	  				<div id="VoyagersCandidates" class="well">
+	  					<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <h3 class="panel-title">Voyagers Captain Candidates</h3>
+						  </div>
+						  <div class="panel-body">
+	  					<button type="button" class="btn btn-success">Add Captain Candidate</button>
+	  					</div>
+	  					</div>
+	  					<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <h3 class="panel-title">Voyagers Vice-Captain Candidates</h3>
+						  </div>
+						  <div class="panel-body">
+	  					<button type="button" class="btn btn-success">Add Vice-Captain Candidate</button>
+	  					</div>
+	  					</div>
+	  				</div>
+  				</div>
+			</ul>
+		</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="/static/js/bootstrap.min.js"></script>
