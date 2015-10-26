@@ -1,0 +1,39 @@
+{
+  "candidates": [
+    {
+      "SchoolElections": {
+        "Prefect": [],
+        "VicePrefectMale": [],
+        "VicePrefectFemale": []
+      }
+    },
+    {
+      "HouseElections": [
+        {
+          "Challengers": {
+            "Captian": [],
+            "Vice-Captain": []
+          }
+        },
+        {
+          "Explorers": {
+            "Captian": [],
+            "Vice-Captain": []
+          }
+        },
+        {
+          "Pioneers": {
+            "Captian": [],
+            "Vice-Captain": []
+          }
+        },
+        {
+          "Voyagers": {
+            "Captian": [],
+            "Vice-Captain": []
+          }
+        }
+      ]
+    }
+  ]
+}
