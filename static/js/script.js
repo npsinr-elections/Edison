@@ -15,3 +15,13 @@ var sidebarstate = "Closed";
 			document.getElementsByClassName("side-icon")[0].style.marginLeft = "50px";
 			sidebarstate = "Closed";
 	}
+function getcandidates() {
+	$('#myModal').modal('show')
+	$("#myModalLabel").html("Candidate List")
+	$.get('/candidates',
+		function(data){
+			viewcandidates(data);
+		},"json");
+}
+function viewcandidates(data) {
+}
