@@ -9,18 +9,9 @@
             }
         </style>
     </head>
-    <body>
+    <body id="body">
 		<script>
-			var polls = []
-            body = document.getElementsByTagName("body")[0];
             theInterface = new Interface();
-			//for each poll in the interface
-			theInterface.polls.forEach(
-				function (poll, i, arr) {
-					body.innerHTML += poll.evalDumpString();
-				},
-				this
-			)
 		</script>
     </body>
 </html>
