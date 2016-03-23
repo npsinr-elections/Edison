@@ -25,25 +25,26 @@ function validate(office, house) {
     if (!house && listOfPrefects.indexOf(office) === -1) {
         throw new Err("No house specified");
     }
-    if (house && listOfHouses.indexOf(house) === -1) {
+    if (house && listOfGroups.indexOf(house) === -1) {
         throw new Err("House name not in order");
     }
 }
 
 //defines a generic candidate
-function Candidate(nam, office, group) {
+function Candidate(number, details, office, group) {
     'use strict';
 
     //validate(office, group);
 
-    if (!nam) {
-        throw new Err("No name specified");
-    }
+    //if (!nam) {
+    //    throw new Err("No name specified");
+    //}
 
     this.office = office;
     this.group = group;
 
-    this.name = nam;
+    this.name = details.name;
+    this.image = details.image;
     this.votes = 0;
     
     this.cl = "candidate " + this.group + " " + this.office.replace(' ', '');
@@ -70,14 +71,15 @@ function Candidate(nam, office, group) {
 }
 
 //defines a generic poll
-function Poll(number, details) {
+function Poll(number, group, office) {
     'use strict';
+    var i; //remove
 
     //validate(details[0], details[1]);
 
-    this.office = details[0];
-    this.group = details[1];
-	this.number = number
+    this.office = office;
+    this.group = group;
+	this.number = number;
 
     this.candidates = []; //reset
     this.totalVotes = 0;
@@ -88,27 +90,7 @@ function Poll(number, details) {
     this.id = this.group.replace(' ', '') + this.office.replace(' ', '');
 	this.dumpString = "<div id=\"" + this.id + "\" class=\"" + this.cl + "\"></div>";
     
-    this.evalDumpString = function () {
-		this.dumpString = "<div id=\"" + this.id + "\" class=\"" + this.cl + "\">";
-		
-		this.candidates.forEach(
-			function(candidate, i, arr) {
-				this.dumpString += candidate.dumpString;
-			},
-			this
-		)
-		
-		this.dumpString += "</div>";
-		
-		//return this.dumpString;
-	}
-    
     this.dump = function (id) {
-		//this.evalDumpString();
-		
-        var i = 0,
-            j = 0;
-        
         document.getElementById(id).innerHTML += this.dumpString;
 		
 		this.candidates.forEach(
@@ -116,11 +98,11 @@ function Poll(number, details) {
 				document.getElementById(this.id).innerHTML += candidate.dumpString;
 			},
 			this
-		)
+		);
     };
 
-    this.addCandidate = function (nam) {
-        this.candidates.push(new Candidate(nam, this.office, this.group));
+    this.addCandidate = function (number, details) {
+        this.candidates.push(new Candidate(number, details, this.office, this.group));
     };
 
     this.vote = function (i) {
@@ -139,15 +121,15 @@ function Poll(number, details) {
         return this.totalVotes;
     };
 
-    function evaluateWinner () {
+    this.evaluateWinner = function () {
         var winners = [],
-            m = Math.max.apply(Math, this.specificVotes),
+            maxVotes = Math.max.apply(Math, this.specificVotes),
             candidate,
             i,
             l;
 
         for (i = 0, l = this.candidates.length; i < l; i = i + 1) {
-            if (this.candidates[i].getVotes() === m) {
+            if (this.candidates[i].getVotes() === maxVotes) {
                 winners.push(this.candidates[i].getName());
                 //do something in the graphics, or leave it to the calling function
             }
@@ -171,44 +153,106 @@ function Poll(number, details) {
     this.getFinalWinner = function () {
         return this.finalWinner;
     };
-    
-    //remove this
-    for (var i = 0; i < 3; i += 1) {
-        this.addCandidate(this.office + this.group + i);
-    }
 }
 
-function Interface() {
+function Interface(electionId, dumpId) {
+    
     'use strict';
     var i = 0,
         j = 0,
         k = 0,
         l = 0,
-        poll = "";
+        groupsAndOffices,
+        pollsAndCandidates;
     
-    this.pollDetails = [
-        ["Prefect", "Prefects"], ["Vice Prefect Female", "Prefects"], ["Vice Prefect Male", "Prefects"],
-        ["Vice Captain", "Challengers"], ["Vice Captain", "Explorers"], ["Vice Captain", "Pioneers"], ["Vice Captain", "Voyagers"],
-        ["Captain", "Challengers"], ["Captain", "Explorers"], ["Captain", "Pioneers"], ["Captain", "Voyagers"]
-    ];
+    this.electionId = electionId;
+    this.dumpId = dumpId;
 	
     this.polls = [];
-
-    this.setPollsAndCandidates = function () {
-        this.pollDetails.forEach(
-            function (details, i, arr) {
-                this.polls[i] = new Poll(i, details);
-            },
-            this
-        );
-		
-		this.polls.forEach(
+	
+	this.fetchAndSet = function () {
+        
+		//request the server for groups and their offices
+		//process the incoming data to form object literal with key-value pairs
+		//return the object
+        
+        var group,
+            office,
+            candidate,
+            pollNumber = 0,
+            candidateNumber = 0,
+            temporaryPoll,
+            data = {
+                "Group 1": {
+                    "Office 1": [
+                        {"name": "foo", "image": "url"},
+                        {"name": "bar", "image": "url"},
+                        {"name": "baz", "image": "url"}
+                    ],
+                    "Office 2": [
+                        {"name": "foo", "image": "url"},
+                        {"name": "bar", "image": "url"},
+                        {"name": "baz", "image": "url"}
+                    ],
+                    "Office 3": [
+                        {"name": "foo", "image": "url"},
+                        {"name": "bar", "image": "url"},
+                        {"name": "baz", "image": "url"}
+                    ]
+                },
+                "Group 2": {
+                    "Office 1": [
+                        {"name": "foo", "image": "url"},
+                        {"name": "bar", "image": "url"},
+                        {"name": "baz", "image": "url"}
+                    ],
+                    "Office 2": [
+                        {"name": "foo", "image": "url"},
+                        {"name": "bar", "image": "url"},
+                        {"name": "baz", "image": "url"}
+                    ],
+                    "Office 3": [
+                        {"name": "foo", "image": "url"},
+                        {"name": "bar", "image": "url"},
+                        {"name": "baz", "image": "url"}
+                    ]
+                }
+            };
+        
+        for (group in data) {
+            if (data.hasOwnProperty(group)) {
+                for (office in data[group]) {
+                    if (data[group].hasOwnProperty(office)) {
+                        
+                        temporaryPoll = new Poll(pollNumber, group, office);
+                        pollNumber += 1;
+                        
+                        data[group][office].forEach(
+                            function(candidate, i, arr) {
+                                temporaryPoll.addCandidate(candidateNumber, candidate);
+                                candidateNumber += 1;
+                            },
+                            this
+                        );
+                        
+                        this.polls.push(temporaryPoll);
+                        temporaryPoll = {};
+                    }
+                }
+            }
+        }  
+	};
+    
+    this.dumpPolls = function () {
+        this.polls.forEach(
 			function (poll, i, arr) {
-				poll.dump("body");
+				poll.dump(this.dumpId);
 			},
 			this
-		)
+		);
     };
     
-    this.setPollsAndCandidates();
+    this.fetchAndSet();
+    this.dumpPolls();
+    //this.setPollsAndCandidates();
 }
