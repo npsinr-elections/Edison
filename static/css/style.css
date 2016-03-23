@@ -9,7 +9,7 @@ html,body {
 	position:fixed;
 	top:0;
 	left:0;
-	transition-duration:0.7s;
+	transition-duration:0.3s;
 }
 
 .navfix {
@@ -39,7 +39,7 @@ html,body {
 	height:30px;
 	margin-left:50px;
 	margin-top:20px;
-	transition-duration:0.7s;
+	transition-duration:0.3s;
 }
 .strip {
 	height:5px;
@@ -57,7 +57,7 @@ html,body {
 	position:fixed;
 	top:0px;
 	left:-300px;
-	transition-duration:0.7s;
+	transition-duration:0.3s;
 	z-index: 10;
 }
 #option1{

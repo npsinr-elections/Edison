@@ -46,9 +46,9 @@ function Candidate(nam, office, house) {
     this.name = nam;
     this.votes = 0;
     
-    this.cl = "candidate " + (this.house || "canpre") + " " + this.office + " " + (this.house || "pre") + this.office;
+    this.cl = "candidate " + (this.house || "canpre") + " " + this.office.replace(' ', '');
     this.id = this.name.replace(" ", "");
-    this.dumpString = "";
+    this.dumpString = "<button id=\"" + this.id + "\" class=\"" + this.cl + "\">" + this.name + "</button>";
 
     this.vote = function () {
         this.votes += 1;
@@ -70,23 +70,37 @@ function Candidate(nam, office, house) {
 }
 
 //defines a generic poll
-function Poll(office, house) {
+function Poll(details) {
     'use strict';
 
-    validate(office, house);
+    validate(details[0], details[1]);
 
-    this.office = office;
-    this.house = house || "";
+    this.office = details[0];
+    this.house = details[1] || "";
 
-    this.candidates = [];
+    this.candidates = []; //reset
     this.totalVotes = 0;
     this.specificVotes = [];
     this.finalWinner = "";
     
     this.cl = "poll " + (this.house || "pre");
     this.id = this.house + this.office.replace(' ', '');
+	this.dumpString = "<div>Not Evaluated</div>";
     
-    this.dumpString = "<div id=\"" + this.id + "\" class=\"" + this.cl + "></div>";
+    this.evalDumpString = function () {
+		this.dumpString = "<div id=\"" + this.id + "\" class=\"" + this.cl + "\">";
+		
+		this.candidates.forEach(
+			function(candidate, i, arr) {
+				this.dumpString += candidate.dumpString;
+			},
+			this
+		)
+		
+		this.dumpString += "</div>";
+		
+		return this.dumpString;
+	}
     
     this.dump = function (id) {
         var i = 0,
@@ -151,6 +165,11 @@ function Poll(office, house) {
     this.getFinalWinner = function () {
         return this.finalWinner;
     };
+    
+    //remove this
+    for (var i = 0; i < 3; i += 1) {
+        this.addCandidate(this.office + this.house + i);
+    }
 }
 
 function Interface() {
@@ -158,31 +177,25 @@ function Interface() {
     var i = 0,
         j = 0,
         k = 0,
-        l = 0;
+        l = 0,
+        poll = "";
+    
+    this.pollDetails = [
+        ["Prefect"], ["Vice Prefect Female"], ["Vice Prefect Male"],
+        ["Vice Captain", "Challengers"], ["Vice Captain", "Explorers"], ["Vice Captain", "Pioneers"], ["Vice Captain", "Voyagers"],
+        ["Captain", "Challengers"], ["Captain", "Explorers"], ["Captain", "Pioneers"], ["Captain", "Voyagers"]
+    ];
     
     this.polls = [];
 
     this.setPollsAndCandidates = function () {
-        /*add code to set this.polls to the value it needs to be, here is an example:
-        [
-            //makes a poll for P, VPF, VPM
-            new Poll("Prefect"),
-            new Poll("Vice Prefect Female"),
-            new Poll("Vice Prefect Male"),
-
-            //makes a poll for VC for each house
-            new Poll("Vice Captain", "Challengers"),
-            new Poll("Vice Captain", "Explorers"),
-            new Poll("Vice Captain", "Pioneers"),
-            new Poll("Vice Captain", "Voyagers"),
-
-            //makes a poll for C for each house
-            new Poll("Captain", "Challengers"),
-            new Poll("Captain", "Explorers"),
-            new Poll("Captain", "Pioneers"),
-            new Poll("Captain", "Voyagers")
-        ]
-        Also, set the values for all this.polls[i].candidates[]
-        */
-    }
+        this.pollDetails.forEach(
+            function (details, i, arr) {
+                this.polls[i] = new Poll(details);
+            },
+            this
+        );
+    };
+    
+    this.setPollsAndCandidates();
 }

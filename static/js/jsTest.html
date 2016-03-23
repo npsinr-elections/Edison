@@ -2,12 +2,25 @@
 <html>
     <head>
         <script lang="text/javascript" src="poll.js"></script>
-        
+        <style>
+            div {
+                height: 100px;
+                background-color: rgba(0, 0, 255, 0.2);
+            }
+        </style>
     </head>
     <body>
-       <p id="p"></p>
-        <script>
-            a = new Interface();
-        </script>
+		<script>
+			var polls = []
+            body = document.getElementsByTagName("body")[0];
+            theInterface = new Interface();
+			//for each poll in the interface
+			theInterface.polls.forEach(
+				function (poll, i, arr) {
+					body.innerHTML += poll.evalDumpString();
+				},
+				this
+			)
+		</script>
     </body>
 </html>
