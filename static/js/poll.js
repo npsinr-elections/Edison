@@ -158,12 +158,7 @@ function Poll(number, group, office) {
 function Interface(electionId, dumpId) {
     
     'use strict';
-    var i = 0,
-        j = 0,
-        k = 0,
-        l = 0,
-        groupsAndOffices,
-        pollsAndCandidates;
+    var i = 0;
     
     this.electionId = electionId;
     this.dumpId = dumpId;
@@ -172,9 +167,6 @@ function Interface(electionId, dumpId) {
 	
 	this.fetchAndSet = function () {
         
-		//request the server for groups and their offices
-		//process the incoming data to form object literal with key-value pairs
-		//return the object
         
         var group,
             office,
@@ -182,7 +174,7 @@ function Interface(electionId, dumpId) {
             pollNumber = 0,
             candidateNumber = 0,
             temporaryPoll,
-            data = {
+            data = { //this is the dummy data to be replaced.
                 "Group 1": {
                     "Office 1": [
                         {"name": "foo", "image": "url"},
@@ -218,6 +210,10 @@ function Interface(electionId, dumpId) {
                     ]
                 }
             };
+        
+		//request the server for groups and their offices
+		//process the incoming data to form object literal with key-value pairs
+		//set the data variable to the object literal
         
         for (group in data) {
             if (data.hasOwnProperty(group)) {
