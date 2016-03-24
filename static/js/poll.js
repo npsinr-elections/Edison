@@ -2,7 +2,7 @@
 //defines an error
 function Err(message) {
     'use strict';
-    
+
     window.alert(message);
     console.log(message);
     throw new Error(message);
@@ -31,7 +31,7 @@ function validate(office, house) {
 }
 
 //defines a generic candidate
-function Candidate(number, details, office, group) {
+function Candidate(candidateNumber, pollNumber, details, office, group) {
     'use strict';
 
     //validate(office, group);
@@ -43,13 +43,23 @@ function Candidate(number, details, office, group) {
     this.office = office;
     this.group = group;
 
+    this.candidateNumber = candidateNumber;
+    this.pollNumber = pollNumber
     this.name = details.name;
     this.image = details.image;
     this.votes = 0;
-    
-    this.cl = "candidate " + this.group + " " + this.office.replace(' ', '');
-    this.id = this.name.replace(" ", "");
-    this.dumpString = "<button id=\"" + this.id + "\" class=\"" + this.cl + "\">" + this.name + "</button>";
+
+    this.isWinner = false;
+
+    this.cl = "candidate " + this.group.replace(' ', '') + " " + this.office.replace(' ', '');
+    this.id = this.group.replace(" ", "") + this.office.replace(" ", '') + this.candidateNumber;
+    this.dumpString = "<button id=\"" + this.id + "\"" + //sets the id
+        "class=\"" + this.cl + "\"" + //sets the class
+        "data-candidate-number=\"" + this.candidateNumber + "\"" + //sets data-candidate-number
+        "data-poll-number=\"" + this.pollNumber + "\"" +
+        "\">" + //ends the starting tag
+        this.name + //sets the content
+        "</button>"; //ends the button
 
     this.vote = function () {
         this.votes += 1;
@@ -73,42 +83,48 @@ function Candidate(number, details, office, group) {
 //defines a generic poll
 function Poll(number, group, office) {
     'use strict';
-    var i; //remove
 
     //validate(details[0], details[1]);
+    var candidateNumber = 0;
 
     this.office = office;
     this.group = group;
-	this.number = number;
+    this.number = number;
 
     this.candidates = []; //reset
     this.totalVotes = 0;
     this.specificVotes = [];
-    this.finalWinner = "";
-    
+    this.finalWinner = {};
+
     this.cl = "poll " + this.group;
     this.id = this.group.replace(' ', '') + this.office.replace(' ', '');
-	this.dumpString = "<div id=\"" + this.id + "\" class=\"" + this.cl + "\"></div>";
-    
+
+    this.dumpString = "<div id=\"" + this.id + "\"" + //sets the id
+        "class=\"" + this.cl + "\"" + //sets the class
+        "data-poll-number=\"" + this.number + "\">" + //sets data-poll-number
+        "</div>"; //ends the div
+
     this.dump = function (id) {
         document.getElementById(id).innerHTML += this.dumpString;
-		
-		this.candidates.forEach(
-			function (candidate, i, arr) {
-				document.getElementById(this.id).innerHTML += candidate.dumpString;
-			},
-			this
-		);
+
+        this.candidates.forEach(
+            function (candidate, i, arr) {
+                document.getElementById(this.id).innerHTML += candidate.dumpString;
+            },
+            this
+        );
     };
 
-    this.addCandidate = function (number, details) {
-        this.candidates.push(new Candidate(number, details, this.office, this.group));
+    this.addCandidate = function (details) {
+        this.candidates.push(new Candidate(candidateNumber, this.number, details, this.office, this.group));
+        candidateNumber += 1;
     };
 
     this.vote = function (i) {
         this.totalVotes += 1;
         this.specificVotes[i] = this.candidates[i].vote();
         this.evaluateWinner();
+        console.log("Voted!!!");
     };
 
     this.unvote = function (i) {
@@ -124,16 +140,19 @@ function Poll(number, group, office) {
     this.evaluateWinner = function () {
         var winners = [],
             maxVotes = Math.max.apply(Math, this.specificVotes),
-            candidate,
-            i,
-            l;
+            candidate;
 
-        for (i = 0, l = this.candidates.length; i < l; i = i + 1) {
-            if (this.candidates[i].getVotes() === maxVotes) {
-                winners.push(this.candidates[i].getName());
-                //do something in the graphics, or leave it to the calling function
-            }
-        }
+        this.candidates.forEach(
+            function (candidate, i, arr) {
+                if (candidate.getVotes() === maxVotes) {
+                    winners.push(candidate);
+                    candidate.isWinner = true;
+                } else {
+                    candidate.isWinner = false;
+                }
+            }, this
+        );
+
         return winners;
     };
 
@@ -141,7 +160,7 @@ function Poll(number, group, office) {
         var winner = this.evaluateWinner();
         if (winner.length === 1) {
             this.finalWinner = winner[0];
-            window.alert("The winner is " + winner[0]);
+            window.alert("The winner is " + winner[0].name);
             //fix interface (remove the window.alert())
             //to go to the next poll, maybe the Interface object or normal scripting JS should handle
         } else {
@@ -156,99 +175,183 @@ function Poll(number, group, office) {
 }
 
 function Interface(electionId, dumpId) {
-    
+
     'use strict';
     var i = 0;
-    
+
     this.electionId = electionId;
     this.dumpId = dumpId;
-	
+
     this.polls = [];
-	
-	this.fetchAndSet = function () {
-        
-        
+
+    this.fetchAndSet = function () {
+
+
         var group,
             office,
             candidate,
             pollNumber = 0,
-            candidateNumber = 0,
             temporaryPoll,
             data = { //this is the dummy data to be replaced.
                 "Group 1": {
                     "Office 1": [
-                        {"name": "foo", "image": "url"},
-                        {"name": "bar", "image": "url"},
-                        {"name": "baz", "image": "url"}
+                        {
+                            "name": "foo",
+                            "image": "url"
+                        },
+                        {
+                            "name": "bar",
+                            "image": "url"
+                        },
+                        {
+                            "name": "baz",
+                            "image": "url"
+                        }
                     ],
                     "Office 2": [
-                        {"name": "foo", "image": "url"},
-                        {"name": "bar", "image": "url"},
-                        {"name": "baz", "image": "url"}
+                        {
+                            "name": "foo",
+                            "image": "url"
+                        },
+                        {
+                            "name": "bar",
+                            "image": "url"
+                        },
+                        {
+                            "name": "baz",
+                            "image": "url"
+                        }
                     ],
                     "Office 3": [
-                        {"name": "foo", "image": "url"},
-                        {"name": "bar", "image": "url"},
-                        {"name": "baz", "image": "url"}
+                        {
+                            "name": "foo",
+                            "image": "url"
+                        },
+                        {
+                            "name": "bar",
+                            "image": "url"
+                        },
+                        {
+                            "name": "baz",
+                            "image": "url"
+                        }
                     ]
                 },
                 "Group 2": {
                     "Office 1": [
-                        {"name": "foo", "image": "url"},
-                        {"name": "bar", "image": "url"},
-                        {"name": "baz", "image": "url"}
+                        {
+                            "name": "foo",
+                            "image": "url"
+                        },
+                        {
+                            "name": "bar",
+                            "image": "url"
+                        },
+                        {
+                            "name": "baz",
+                            "image": "url"
+                        }
                     ],
                     "Office 2": [
-                        {"name": "foo", "image": "url"},
-                        {"name": "bar", "image": "url"},
-                        {"name": "baz", "image": "url"}
+                        {
+                            "name": "foo",
+                            "image": "url"
+                        },
+                        {
+                            "name": "bar",
+                            "image": "url"
+                        },
+                        {
+                            "name": "baz",
+                            "image": "url"
+                        }
                     ],
                     "Office 3": [
-                        {"name": "foo", "image": "url"},
-                        {"name": "bar", "image": "url"},
-                        {"name": "baz", "image": "url"}
+                        {
+                            "name": "foo",
+                            "image": "url"
+                        },
+                        {
+                            "name": "bar",
+                            "image": "url"
+                        },
+                        {
+                            "name": "baz",
+                            "image": "url"
+                        }
                     ]
                 }
             };
-        
-		//request the server for groups and their offices
-		//process the incoming data to form object literal with key-value pairs
-		//set the data variable to the object literal
-        
+
+        //request the server for groups and their offices
+        //process the incoming data to form object literal with key-value pairs
+        //set the data variable to the object literal
+
         for (group in data) {
             if (data.hasOwnProperty(group)) {
                 for (office in data[group]) {
                     if (data[group].hasOwnProperty(office)) {
-                        
+
                         temporaryPoll = new Poll(pollNumber, group, office);
                         pollNumber += 1;
-                        
+
                         data[group][office].forEach(
-                            function(candidate, i, arr) {
-                                temporaryPoll.addCandidate(candidateNumber, candidate);
-                                candidateNumber += 1;
+                            function (candidate, i, arr) {
+                                temporaryPoll.addCandidate(candidate);
                             },
                             this
                         );
-                        
+
                         this.polls.push(temporaryPoll);
                         temporaryPoll = {};
                     }
                 }
             }
-        }  
-	};
-    
+        }
+    };
+
     this.dumpPolls = function () {
         this.polls.forEach(
-			function (poll, i, arr) {
-				poll.dump(this.dumpId);
-			},
-			this
-		);
+            function (poll, i, arr) {
+                poll.dump(this.dumpId);
+            },
+            this
+        );
     };
-    
+
+    this.addEvents = function () {
+        var polls = this.polls,
+            winners = [],
+            candidates = [],
+            theButton;
+        this.polls.forEach(
+            function (poll, i, arr) {
+                poll.candidates.forEach(
+                    function (candidate, j, arr1) {
+                        document.getElementById(candidate.id).addEventListener("click",
+                            function () {
+                                polls[this.dataset.pollNumber].vote(this.dataset.candidateNumber);
+                                winners = polls[this.dataset.pollNumber].evaluateWinner();
+                                candidates = polls[this.dataset.pollNumber].candidates;
+                                candidates.forEach(
+                                    function (candidate, k, arr2) {
+                                        if (candidate.isWinner) {
+                                            document.getElementById(candidate.id).classList.add("winner");
+                                        } else {
+                                            document.getElementById(candidate.id).classList.remove("winner");
+                                        }
+                                    },
+                                    this
+                                );
+                            });
+                    }
+                );
+            }
+        );
+    }
+
     this.fetchAndSet();
     this.dumpPolls();
+    this.addEvents();
     //this.setPollsAndCandidates();
 }
