@@ -1,14 +1,14 @@
 /*jslint browser: true */
 //defines an error
-function Err(message) {
+/*function Err(message) {
     'use strict';
 
     window.alert(message);
     console.log(message);
     throw new Error(message);
-}
+}*/
 
-function validate(office, house) {
+/*function validate(office, house) {
     'use strict';
 
     var listOfOffices = ["Captain", "Vice Captain", "Prefect", "Vice Prefect Female", "Vice Prefect Male"],
@@ -28,7 +28,7 @@ function validate(office, house) {
     if (house && listOfGroups.indexOf(house) === -1) {
         throw new Err("House name not in order");
     }
-}
+}*/
 
 //defines a generic candidate
 function Candidate(candidateNumber, pollNumber, details, office, group) {
@@ -44,7 +44,7 @@ function Candidate(candidateNumber, pollNumber, details, office, group) {
     this.group = group;
 
     this.candidateNumber = candidateNumber;
-    this.pollNumber = pollNumber
+    this.pollNumber = pollNumber;
     this.name = details.name;
     this.image = details.image;
     this.votes = 0;
@@ -53,21 +53,25 @@ function Candidate(candidateNumber, pollNumber, details, office, group) {
 
     this.cl = "candidate " + this.group.replace(' ', '') + " " + this.office.replace(' ', '');
     this.id = this.group.replace(" ", "") + this.office.replace(" ", '') + this.candidateNumber;
+
+    this.innerHTML = this.name + ": " + this.votes;
     this.dumpString = "<button id=\"" + this.id + "\"" + //sets the id
         "class=\"" + this.cl + "\"" + //sets the class
         "data-candidate-number=\"" + this.candidateNumber + "\"" + //sets data-candidate-number
         "data-poll-number=\"" + this.pollNumber + "\"" +
         "\">" + //ends the starting tag
-        this.name + //sets the content
+        this.innerHTML + //sets the content
         "</button>"; //ends the button
 
     this.vote = function () {
         this.votes += 1;
+        this.innerHTML = this.name + ": " + this.votes;
         return this.votes;
     };
 
     this.unvote = function () {
         this.votes -= 1;
+        this.innerHTML = this.name + ": " + this.votes;
         return this.votes;
     };
 
@@ -85,7 +89,8 @@ function Poll(number, group, office) {
     'use strict';
 
     //validate(details[0], details[1]);
-    var candidateNumber = 0;
+    var candidateNumber = 0,
+        votes = [];
 
     this.office = office;
     this.group = group;
@@ -96,12 +101,15 @@ function Poll(number, group, office) {
     this.specificVotes = [];
     this.finalWinner = {};
 
-    this.cl = "poll " + this.group;
+    this.cl = "poll " + this.group.replace(" ", "");
     this.id = this.group.replace(' ', '') + this.office.replace(' ', '');
 
     this.dumpString = "<div id=\"" + this.id + "\"" + //sets the id
         "class=\"" + this.cl + "\"" + //sets the class
         "data-poll-number=\"" + this.number + "\">" + //sets data-poll-number
+        "<button disabled=\"true\" id=\"undo" + this.id + "\">" + //adds undo button
+        "Undo" +
+        "</button>" +
         "</div>"; //ends the div
 
     this.dump = function (id) {
@@ -115,6 +123,10 @@ function Poll(number, group, office) {
         );
     };
 
+    this.getTotalVotes = function () {
+        return votes.length;
+    };
+
     this.addCandidate = function (details) {
         this.candidates.push(new Candidate(candidateNumber, this.number, details, this.office, this.group));
         this.specificVotes.push(0);
@@ -122,15 +134,19 @@ function Poll(number, group, office) {
     };
 
     this.vote = function (i) {
-        this.totalVotes += 1;
         this.specificVotes[i] = this.candidates[i].vote();
         this.evaluateWinner();
-        console.log("Voted!!!");
+        votes.push(i);
     };
 
     this.unvote = function (i) {
-        this.totalVotes -= 1;
         this.specificVotes[i] = this.candidates[i].unvote();
+        this.evaluateWinner();
+        votes.pop();
+    };
+    
+    this.undo = function () {
+        this.unvote(votes[votes.length - 1]);
         this.evaluateWinner();
     };
 
@@ -151,7 +167,16 @@ function Poll(number, group, office) {
                 } else {
                     candidate.isWinner = false;
                 }
-            }, this
+                if (winners.length === this.candidates.length) {
+                    winners = [];
+                    this.candidates.forEach(
+                        function (candidate1, j, arr1) {
+                            candidate1.isWinner = false;
+                        }
+                    );
+                }
+            },
+            this
         );
 
         return winners;
@@ -311,6 +336,7 @@ function Interface(electionId, dumpId) {
         }
     };
 
+
     this.dumpPolls = function () {
         this.polls.forEach(
             function (poll, i, arr) {
@@ -324,31 +350,62 @@ function Interface(electionId, dumpId) {
         var polls = this.polls,
             winners = [],
             candidates = [],
-            theButton;
+            theButton,
+            theCandidate;
+
         this.polls.forEach(
             function (poll, i, arr) {
+                //for clicking on the candidates
                 poll.candidates.forEach(
                     function (candidate, j, arr1) {
                         document.getElementById(candidate.id).addEventListener("click",
                             function () {
+                                //votes
                                 polls[this.dataset.pollNumber].vote(this.dataset.candidateNumber);
+                                
+                                //enables the undo button
+                                document.getElementById("undo" + polls[this.dataset.pollNumber].id).disabled = false;
+                                
                                 winners = polls[this.dataset.pollNumber].evaluateWinner();
-                                candidates = polls[this.dataset.pollNumber].candidates;
-                                candidates.forEach(
-                                    function (candidate, k, arr2) {
-                                        if (candidate.isWinner) {
-                                            document.getElementById(candidate.id).classList.add("winner");
-                                        } else {
-                                            document.getElementById(candidate.id).classList.remove("winner");
-                                        }
-                                    },
-                                    this
+                                poll.candidates.forEach(
+                                    function (candidate1, k, arr2) {
+                                        showIfWinner(candidate1);
+                                    }
                                 );
-                            });
+                            }
+                            );
+                    }
+                );
+                //for clicking on undo
+                document.getElementById("undo" + poll.id).addEventListener("click",
+                    function () {
+                        poll.undo();
+                        poll.candidates.forEach(
+                            function (candidate, i, arr) {
+                                showIfWinner(candidate);
+                            }
+                        );
+                        //disables the undo button if the total number of votes = 0
+                        if (poll.getTotalVotes() === 0) {
+                            document.getElementById("undo" + poll.id).disabled = true;
+                        }
                     }
                 );
             }
         );
+    };
+    
+    function showIfWinner(candidate) {
+        if (candidate.isWinner) {
+            document.getElementById(candidate.id).classList.add("winner");
+        } else {
+            document.getElementById(candidate.id).classList.remove("winner");
+        }
+        resetDisplayedVotes(candidate);
+    }
+    
+    function resetDisplayedVotes(candidate) {
+        document.getElementById(candidate.id).innerHTML = candidate.innerHTML;
     }
 
     this.fetchAndSet();
