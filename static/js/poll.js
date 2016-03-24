@@ -117,6 +117,7 @@ function Poll(number, group, office) {
 
     this.addCandidate = function (details) {
         this.candidates.push(new Candidate(candidateNumber, this.number, details, this.office, this.group));
+        this.specificVotes.push(0);
         candidateNumber += 1;
     };
 
