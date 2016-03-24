@@ -105,7 +105,7 @@ function Poll(number, group, office) {
     this.id = this.group.replace(' ', '') + this.office.replace(' ', '');
 
     this.dumpString = "<div id=\"" + this.id + "\"" + //sets the id
-        "class=\"" + this.cl + "\"" + //sets the class
+        "class=\"" + this.cl + " row\"" + //sets the class
         "data-poll-number=\"" + this.number + "\">" + //sets data-poll-number
         "<button disabled=\"true\" class=\"undo\" id=\"undo" + this.id + "\">" + //adds undo button
         "Undo" +
