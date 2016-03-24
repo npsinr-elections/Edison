@@ -54,13 +54,13 @@ function Candidate(candidateNumber, pollNumber, details, office, group) {
     this.cl = "candidate " + this.group.replace(' ', '') + " " + this.office.replace(' ', '');
     this.id = this.group.replace(" ", "") + this.office.replace(" ", '') + this.candidateNumber;
 
-    this.innerHTML = this.name + ": " + this.votes;
     this.dumpString = "<button id=\"" + this.id + "\"" + //sets the id
         "class=\"" + this.cl + "\"" + //sets the class
         "data-candidate-number=\"" + this.candidateNumber + "\"" + //sets data-candidate-number
         "data-poll-number=\"" + this.pollNumber + "\"" +
         "\">" + //ends the starting tag
-        this.innerHTML + //sets the content
+        this.name + ": " + //sets the content
+        "<div id=\"votes" + this.id + "\">" + this.votes + "</div>" + 
         "</button>"; //ends the button
 
     this.vote = function () {
@@ -107,8 +107,11 @@ function Poll(number, group, office) {
     this.dumpString = "<div id=\"" + this.id + "\"" + //sets the id
         "class=\"" + this.cl + "\"" + //sets the class
         "data-poll-number=\"" + this.number + "\">" + //sets data-poll-number
-        "<button disabled=\"true\" id=\"undo" + this.id + "\">" + //adds undo button
+        "<button disabled=\"true\" class=\"undo\" id=\"undo" + this.id + "\">" + //adds undo button
         "Undo" +
+        "</button>" +
+        "<button class=\"end\" id=\"end" + this.id + "\">" + //adds end button
+        "End" +
         "</button>" +
         "</div>"; //ends the div
 
@@ -351,7 +354,10 @@ function Interface(electionId, dumpId) {
             winners = [],
             candidates = [],
             theButton,
-            theCandidate;
+            theCandidate,
+            pollElement,
+            iterator,
+            length;
 
         this.polls.forEach(
             function (poll, i, arr) {
@@ -366,7 +372,6 @@ function Interface(electionId, dumpId) {
                                 //enables the undo button
                                 document.getElementById("undo" + polls[this.dataset.pollNumber].id).disabled = false;
                                 
-                                winners = polls[this.dataset.pollNumber].evaluateWinner();
                                 poll.candidates.forEach(
                                     function (candidate1, k, arr2) {
                                         showIfWinner(candidate1);
@@ -381,7 +386,7 @@ function Interface(electionId, dumpId) {
                     function () {
                         poll.undo();
                         poll.candidates.forEach(
-                            function (candidate, i, arr) {
+                            function (candidate, j, arr1) {
                                 showIfWinner(candidate);
                             }
                         );
@@ -389,6 +394,18 @@ function Interface(electionId, dumpId) {
                         if (poll.getTotalVotes() === 0) {
                             document.getElementById("undo" + poll.id).disabled = true;
                         }
+                    }
+                );
+                //for clicking on end
+                document.getElementById("end" + poll.id).addEventListener("click",
+                    function() {
+                        pollElement = document.getElementById(poll.id);
+                        for (iterator = 0, length = pollElement.children.length; iterator < length; iterator += 1) {
+                            if (pollElement.children[iterator].tagName === "BUTTON") {
+                                pollElement.children[iterator].disabled = true;
+                            }
+                        }
+                        poll.declareWinner();
                     }
                 );
             }
@@ -405,7 +422,7 @@ function Interface(electionId, dumpId) {
     }
     
     function resetDisplayedVotes(candidate) {
-        document.getElementById(candidate.id).innerHTML = candidate.innerHTML;
+        document.getElementById("votes" + candidate.id).innerHTML = candidate.votes;
     }
 
     this.fetchAndSet();
