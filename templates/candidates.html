@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>NPS-I Elections</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/jumbotron-narrow.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <div class="container">
+    	<!-- Navigation bar on top of page -->
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation"><a href="/">Home</a></li>
+            <li role="presentation" class="active"><a href="/candidates">Candidates</a></li>
+            <li role="presentation"><a href="#">Elections</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">NPS Indiranagar Elections</h3>
+      </div>
+
+<!-- Structures for office divs inside panels -->
+<div class="panel panel-default">
+  <div class="panel-heading">Prefect</div>
+  <div class="panel-body">
+  <div id="Prefect"></div>
+  <button class = "btn btn-info" onClick = "myFunction(null,'Prefect')">Add Candidate</button>
+  </div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">Vice Prefect 1</div>
+	<div class="panel-body">
+		<div id="VicePrefectM"></div>
+		<button class = "btn btn-info" onClick = "myFunction(null,'VicePrefectM')">Add Candidate</button>
+	</div>
+	</div>
+<div class="panel panel-default">
+	<div class="panel-heading">Vice Prefect 2</div>
+	<div class="panel-body">
+		<div id="VicePrefectF"></div>
+		<button class = "btn btn-info" onClick = "myFunction(null,'VicePrefectF')">Add Candidate</button>
+	</div>
+	</div>
+	<div class="panel panel-default">
+	<div class="panel-heading">Challengers Captain</div>
+	<div class="panel-body">
+		<div id="ChallengersC"></div>
+		<button class = "btn btn-info" onClick = "myFunction(null,'ChallengersC')">Add Candidate</button>
+	</div>
+	</div>
+	<div class="panel panel-default">
+	<div class="panel-heading">Challengers Vice Captain</div>
+	<div class="panel-body">
+		<div id="ChallengersVC"></div>
+		<button class = "btn btn-info" onClick = "myFunction(null,'ChallengersVC')">Add Candidate</button>
+	</div>
+	</div>
+	<div class="panel panel-default">
+	<div class="panel-heading">Explorers Captain</div>
+	<div class="panel-body">
+		<div id="ExplorersC"></div>
+		<button class = "btn btn-info" onClick = "myFunction(null,'ExplorersC')">Add Candidate</button>
+	</div>
+	</div>
+	<div class="panel panel-default">
+	<div class="panel-heading">Explorers Vice Captain</div>
+	<div class="panel-body">
+		<div id="ExplorersVC"></div>
+		<button class = "btn btn-info" onClick = "myFunction(null,'ExplorersVC')">Add Candidate</button>
+	</div>
+	</div>
+	<div class="panel panel-default">
+	<div class="panel-heading">Pioneers Captain</div>
+	<div class="panel-body">
+		<div id="PioneersC"></div>
+		<button class = "btn btn-info" onClick = "myFunction(null,'PioneersC')">Add Candidate</button>
+	</div>
+	</div>
+	<div class="panel panel-default">
+	<div class="panel-heading">Pioneers Vice Captain</div>
+	<div class="panel-body">
+		<div id="PioneersVC"></div>
+		<button class = "btn btn-info" onClick = "myFunction(null,'PioneersVC')">Add Candidate</button>
+	</div>
+	</div>
+	<div class="panel panel-default">
+	<div class="panel-heading">Voyagers Vice Captain</div>
+	<div class="panel-body">
+		<div id="VoyagersC"></div>
+		<button class = "btn btn-info" onClick = "myFunction(null,'VoyagersC')">Add Candidate</button>
+	</div>
+	</div>
+	<div class="panel panel-default">
+	<div class="panel-heading">Voyagers Vice Captain</div>
+	<div class="panel-body">
+		<div id="VoyagersVC"></div>
+		<button class = "btn btn-info" onClick = "myFunction(null,'VoyagersVC')">Add Candidate</button>
+	</div>
+	</div>
+	
+</div> <!-- /container -->
+
+	<script type="text/javascript">
+			var candidates = {"Prefect":[],"VicePrefectM":[],"VicePrefectF":[],"ChallengersC":[],"ChallengersVC":[],"ExplorersC":[],"ExplorersVC":[],"PioneersC":[],"PioneersVC":[],"VoyagersC":[],"VoyagersVC":[]};
+	prefect_nos = 0;
+	var para ;
+	var node ;
+	var element ;
+	var candidates2;
+	
+// Function to remove candidates.
+	function removeCandidate(object2,office) {
+		// object2: Button which called function, office: Concerned office to delete candidate from.
+		text = object2.id;
+		number = text.match(/\d/g); //Extracting number part of ID
+		number = number.join("");
+		id_para = parseInt(number) - 1; // ID for para
+		para2 = document.getElementById(office) // Office Div
+		child = document.getElementById(office + id_para.toString()) ; // Exact Candidate Div inside Office Div.
+		candidates[office].splice(findRow3(child)-1, 1); // Deleting candidate from candidate dictionary
+		para2.removeChild(child) ; // Deleting candidate from DOM (UI-front end).
+		
+		sendstructure(); // Updating Server with new structure.
+	}
+
+// Function to find the index position of child as related to a specific parent.
+	function findRow3(node)
+{
+    var i = 1;
+    while (node = node.previousSibling) {
+        if (node.nodeType === 1) { ++i }
+    }
+    return i;
+}
+
+// Function to edit Candidate Name. (To be completed)
+	function editName() {
+		var person = prompt("Edit the candidate's name:");
+		if (person !== null) {
+			
+		}
+	}
+
+// Function to add new candidate.
+	function myFunction(name,office) {
+				if (name == null) {
+   			var person = prompt("Please enter the candidate's name");
+				} else {person = name;}
+    		if (person != null) {
+    			// Adding candidate to candidate dictionary.
+    			candidates[office].push(person)
+    			// Calculating Candidate div No.
+    			prefect_nos = (2*(candidates[office].length))
+					// Creating Candidate Paragraph.
+    			para = document.createElement("p") ;
+    			node = document.createTextNode(person+"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0")
+    			para.appendChild(node)
+    			para.id = office + parseInt(prefect_nos);
+    		
+    		//Creating Delete button for candidate
+				delbut = document.createElement("button") ;
+				nodebut = document.createTextNode("Delete Candidate");
+				delbut.id = office + parseInt((prefect_nos + 1));
+				delbut.className = "btn btn-danger"
+				delbut.appendChild(nodebut) ;
+				
+				// Creating Edit button for candidate.
+				editbut = document.createElement("button");
+				editbut.id = office + parseInt((prefect_nos + 1));
+				editbut.className = "btn btn-primary"
+				node2but = document.createTextNode("Edit Candidate Info");
+				editbut.appendChild(node2but);
+				
+				// Appending buttons to the candidate para.
+				para.appendChild(editbut);
+				para.appendChild(delbut) ;
+					
+					// Finally, appending paragraph to the office Div element.
+    			var element = document.getElementById(office) ;
+    			element.appendChild(para) ;
+					
+					// Adding necessary event listeners. Note the "this" keyword argument.
+    			delbut.addEventListener('click', function() {removeCandidate(this,office);}, false) ;
+    			
+    			editbut.addEventListener('click', editName, false);
+    			// Updating server with new structure.
+    			sendstructure();
+
+    } else {alert("Candidate Name cannot be Empty!!")}
+}
+
+
+//-----------------------------------------------------------------------------
+// Function to update server with candidate dictionary.
+function sendstructure() {
+xhr = new XMLHttpRequest();
+var url = "/updateserver";
+xhr.open("POST", url, true);
+xhr.setRequestHeader("Content-type", "application/json");
+var data = JSON.stringify(candidates);
+xhr.send(data);
+}
+
+// --------------------------------------------------------------------
+// Function to get previous structure of candidates dictionary when page is first loaded.
+window.onload = function() {
+xhr = new XMLHttpRequest();
+var url = "/getcandidates";
+xhr.onreadystatechange = function() {
+  if (xhr.readyState == 4 && xhr.status == 200) {
+    candidates2 = JSON.parse(xhr.responseText);
+    displayCandidates();
+  }
+};
+xhr.open("GET", url, true);
+xhr.send();
+}
+
+//-----------------------------------------------------------------------------
+// Function to render previous candidates dictionary in previous function.
+function displayCandidates() {
+	for (key in candidates2) {
+		for (name in candidates2[key]) {
+			myFunction(candidates2[key][name],key);
+		}
+	}
+}
+	</script>
+  </body>
+</html>
