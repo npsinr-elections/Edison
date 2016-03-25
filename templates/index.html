@@ -1,46 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Edison</title>
-	<link rel="stylesheet" href="/static/css/style.css">
-	<link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
-</head>
-<body>
-	<div class="sidebar">
-	</div>
-	<div class="header">
-		<div onclick="togglesidebar();" class="side-icon">
-			<div class="strip"></div>
-			<div class="strip"></div>
-			<div class="strip"></div>
-		</div>
-		<div onclick="hidesidebar();" class="everythingelse">
-		<div id="brand">
-			Edison
-		</div>
-		</div>
-	</div>
-	<div onclick="hidesidebar();" class="everythingelse">
-	</div>
-	<script>
-	var sidebarstate = "Closed";
-	function togglesidebar() {
-		if (sidebarstate === "Closed") {
-			document.getElementsByClassName("sidebar")[0].style.left = "0px";
-			document.getElementsByClassName("side-icon")[0].style.marginLeft = "300px";
-			sidebarstate = "Open";
-		} else {
-			document.getElementsByClassName("sidebar")[0].style.left = "-300px";
-			document.getElementsByClassName("side-icon")[0].style.marginLeft = "50px";
-			sidebarstate = "Closed";
-		}
-	}
-	function hidesidebar() {
-			document.getElementsByClassName("sidebar")[0].style.left = "-300px";
-			document.getElementsByClassName("side-icon")[0].style.marginLeft = "50px";
-			sidebarstate = "Closed";
-	}
-	</script>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>NPS-I Elections</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/jumbotron-narrow.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="active"><a href="/">Home</a></li>
+            <li role="presentation"><a href="/candidates">Candidates</a></li>
+            <li role="presentation"><a href="#">Elections</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">NPS Indiranagar Elections</h3>
+      </div>
+
+      <div class="jumbotron">
+        <h1>Lets elect the leaders of tomorrow.</h1>
+        <p class="lead">This application has been built to hold the <strong>perfect elections</strong> for the <strong>perfect school</strong>.</p>
+        <p><a class="btn btn-lg btn-success" href="#" role="button">Start Elections Now!</a></p>
+      </div>
+
+      <div class="row marketing">
+        <div class="col-lg-4">
+          <h4>Simple Design</h4>
+          <p>This app has a simple design, to ensure optimum user experience..</p>
+        </div>
+
+        <div class="col-lg-4">
+          <h4>Blazingly Fast</h4>
+          <p>We know time is the most precious resource and this app ensures that the elections are a smooth process.</p>
+        </div>
+        
+        <div class="col-lg-4">
+        	<h4>Security First.</h4>
+          <p>This app uses latest encryption technology to ensure your election data stays safe</p>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <p>&copy; Built by Rishit Bansal (@thebongy) and Muktaka Joshipura (@TheOriginalMuktaka) for only NPS-I purposes.</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  </body>
 </html>

@@ -1,11 +1,41 @@
-from flask import Flask       # Importing Flask
-from flask import render_template
+from bottle import Bottle,route,request,run,get,static_file    # Importing Bottle
+import json
 
-app = Flask(__name__)		# initializing flask app
+app = Bottle()
 
 @app.route('/')
 def home():
-	return render_template("index.html")
+	return open("templates/index.html").read()
 
-if __name__ == '__main__':
-    app.run()
+@app.get('/candidates')
+def candidate():
+	return open("templates/candidates.html").read()
+
+@app.post('/updateserver')
+def updateserver():
+	with open('candidates.json', 'w') as outfile:
+		json.dump(request.json, outfile)
+
+@app.get("/getcandidates")
+def getcandidates():
+	with open("candidates.json") as json_file:
+		json_data = json.load(json_file)
+	return json_data
+
+@app.get('/static/css/<filename>')
+def returncss(filename):
+	return static_file(filename, root='static/css')
+
+@app.get('/static/js/<filename>')
+def returnjs(filename):
+	return static_file(filename, root='static/js')
+
+@app.get('/static/fonts/<filename>')
+def returnfonts(filename):
+	return static_file(filename, root='static/fonts')
+
+@app.get('/static/images/<filename>')
+def returnimages(filename):
+	return static_file(filename, root='static/images')
+
+run(app, host='localhost', port=8080)

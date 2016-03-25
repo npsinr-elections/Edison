@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script lang="text/javascript" src="poll.js"></script>
-        
-    </head>
-    <body>
-       <p id="p"></p>
-        <script>
-            a = new Interface();
-        </script>
-    </body>
+
+<head>
+    <link rel="stylesheet" href="pollStyle.css">
+    <script lang="text/javascript" src="jquery-1.12.2.min.js"></script>
+    <script lang="text/javascript" src="poll.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body id="body">
+    <script>
+        electionId = "blah";
+        var theInterface = new Interface("blah", "body");
+    </script>
+</body>
+
 </html>
