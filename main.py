@@ -126,7 +126,7 @@ def pollAction():
 			data['polls'][pollIndex]['candidates'].append(value)
 			
 		elif action == 'update':
-			data['polls'][pollIndex][target] = value
+			data['polls'][pollIndex][update] = value
 			
 		elif action == 'delete':
 			del data['polls'][pollIndex]
