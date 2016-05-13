@@ -61,11 +61,20 @@ html, body {
 	color:#FFF;
 	opacity:1;
 	font-size:120px;
+	 background:none;
+  border:none;
+  font-weight:900;
+}
+#left_button:active, #right_button:active {
+	border:none;
 }
 #right_button {
 	color:#FFF;
 	opacity:1;
 	font-size:120px;
+	font-weight:900;
+	 background:none;
+  border:none;
 }
 .slide {
 	position:absolute;
