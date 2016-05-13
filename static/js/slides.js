@@ -80,16 +80,16 @@ function electionSlide(heading,b_col,t_col,poll) {
 
 
 function Presentation() {
-	this.currentSlide = 0;
 	this.currentAddSlide = 1;
-	this.animations = new AnimationHandler();
-	this.viewport = document.getElementById("viewport");
+	this.currentSlide = 0;
+	this.viewport = Id("viewport");
 	this.newSlide = function(type,data) {
 		var n_slide,slide_cont;
 		
 		slide_cont = document.createElement("div");
 		slide_cont.id = "slide" + this.currentAddSlide;
 		slide_cont.className = "slide";
+		slide_cont.style.left = (100+(100*(this.currentAddSlide-1))) + "%";
 		
 		slide = addSlide(type,data);
 		
@@ -100,46 +100,28 @@ function Presentation() {
 		this.currentAddSlide ++;
 	}
 	this.start = function() {
-		this.currentSlide = 0;
+		this.slides = Cl("slide");
 		this.nextSlide();
-		this.animations.start_election();
+	
 	}
 	this.nextSlide = function() {
+		var i;
+		if (this.currentSlide !== this.currentAddSlide-1) {
+		for (i = 0; i < this.slides.length; i++) {
+		this.slides[i].style.left = (Number(this.slides[i].style.left.replace("%","")) - 100) + "%";
+		}
 		this.currentSlide ++;
-		if (this.currentSlide == this.currentAddSlide) {
-			this.currentSlide = 1;
-			this.animations.next(this.currentAddSlide-1,this.currentSlide);
-		} else {
-		this.animations.next(this.currentSlide-1,this.currentSlide);
 		}
 	}
 	
 	this.previousSlide = function() {
-		this.currentSlide --;
-		if (this.currentSlide === 0) {
-			this.currentSlide = this.currentAddSlide-1
-			this.animations.previous(1,this.currentSlide);
-		} else {
-			this.animations.previous(this.currentSlide+1,this.currentSlide);
+			var i;
+			console.log(this.currentSlide);
+		if (this.currentSlide !== 1) {
+		for (i = 0; i < this.slides.length; i++) {
+		this.slides[i].style.left = (Number(this.slides[i].style.left.replace("%","")) + 100) + "%";
 		}
+		this.currentSlide --;
 	}
-}
-
-function AnimationHandler() {
-	this.next_anim = function() {
-	}
-	this.start_election = function() {
-		$(".slide").css({display:"initial"})
-		$("#slide1").animate({left:0},600);
-	}
-	this.next = function(currentSlide,nextSlide) {
-		$("#slide"+(nextSlide)).css({left:"100%"});
-		$("#slide"+(currentSlide)).animate({left:"-100%"},600)
-		$("#slide"+(nextSlide)).animate({left:"0"},600)
-	}
-	this.previous = function(currentSlide,previousSlide) {
-		$("#slide"+(previousSlide)).css({left:"-100%"});
-		$("#slide"+(currentSlide)).animate({left:"100%"},600)
-		$("#slide"+(previousSlide)).animate({left:"0"},600)
 	}
 }

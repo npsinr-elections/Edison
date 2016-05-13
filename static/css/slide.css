@@ -70,8 +70,7 @@ html, body {
 .slide {
 	position:absolute;
 	top:0;
-	left:-100%;
-	display:none;
+	transition-duration:0.5s;
 }
 .flex-container, .slide,.flex-container-h {
 	width:100%;
