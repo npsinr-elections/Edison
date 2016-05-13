@@ -1,24 +1,160 @@
-/*jslint browser: true*/
+/*jslint browser: true */
+//defines an error
 
-function Interface() {
+//defines a generic candidate
+function Candidate(candidateNumber, pollNumber, details, office, group) {
     'use strict';
 
-    var xhr = new XMLHttpRequest(),
-        url = "/getcandidates",
-        data = {};
+    //validate(office, group);
 
-    function setData() {
+    //if (!nam) {
+    //    throw new Err("No name specified");
+    //}
 
-    }
+    this.office = office;
+	
+    this.group = group;
 
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            data = JSON.parse(xhr.responseText);
-            setData();
+    this.candidateNumber = candidateNumber;
+    this.pollNumber = pollNumber;
+    this.name = details.name;
+    this.image = details.image;
+    this.votes = 0;
+
+    this.isWinner = false;
+
+    this.cl = "candidate " + /*this.group.replace(/\s/g, "") +*/ " " + this.office.replace(/\s/g, "");
+    this.id = /*this.group.replace(/\s/g, "") +*/ this.office.replace(/\s/g, "") + this.candidateNumber;
+
+    this.vote = function () {
+        this.votes += 1;
+        return this.votes;
+    };
+
+    this.unvote = function () {
+        this.votes -= 1;
+        return this.votes;
+    };
+
+    this.getVotes = function () {
+        return this.votes;
+    };
+
+    this.getName = function () {
+        return this.name;
+    };
+}
+
+//defines a generic poll
+function Poll(number, /*group,*/ office) {
+    'use strict';
+
+    //validate(details[0], details[1]);
+    var candidateNumber = 0,
+        votes = [];
+
+    this.office = office;
+    /*this.group = group;*/
+    this.number = number;
+
+    this.candidates = []; //reset
+    this.totalVotes = 0;
+    this.specificVotes = [];
+    this.finalWinner = {};
+
+    this.cl = "poll " + /*this.group.replace(" ", "");*/ this.office.replace(/\s/g, "");
+    this.id = /*this.group.replace(' ', '') +*/ this.office.replace(/\s/g, "");
+//		var headingTag = document.createElement("h2");
+//		headingTag.innerHTML = office;
+
+    this.getTotalVotes = function () {
+        return votes.length;
+    };
+
+    this.addCandidate = function (details) {
+        this.candidates.push(new Candidate(candidateNumber, this.number, details, this.office, this.group));
+        this.specificVotes.push(0);
+        candidateNumber += 1;
+    };
+
+    this.vote = function (i) {
+        this.specificVotes[i] = this.candidates[i].vote();
+        this.evaluateWinner();
+        votes.push(i);
+    };
+
+    this.unvote = function (i) {
+        this.specificVotes[i] = this.candidates[i].unvote();
+        this.evaluateWinner();
+        votes.pop();
+    };
+    
+    this.undo = function () {
+        this.unvote(votes[votes.length - 1]);
+        this.evaluateWinner();
+    };
+
+    this.getVotes = function () {
+        return this.totalVotes;
+    };
+
+    this.evaluateWinner = function () {
+        var winners = [],
+            maxVotes = Math.max.apply(Math, this.specificVotes),
+            candidate;
+
+        this.candidates.forEach(
+            function (candidate, i, arr) {
+                if (candidate.getVotes() === maxVotes) {
+                    winners.push(candidate);
+                    candidate.isWinner = true;
+                } else {
+                    candidate.isWinner = false;
+                }
+                if (winners.length === this.candidates.length) {
+                    winners = [];
+                    this.candidates.forEach(
+                        function (candidate1, j, arr1) {
+                            candidate1.isWinner = false;
+                        }
+                    );
+                }
+            },
+            this
+        );
+
+        return winners;
+    };
+
+    this.declareWinner = function () {
+        var winner = this.evaluateWinner();
+        if (winner.length === 1) {
+            this.finalWinner = winner[0];
+            window.alert("The winner is " + winner[0].name);
+            //fix interface (remove the window.alert())
+            //to go to the next poll, maybe the Interface object or normal scripting JS should handle
+        } else {
+            window.alert("There has been a tie!");
+            //fix interface (remove the window.alert(), add something to continue the vote, or a recount or something)
         }
     };
 
-    xhr.open("GET", url, true);
-    xhr.send();
-
+    this.getFinalWinner = function () {
+        return this.finalWinner;
+    };
 }
+
+    function showIfWinner(candidate) {
+        if (candidate.isWinner) {
+            document.getElementById(candidate.id).classList.add("winner");
+        } else {
+            document.getElementById(candidate.id).classList.remove("winner");
+        }
+        resetDisplayedVotes(candidate);
+    }
+    
+    function resetDisplayedVotes(candidate) {
+        document.getElementById("votes" + candidate.id).innerHTML = candidate.votes;
+    }
+
+
