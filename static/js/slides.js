@@ -130,16 +130,16 @@ function AnimationHandler() {
 	}
 	this.start_election = function() {
 		$(".slide").css({display:"initial"})
-		$("#slide1").animate({left:0},1000);
+		$("#slide1").animate({left:0},600);
 	}
 	this.next = function(currentSlide,nextSlide) {
 		$("#slide"+(nextSlide)).css({left:"100%"});
-		$("#slide"+(currentSlide)).animate({left:"-100%"},1000)
-		$("#slide"+(nextSlide)).animate({left:"0"},1000)
+		$("#slide"+(currentSlide)).animate({left:"-100%"},600)
+		$("#slide"+(nextSlide)).animate({left:"0"},600)
 	}
 	this.previous = function(currentSlide,previousSlide) {
 		$("#slide"+(previousSlide)).css({left:"-100%"});
-		$("#slide"+(currentSlide)).animate({left:"100%"},1000)
-		$("#slide"+(previousSlide)).animate({left:"0"},1000)
+		$("#slide"+(currentSlide)).animate({left:"100%"},600)
+		$("#slide"+(previousSlide)).animate({left:"0"},600)
 	}
 }

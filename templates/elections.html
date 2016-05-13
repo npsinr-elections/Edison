@@ -11,33 +11,15 @@
 			<img id = "logo_pic" src="/static/images/logo_sml.png" />
 			<h1>National Public School Indiranagar</h1>
 		</div>
-		<div id = "left"><i class="fa fa-chevron-left" id="left_button" aria-hidden="true"></i></div>
 		<div id = "left_hover"></div>
+		<div id = "left"><i class="fa fa-chevron-left" id="left_button" aria-hidden="true"></i></div>
 		<div id = "viewport"></div>
-		<div id = "right"><i class="fa fa-chevron-right" id="right_button" aria-hidden="true"></i></div>
 		<div id = "right_hover"></div>
+		<div id = "right"><i class="fa fa-chevron-right" id="right_button" aria-hidden="true"></i></div>
 		<script src="/static/js/slides.js"></script>
 		<script src="/static/js/poll.js"></script>
 		<script>
 			
-			$( document ).ready(function() {
-			$("#left_hover").mouseover(function() {
-				$("#left").animate({left:0},200)
-			})
-			
-			$("#left").hover(function() {
-			},function() {
-				$("#left").animate({left:"-200px"},200)
-			})
-			
-			$("#right_hover").mouseover(function() {
-				$("#right").animate({right:0},200)
-			})
-			
-			$("#right").hover(function() {
-			},function() {
-				$("#right").animate({right:"-200px"},200)
-			})
 			
 			// ------------------------------------------------------------------------------------------------------------------
 			// POLL CREATION
@@ -52,7 +34,7 @@ xhr.onreadystatechange = function() {
   }
 };
 xhr.open("GET", url, true);
-xhr.send();
+window.onload = xhr.send();
 
 			function createPolls() {
 		data.values.forEach(function (pollValue, index) {
@@ -69,14 +51,14 @@ xhr.send();
 				for (poll in polls) {
 					elections.newSlide("title",{"heading":polls[poll].office + " Elections","subheading":polls[poll].message,"b_col":polls[poll].backColor,"t_col":polls[poll].foreColor})
 				}
-					$("#left").click(function(){elections.previousSlide()});
-			$("#right").click(function(){elections.nextSlide()});
+			Id("left").onclick = function() {elections.previousSlide();}
+			Id("right").onclick = function() {elections.nextSlide();}
 				elections.start();
-			}
+				}
 			// -------------------------------------------------------------------------------------------------------
-		
+		function Id(Id) {return document.getElementById(Id);}
+		function Cl(cl) {return document.getElementsByClassName(cl);}
 			
-			});
 		</script>
 	</body>
 </html>

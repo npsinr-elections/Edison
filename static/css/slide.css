@@ -25,6 +25,7 @@ html, body {
 	display:flex;
 	justify-content:center;
 	align-items:center;
+	transition-duration:0.3s;
 }
 #left_hover {
 	height:100%;
@@ -46,6 +47,7 @@ html, body {
 	display:flex;
 	justify-content:center;
 	align-items:center;
+	transition-duration:0.3s;
 }
 #right_hover {
 	height:100%;
@@ -119,4 +121,14 @@ html, body {
 .title_h2 {
 	font-size:40px;
 	font-family: 'Oswald', sans-serif;
+}
+
+#left_hover:hover+#left,#left:hover {
+	left:0;
+	cursor:pointer;
+}
+
+#right_hover:hover+#right,#right:hover {
+	right:0;
+	cursor:pointer;
 }
