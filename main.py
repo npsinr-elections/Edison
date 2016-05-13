@@ -67,7 +67,7 @@ def candidate():
 
 @app.get('/elections')
 def elections():
-	return open("templates/poll.html").read()
+	return open("templates/elections.html").read()
 
 @app.post('/uploadimage')
 def uploadimage():

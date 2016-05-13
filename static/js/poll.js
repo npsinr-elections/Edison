@@ -2,7 +2,7 @@
 //defines an error
 
 //defines a generic candidate
-function Candidate(candidateNumber, pollNumber, details, office, group) {
+function Candidate(candidateNumber, pollNumber, details, office) {
     'use strict';
 
     //validate(office, group);
@@ -12,8 +12,6 @@ function Candidate(candidateNumber, pollNumber, details, office, group) {
     //}
 
     this.office = office;
-	
-    this.group = group;
 
     this.candidateNumber = candidateNumber;
     this.pollNumber = pollNumber;
@@ -46,7 +44,7 @@ function Candidate(candidateNumber, pollNumber, details, office, group) {
 }
 
 //defines a generic poll
-function Poll(number, /*group,*/ office) {
+function Poll(number,office,foreColor,backColor,message) {
     'use strict';
 
     //validate(details[0], details[1]);
@@ -56,7 +54,12 @@ function Poll(number, /*group,*/ office) {
     this.office = office;
     /*this.group = group;*/
     this.number = number;
-
+    
+    this.foreColor = foreColor;
+    this.backColor = backColor;
+		
+		this.message = message;
+		
     this.candidates = []; //reset
     this.totalVotes = 0;
     this.specificVotes = [];
@@ -72,7 +75,7 @@ function Poll(number, /*group,*/ office) {
     };
 
     this.addCandidate = function (details) {
-        this.candidates.push(new Candidate(candidateNumber, this.number, details, this.office, this.group));
+        this.candidates.push(new Candidate(candidateNumber, this.number, details, this.office));
         this.specificVotes.push(0);
         candidateNumber += 1;
     };
