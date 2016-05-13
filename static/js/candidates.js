@@ -154,6 +154,7 @@ function Poll(givenDumpId, givenIndex, givenValue) {
 		id = office.replace(/\s/g, '') + index,
 
 		parentElement,
+		deletePollButton,
 		officeErrorBox,
 		officeTextBox,
 		panel,
@@ -246,7 +247,7 @@ function Poll(givenDumpId, givenIndex, givenValue) {
 	officeTextBox.addEventListener('input', function () {
 		var text = this.value.replace(' ', '');
 
-		if (text == '') {
+		if (text === '') {
 			officeErrorBox.innerHTML = 'Please do not leave this field empty.';
 		} else {
 			officeErrorBox.innerHTML = '';
@@ -264,7 +265,7 @@ function Poll(givenDumpId, givenIndex, givenValue) {
 		}
 	});
 
-	deletePollButton = document.c
+	deletePollButton = document.createElement('button');
 
 	panelHeading = document.createElement('div');
 	panelHeading.className = 'panel-heading';
@@ -311,7 +312,7 @@ window.addEventListener('load', function () {
 		if (xhr.readyState === 4 && xhr.status === 200) {
 			data = JSON.parse(xhr.responseText);
 			data.polls.forEach(function (pollValue, index) {
-				polls.push(new Poll('a', index, pollValue));
+				polls.push(new Poll('container', index, pollValue));
 			});
 		}
 	};
