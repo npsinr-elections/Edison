@@ -1,1 +1,190 @@
-{"values": [{"foreColor": "#FFFFFF", "candidates": [{"image": "", "votes": "", "name": "Superman"}, {"image": "", "votes": "", "name": "Batman"}, {"image": "", "votes": "", "name": "Spider-man"}], "name": "Prefect", "backColor": "#000000"}, {"foreColor": "#FFFFFF", "candidates": [{"image": "", "votes": "", "name": "Thor"}, {"image": "", "votes": "", "name": "Hal Jordan"}, {"image": "", "votes": "", "name": "Captain America"}], "name": "Boy Vice Prefect", "backColor": "#000000"}, {"foreColor": "#FFFFFF", "candidates": [{"image": "", "votes": "", "name": "Wonder Woman"}, {"image": "", "votes": "", "name": "Invisible Woman"}, {"image": "", "votes": "", "name": "Supergirl"}], "name": "Girl Vice Prefect", "backColor": "#000000"}, {"foreColor": "#FFFFFF", "candidates": [{"image": "", "votes": "", "name": "Martian Manhunter"}, {"image": "", "votes": "", "name": "Dick Grayson"}, {"image": "", "votes": "", "name": "Thing"}], "name": "Challengers Captain", "backColor": "#000000"}, {"foreColor": "#FFFFFF", "candidates": [{"image": "", "votes": "", "name": "Human Torch"}, {"image": "", "votes": "", "name": "Mr. Fantastic"}, {"image": "", "votes": "", "name": "Wally West"}], "name": "Challengers Vice Captain", "backColor": "#000000"}, {"foreColor": "#FFFFFF", "candidates": [{"image": "", "votes": "", "name": "Kyle Rayner"}, {"image": "", "votes": "", "name": "Superboy"}, {"image": "", "votes": "", "name": "Leonardo"}], "name": "Explorers Captain", "backColor": "#000000"}, {"foreColor": "#FFFFFF", "candidates": [{"image": "", "votes": "", "name": "Raphael"}, {"image": "", "votes": "", "name": "Donatello"}, {"image": "", "votes": "", "name": "Michelangelo"}], "name": "Explorers Vice Captain", "backColor": "#000000"}, {"foreColor": "#FFFFFF", "candidates": [{"image": "", "votes": "", "name": "Silver Surfer"}, {"image": "", "votes": "", "name": "Aquaman"}, {"image": "", "votes": "", "name": "Green Arrow"}], "name": "Pioneers Captain", "backColor": "#000000"}, {"foreColor": "#FFFFFF", "candidates": [{"image": "", "votes": "", "name": "Tim Drake"}, {"image": "", "votes": "", "name": "Iron Man"}, {"image": "", "votes": "", "name": "Hercules"}], "name": "Pioneers Vice Captain", "backColor": "#000000"}, {"foreColor": "#FFFFFF", "candidates": [{"image": "", "votes": "", "name": "Hercules"}, {"image": "", "votes": "", "name": "Daredevil"}, {"image": "", "votes": "", "name": "Orion"}], "name": "Voyagers Captain", "backColor": "#000000"}, {"foreColor": "#FFFFFF", "candidates": [{"image": "", "votes": "", "name": "Black Panther"}, {"image": "", "votes": "", "name": "Wolverine"}, {"image": "", "votes": "", "name": "Billy Batson"}], "name": "Voyagers Vice Captain", "backColor": "#000000"}]}
+{
+	"polls": [{
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Superman"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Batman"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Spider-man"
+		}],
+		"name": "Prefect",
+		"backColor": "#000000"
+	}, {
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Thor"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Hal Jordan"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Captain America"
+		}],
+		"name": "Boy Vice Prefect",
+		"backColor": "#000000"
+	}, {
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Wonder Woman"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Invisible Woman"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Supergirl"
+		}],
+		"name": "Girl Vice Prefect",
+		"backColor": "#000000"
+	}, {
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Martian Manhunter"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Dick Grayson"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Thing"
+		}],
+		"name": "Challengers Captain",
+		"backColor": "#000000"
+	}, {
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Human Torch"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Mr. Fantastic"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Wally West"
+		}],
+		"name": "Challengers Vice Captain",
+		"backColor": "#000000"
+	}, {
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Kyle Rayner"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Superboy"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Leonardo"
+		}],
+		"name": "Explorers Captain",
+		"backColor": "#000000"
+	}, {
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Raphael"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Donatello"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Michelangelo"
+		}],
+		"name": "Explorers Vice Captain",
+		"backColor": "#000000"
+	}, {
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Silver Surfer"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Aquaman"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Green Arrow"
+		}],
+		"name": "Pioneers Captain",
+		"backColor": "#000000"
+	}, {
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Tim Drake"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Iron Man"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Hercules"
+		}],
+		"name": "Pioneers Vice Captain",
+		"backColor": "#000000"
+	}, {
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Hercules"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Daredevil"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Orion"
+		}],
+		"name": "Voyagers Captain",
+		"backColor": "#000000"
+	}, {
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Black Panther"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Wolverine"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Billy Batson"
+		}],
+		"name": "Voyagers Vice Captain",
+		"backColor": "#000000"
+	}]
+}

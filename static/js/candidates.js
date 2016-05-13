@@ -279,7 +279,7 @@ window.addEventListener('load', function () {
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === 4 && xhr.status === 200) {
 			data = JSON.parse(xhr.responseText);
-			data.values.forEach(function (pollValue, index) {
+			data.polls.forEach(function (pollValue, index) {
 				polls.push(new Poll('a', index, pollValue));
 			});
 		}

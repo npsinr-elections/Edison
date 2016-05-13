@@ -98,10 +98,10 @@ def candidateAction():
 		data = json.load(data_file)
 		
 		if action == 'delete':
-			del data['values'][pollIndex]['candidates'][candidateIndex]
+			del data['polls'][pollIndex]['candidates'][candidateIndex]
 				
 		elif action == 'update':
-			data['values'][pollIndex]['candidates'][candidateIndex][update] = value
+			data['polls'][pollIndex]['candidates'][candidateIndex][update] = value
 		
 	with open('candidates.json', 'w') as data_file:
 		data_file.write(json.dumps(data))
@@ -123,13 +123,13 @@ def pollAction():
 		data = json.load(data_file)
 		
 		if action == 'createCandidate':
-			data['values'][pollIndex]['candidates'].append(value)
+			data['polls'][pollIndex]['candidates'].append(value)
 			
 		elif action == 'update':
-			data['values'][pollIndex][target] = value
+			data['polls'][pollIndex][target] = value
 			
 		elif action == 'delete':
-			del data['values'][pollIndex]
+			del data['polls'][pollIndex]
 	
 	with open('candidates.json', 'w') as data_file:
 		data_file.write(json.dumps(data))
@@ -142,10 +142,10 @@ def exit():
 		data = json.load(data_file)
 		candidateIndex = 0
 		
-	for pollIndex in range(len(data['values'])):
-		while candidateIndex < len(data['values'][pollIndex]['candidates']):
-			if data['values'][pollIndex]['candidates'][candidateIndex]['name'] == '':
-				del data['values'][pollIndex]['candidates'][candidateIndex]
+	for pollIndex in range(len(data['polls'])):
+		while candidateIndex < len(data['polls'][pollIndex]['candidates']):
+			if data['polls'][pollIndex]['candidates'][candidateIndex]['name'] == '':
+				del data['polls'][pollIndex]['candidates'][candidateIndex]
 			candidateIndex += 1
 	
 	with open('candidates.json', 'w') as data_file:
