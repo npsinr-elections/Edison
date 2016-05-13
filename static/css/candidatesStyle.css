@@ -1,0 +1,116 @@
+button {
+	text-transform: uppercase;
+}
+
+div.imageBox {
+	width: 25%;
+	display: inline-block;
+	position: relative;
+}
+
+input.fileInput,
+button.backgroundTextBox {
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+	position: absolute;
+	opacity: 0;
+	border: none;
+	cursor: pointer;
+}
+
+button.backgroundTextBox {
+	color: #FFFFFF;
+	background-color: rgba(0, 0, 0, 0.7);
+	-o-transition: all 1s;
+	-ms-transition: all 1s;
+	-moz-transition: all 1s;
+	-webkit-transition: all 1s;
+	transition: all 1s;
+}
+
+img.candidateImg {
+	width: 100%;
+}
+
+div.imageBox:hover > button.backgroundTextBox {
+	opacity: 1;
+}
+
+div.panel-body {
+	text-align: right;
+}
+
+div.candidateContainerElement {
+	text-align: left;
+	position: relative;
+}
+
+div.candidateContainerElement:last-of-type {
+	padding-bottom: initial;
+	margin-bottom: initial;
+}
+
+div.candidateContainerElement:last-of-type>input.textBox {
+	border: 1px solid transparent;
+	margin: initial;
+}
+
+button.deleteCandidateButton {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	font-size: 40px;
+	background: transparent;
+	margin: none;
+	margin-top: -10px;
+	padding: none;
+	border: none;
+	color: #B3B3B3;
+}
+
+button.deleteCandidateButton:hover {
+	color: #999999;
+}
+
+input.textBox {
+	width: 100%;
+	padding: 10px 5px;
+	border: 1px solid transparent;
+	border-bottom: 1px solid #B3B3B3;
+	-o-transition: border 1s;
+	-ms-transition: border 1s;
+	-moz-transition: border 1s;
+	-webkit-transition: border 1s;
+	transition: border 1s;
+	margin-bottom: 15px;
+}
+
+input.textBox:hover,
+input.textBox:focus {
+	border: 1px solid #B3B3B3 !important;
+}
+
+button.addNewCandidateButton {
+	font-size: 40px;
+	background: transparent;
+	margin: none;
+	padding: none;
+	border: none;
+	color: #B3B3B3;
+}
+
+button.addNewCandidateButton:hover {
+	color: #999999;
+}
+
+button.addNewCandidateButton:disabled {
+	color: #CCCCCC;
+	cursor: not-allowed;
+}
+
+div.errorBox {
+	padding: 10px 0px;
+	color: #FF0000;
+}
