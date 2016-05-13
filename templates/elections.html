@@ -41,7 +41,7 @@
 			
 			// ------------------------------------------------------------------------------------------------------------------
 			// POLL CREATION
-			var data,polls,poll_count;
+			var data,polls;
 			polls = [];
 			xhr = new XMLHttpRequest();
 var url = "/getcandidates";
@@ -55,7 +55,6 @@ xhr.open("GET", url, true);
 xhr.send();
 
 			function createPolls() {
-			poll_count = 0;
 		data.values.forEach(function (pollValue, index) {
 				polls.push(new Poll(index,pollValue.name,pollValue.foreColor,pollValue.backColor,pollValue.message));
 				for (candidate in pollValue.candidates) {
