@@ -1,7 +1,7 @@
 {
 	"values": [
 		{
-			"foreColor": "#000",
+			"foreColor": "#FFFFFF",
 			"candidates": [
 				{
 					"image": "",
@@ -20,11 +20,11 @@
                 }
             ],
 			"name": "Prefect",
-			"backColor": "radial-gradient(ellipse at center, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 39%,rgba(0,0,0,0.65) 100%)",
+			"backColor": "#404040",
 			"message": "'Before you are a leader, success is all about growing yourself. When you become a leader, success is all about growing others.'"
         },
 		{
-			"foreColor": "#000",
+			"foreColor": "#FFFFFF",
 			"candidates": [
 				{
 					"image": "",
@@ -43,11 +43,11 @@
                 }
             ],
 			"name": "Boy Vice Prefect",
-			"backColor": "radial-gradient(ellipse at center, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 39%,rgba(0,0,0,0.65) 100%)",
+			"backColor": "#404040",
 			"message": "Leadership is the art of getting someone else to do something you want done because he wants to do it."
         },
 		{
-			"foreColor": "#000",
+			"foreColor": "#FFFFFF",
 			"candidates": [
 				{
 					"image": "",
@@ -66,8 +66,8 @@
                 }
             ],
 			"name": "Girl Vice Prefect",
-			"backColor": "radial-gradient(ellipse at center, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 39%,rgba(0,0,0,0.65) 100%)",
-			"message": "Only one man in a thousand is a leader of men--the other 999 follow women."
+			"backColor": "#404040",
+			"message": ""
         },
 		{
 			"foreColor": "#FFFFFF",
@@ -89,7 +89,7 @@
                 }
             ],
 			"name": "Challengers Captain",
-			"backColor": "radial-gradient(ellipse at center, rgba(169,3,41,0.56) 0%,rgba(143,2,34,0.75) 44%,rgba(109,0,25,1) 100%)",
+			"backColor": "#6D0019",
 			"message": "'To strive, to seek, to find, but not to yield'"
         },
 		{
@@ -112,7 +112,7 @@
                 }
             ],
 			"name": "Challengers Vice Captain",
-			"backColor": "radial-gradient(ellipse at center, rgba(169,3,41,0.56) 0%,rgba(143,2,34,0.75) 44%,rgba(109,0,25,1) 100%)",
+			"backColor": "#6D0019",
 			"message": "'To strive, to seek, to find, but not to yield'"
         },
 		{
@@ -135,7 +135,7 @@
                 }
             ],
 			"name": "Explorers Captain",
-			"backColor": "radial-gradient(ellipse at center, rgba(75,0,130,0.48) 0%,rgba(75,0,130,0.93) 100%)",
+			"backColor": "#4B0082",
 			"message": "'Endeavour to reach beyond'"
         },
 		{
@@ -158,7 +158,7 @@
                 }
             ],
 			"name": "Explorers Vice Captain",
-			"backColor": "radial-gradient(ellipse at center, rgba(75,0,130,0.48) 0%,rgba(75,0,130,0.93) 100%)",
+			"backColor": "#4B0082",
 			"message": "'Endeavour to reach beyond'"
         },
 		{
@@ -181,7 +181,7 @@
                 }
             ],
 			"name": "Pioneers Captain",
-			"backColor": "radial-gradient(ellipse at center, rgba(255,175,75,0.28) 0%,rgba(255,146,10,1) 100%)",
+			"backColor": "#FF8833",
 			"message": "'The spark that always glows; the light that always shows'"
         },
 		{
@@ -204,7 +204,7 @@
                 }
             ],
 			"name": "Pioneers Vice Captain",
-			"backColor": "radial-gradient(ellipse at center, rgba(255,175,75,0.28) 0%,rgba(255,146,10,1) 100%)",
+			"backColor": "#FF8833",
 			"message": "'The spark that always glows; the light that always shows'"
         },
 		{
@@ -227,7 +227,7 @@
                 }
             ],
 			"name": "Voyagers Captain",
-			"backColor": "radial-gradient(ellipse at center, rgba(178,225,255,0.83) 0%,rgba(102,182,252,1) 100%)",
+			"backColor": "#80CEFF",
 			"message": "'Vigour, Valour, Victory'"
         },
 		{
@@ -250,8 +250,8 @@
                 }
             ],
 			"name": "Voyagers Vice Captain",
-			"backColor": "radial-gradient(ellipse at center, rgba(178,225,255,0.83) 0%,rgba(102,182,252,1) 100%)",
+			"backColor": "#80CEFF",
 			"message": "'Vigour, Valour, Victory'"
         }
     ]
-} >>> >>> > 4 b6a48c813533522d70278207ec9126f86d4486c
+}
