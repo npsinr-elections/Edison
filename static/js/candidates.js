@@ -94,7 +94,7 @@ function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue, s) {
 	imageBox.appendChild(backgroundTextBox);
 	imageBox.appendChild(fileInput);
 
-	errorBox = document.createElement('div');
+	errorBox = document.createElement('p');
 	errorBox.className = 'errorBox';
 
 	this.textBox = document.createElement('input');
@@ -111,9 +111,9 @@ function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue, s) {
 				'update': 'name',
 				'value': this.value.trim()
 			});
-			errorBox.innerHTML = "";
+			errorBox.innerHTML = '';
 		} else {
-			errorBox.innerHTML = "Please enter only Latin letters, periods and spaces. Otherwise, the name will not be stored correctly.";
+			errorBox.innerHTML = 'Please enter only Latin letters, periods and spaces. Otherwise, the name will not be stored correctly.';
 		}
 	});
 
@@ -151,9 +151,11 @@ function Poll(givenDumpId, givenIndex, givenValue) {
 		index = givenIndex,
 
 		dumpId = givenDumpId,
-		id = office.replace(/\s/g, ''),
+		id = office.replace(/\s/g, '') + index,
 
 		parentElement,
+		deletePollButton,
+		officeErrorBox,
 		officeTextBox,
 		panel,
 		panelHeading,
@@ -234,13 +236,42 @@ function Poll(givenDumpId, givenIndex, givenValue) {
 		candidates.push(tempCandidate);
 	}
 
+	officeErrorBox = document.createElement('p');
+	officeErrorBox.className = 'officeErrorBox';
+
 	officeTextBox = document.createElement('input');
+	officeTextBox.className = 'officeTextBox';
+	officeTextBox.type = 'text';
+	officeTextBox.placeholder = 'Enter a name.';
+	officeTextBox.value = value.name || '';
+	officeTextBox.addEventListener('input', function () {
+		var text = this.value.replace(' ', '');
+
+		if (text === '') {
+			officeErrorBox.innerHTML = 'Please do not leave this field empty.';
+		} else {
+			officeErrorBox.innerHTML = '';
+		}
+
+		if (!(/[\d\f\n\r\t\v_]/gi.test(text))) {
+			updateServer({
+				'action': 'update',
+				'update': 'name',
+				'value': this.value.trim()
+			});
+			officeErrorBox.innerHTML = '';
+		} else {
+			officeErrorBox.innerHTML = 'Please enter only Latin letters, periods and spaces. Otherwise, the name will not be stored correctly.';
+		}
+	});
+
+	deletePollButton = document.createElement('button');
 
 	panelHeading = document.createElement('div');
 	panelHeading.className = 'panel-heading';
-	panelHeading.innerHTML = office;
 	panelHeading.style.backgroundColor = backColor;
 	panelHeading.style.color = foreColor;
+	panelHeading.appendChild(officeTextBox);
 
 	addNewCandidateButton = document.createElement('button');
 	addNewCandidateButton.className = 'addNewCandidateButton';
@@ -253,6 +284,7 @@ function Poll(givenDumpId, givenIndex, givenValue) {
 	panelBody = document.createElement('div');
 	panelBody.className = 'panel-body';
 	panelBody.id = id;
+	panelBody.appendChild(officeErrorBox);
 	panelBody.appendChild(addNewCandidateButton);
 
 	panel = document.createElement('div');
@@ -279,8 +311,8 @@ window.addEventListener('load', function () {
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === 4 && xhr.status === 200) {
 			data = JSON.parse(xhr.responseText);
-			data.values.forEach(function (pollValue, index) {
-				polls.push(new Poll('a', index, pollValue));
+			data.polls.forEach(function (pollValue, index) {
+				polls.push(new Poll('container', index, pollValue));
 			});
 		}
 	};

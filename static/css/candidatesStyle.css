@@ -110,7 +110,33 @@ button.addNewCandidateButton:disabled {
 	cursor: not-allowed;
 }
 
-div.errorBox {
+p.errorBox {
+	margin: 0px;
 	padding: 10px 0px;
 	color: #FF0000;
+}
+
+p.officeErrorBox {
+	margin: 0px;
+	margin-bottom: 15px;
+	color: #FF0000;
+	text-align: left;
+}
+
+input.officeTextBox {
+	width: 100%;
+	padding: 10px 5px;
+	background-color: transparent;
+	border: 1px solid transparent;
+	border-bottom: 1px solid #B3B3B3;
+	-o-transition: border 1s;
+	-ms-transition: border 1s;
+	-moz-transition: border 1s;
+	-webkit-transition: border 1s;
+	transition: border 1s;
+}
+
+input.officeTextBox:focus,
+input.officeTextBox:hover {
+	border: 1px solid #B3B3B3;
 }

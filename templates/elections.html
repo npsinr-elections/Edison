@@ -1,31 +1,60 @@
 <!DOCTYPE html>
 <html>
-	<head><title>SLIDE TEST</title>
+
+<head>
+	<title>SLIDE TEST</title>
 	<link href="/static/css/slide.css" rel="stylesheet">
 	<link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-	</head>
-	<body>
-		<div id = "school_logo">
-			<img id = "logo_pic" src="/static/images/logo_sml.png" />
-			<h1>National Public School Indiranagar</h1>
-		</div>
-		<div id = "left_hover"></div>
-		<div id = "left"><i class="fa fa-chevron-left" id="left_button" aria-hidden="true"></i></div>
-		<div id = "viewport"></div>
-		<div id = "right_hover"></div>
-		<div id = "right"><i class="fa fa-chevron-right" id="right_button" aria-hidden="true"></i></div>
-		<script src="/static/js/slides.js"></script>
-		<script src="/static/js/poll.js"></script>
-		<script>
-			
-			
+
+</head>
+
+<body>
+	<div id="school_logo">
+		<img id="logo_pic" src="/static/images/logo_sml.png" />
+		<h1>National Public School Indiranagar</h1>
+	</div>
+	<div id="left"><i class="fa fa-chevron-left" id="left_button" aria-hidden="true"></i></div>
+	<div id="left_hover"></div>
+	<div id="viewport"></div>
+	<div id="right"><i class="fa fa-chevron-right" id="right_button" aria-hidden="true"></i></div>
+	<div id="right_hover"></div>
+	<script src="/static/js/slides.js"></script>
+	<script src="/static/js/poll.js"></script>
+	<script>
+		$(document).ready(function () {
+			$("#left_hover").mouseover(function () {
+				$("#left").animate({
+					left: 0
+				}, 200)
+			})
+
+			$("#left").hover(function () {}, function () {
+				$("#left").animate({
+					left: "-200px"
+				}, 200)
+			})
+
+			$("#right_hover").mouseover(function () {
+				$("#right").animate({
+					right: 0
+				}, 200)
+			})
+
+			$("#right").hover(function () {}, function () {
+				$("#right").animate({
+					right: "-200px"
+				}, 200)
+			})
+
+>>>>>>> 63d7f3145d41a791be860b242f5512ebccb04b4f
 			// ------------------------------------------------------------------------------------------------------------------
 			// POLL CREATION
-			var data,polls;
+			var data, polls;
 			polls = [];
 			xhr = new XMLHttpRequest();
+<<<<<<< HEAD
 var url = "/getcandidates";
 xhr.onreadystatechange = function() {
   if (xhr.readyState == 4 && xhr.status == 200) {
@@ -35,30 +64,64 @@ xhr.onreadystatechange = function() {
 };
 xhr.open("GET", url, true);
 window.onload = xhr.send();
+=======
+			var url = "/getcandidates";
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState == 4 && xhr.status == 200) {
+					data = JSON.parse(xhr.responseText);
+					createPolls();
+				}
+			};
+			xhr.open("GET", url, true);
+			xhr.send();
+>>>>>>> 63d7f3145d41a791be860b242f5512ebccb04b4f
 
 			function createPolls() {
-		data.values.forEach(function (pollValue, index) {
-				polls.push(new Poll(index,pollValue.name,pollValue.foreColor,pollValue.backColor,pollValue.message));
-				for (candidate in pollValue.candidates) {
-					polls[index].addCandidate(pollValue.candidates[candidate]);
-				}
-			});
-			createPresentation();
-};
+				data.values.forEach(function (pollValue, index) {
+					polls.push(new Poll(index, pollValue.name, pollValue.foreColor, pollValue.backColor, pollValue.message));
+					for (candidate in pollValue.candidates) {
+						polls[index].addCandidate(pollValue.candidates[candidate]);
+					}
+				});
+				createPresentation();
+			};
 			// ------------------------------------------------------------------------------------------------------------------
 			function createPresentation() {
 				var elections = new Presentation();
 				for (poll in polls) {
-					elections.newSlide("title",{"heading":polls[poll].office + " Elections","subheading":polls[poll].message,"b_col":polls[poll].backColor,"t_col":polls[poll].foreColor})
+					elections.newSlide("title", {
+						"heading": polls[poll].office + " Elections",
+						"subheading": polls[poll].message,
+						"b_col": polls[poll].backColor,
+						"t_col": polls[poll].foreColor
+					})
 				}
+<<<<<<< HEAD
 			Id("left").onclick = function() {elections.previousSlide();}
 			Id("right").onclick = function() {elections.nextSlide();}
+=======
+				$("#left").click(function () {
+					elections.previousSlide()
+				});
+				$("#right").click(function () {
+					elections.nextSlide()
+				});
+>>>>>>> 63d7f3145d41a791be860b242f5512ebccb04b4f
 				elections.start();
 				}
 			// -------------------------------------------------------------------------------------------------------
+<<<<<<< HEAD
 		function Id(Id) {return document.getElementById(Id);}
 		function Cl(cl) {return document.getElementsByClassName(cl);}
 			
 		</script>
 	</body>
+=======
+
+
+		});
+	</script>
+</body>
+
+>>>>>>> 63d7f3145d41a791be860b242f5512ebccb04b4f
 </html>
