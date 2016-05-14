@@ -63,6 +63,17 @@ window.onload = xhr.send();
 
 			Id("left").onclick = function() {elections.previousSlide();}
 			Id("right").onclick = function() {elections.nextSlide();}
+			
+			document.onkeydown = function(e) {
+    switch (e.keyCode) {
+        case 37: // Left key code
+            elections.previousSlide();
+            break;
+        case 39: // Right key code
+            elections.nextSlide();
+            break;
+    }
+};
 
 				elections.start();
 				}
