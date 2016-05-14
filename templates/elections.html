@@ -74,14 +74,15 @@ window.onload = xhr.send();
             break;
     }
 };
-
-				elections.start();
+				
+				setTimeout(function() {center();elections.start()},500)
 				}
 			// -------------------------------------------------------------------------------------------------------
 
 		function Id(Id) {return document.getElementById(Id);}
 		function Cl(cl) {return document.getElementsByClassName(cl);}
-			
+		
+		window.onresize = function() {center()};
 		</script>
 	</body>
 </html>
