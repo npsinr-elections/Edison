@@ -99,11 +99,11 @@ function electionSlide(heading, b_col, t_col, poll) {
         row_2.style.height = "50%";
         row_2.className = "row2";
 
-        cand_width = ((Math.floor(100 / Math.ceil(poll.candidates.length / 2))) - 1) + "%";
+        cand_width = ((Math.floor(100 / Math.ceil(poll.candidates.length / 2))) - 1);
         for (var i = 0; i <= Math.ceil(poll.candidates.length / 2) - 1; i++) {
             candidate_obj = document.createElement("div");
             candidate_obj.className = "candidate";
-            candidate_obj.style.width = cand_width;
+            candidate_obj.style.width = cand_width + "%";
             candidate_obj.style.height = "80%";
             candidate_obj.style.marginLeft = "1%";
 
@@ -114,10 +114,11 @@ function electionSlide(heading, b_col, t_col, poll) {
             candidate_obj.appendChild(c_name);
             row_1.appendChild(candidate_obj);
         }
+        var total_width = -1;
         for (i = Math.ceil(poll.candidates.length / 2); i <= poll.candidates.length - 1; i++) {
             candidate_obj = document.createElement("div");
             candidate_obj.className = "candidate";
-            candidate_obj.style.width = cand_width;
+            candidate_obj.style.width = cand_width + "%";
             candidate_obj.style.height = "80%";
             candidate_obj.style.marginLeft = "1%";
 
@@ -127,7 +128,11 @@ function electionSlide(heading, b_col, t_col, poll) {
 
             candidate_obj.appendChild(c_name);
             row_2.appendChild(candidate_obj);
+            
+            total_width += cand_width+1;
         }
+        
+        row_2.style.marginLeft = ((100-total_width)/2) + "%";
         candidate_cont.appendChild(row_1);
         candidate_cont.appendChild(row_2);
     }
