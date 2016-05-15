@@ -43,7 +43,7 @@ function titleSlide(heading,subheading,b_col,t_col) {
 }
 
 function electionSlide(heading,b_col,t_col,poll) {
-	var div,head_cont,h1,h2;
+	var div,head_cont,h1,h2,row_1,row_2,cand_width;
 
 	b_col = b_col || "#FFF";
 	t_col = t_col || "#000";
@@ -72,10 +72,43 @@ function electionSlide(heading,b_col,t_col,poll) {
 	candidate_cont = document.createElement("div");
 	candidate_cont.className = "candidates fill-height";
 	
-	for (var candidate in poll.candidates) {
+	if (poll.candidates.length <=3) {
+		cand_width = (Math.floor(100/poll.candidates.length)-1) + "%";
+		
+			for (var candidate in poll.candidates) {
 		candidate_obj = document.createElement("div");
 		candidate_obj.className = "candidate";
+		candidate_obj.style.width = cand_width;
+		candidate_obj.style.height = "80%";
+		candidate_obj.style.marginLeft = "1%";
 		candidate_cont.appendChild(candidate_obj);
+	}
+	} else {
+		row_1 = document.createElement("div");
+		row_1.style.height = "50%";
+		
+		row_2 = document.createElement("div");
+		row_2.style.height = "50%";
+		
+		cand_width = ((Math.floor(100/Math.ceil(poll.candidates.length/2)))-1) + "%";
+		for (var i=0;i<=Math.ceil(poll.candidates.length/2)-1;i++) {
+			candidate_obj = document.createElement("div");
+			candidate_obj.className = "candidate";
+			candidate_obj.style.width = cand_width;
+			candidate_obj.style.height = "80%";
+		candidate_obj.style.marginLeft = "1%";
+		row_1.appendChild(candidate_obj);
+		}
+		for (i=Math.ceil(poll.candidates.length/2);i<=poll.candidates.length-1;i++) {
+			candidate_obj = document.createElement("div");
+			candidate_obj.className = "candidate";
+			candidate_obj.style.width = cand_width;
+			candidate_obj.style.height = "80%";
+			candidate_obj.style.marginLeft = "1%";
+			row_2.appendChild(candidate_obj);
+	}
+	candidate_cont.appendChild(row_1);
+	candidate_cont.appendChild(row_2);
 	}
 	
 	head_cont.appendChild(h1);
