@@ -16,7 +16,11 @@ function Candidate(candidateNumber, pollNumber, details, office) {
 	this.candidateNumber = candidateNumber;
 	this.pollNumber = pollNumber;
 	this.name = details.name;
-	this.image = details.image;
+	if (details.image === "") {
+		this.image = "/candidateimages/default.gif";
+	} else  {
+		this.image = details.image;
+	}
 	this.votes = 0;
 
 	this.isWinner = false;
