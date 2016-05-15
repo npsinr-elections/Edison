@@ -58,6 +58,12 @@ window.onload = xhr.send();
 						"b_col": polls[poll].backColor,
 						"t_col": polls[poll].foreColor
 					})
+					elections.newSlide("election", {
+						"heading": polls[poll].office + " Elections",
+						"b_col": polls[poll].backColor,
+						"t_col": polls[poll].foreColor,
+						"poll" : polls[poll]
+					})
 				}
 
 			Id("left").onclick = function() {elections.previousSlide();}
@@ -74,14 +80,29 @@ window.onload = xhr.send();
     }
 };
 				
-				setTimeout(function() {center();elections.start()},500)
+				setTimeout(function() {construct_ui();elections.start()},500)
 				}
 			// -------------------------------------------------------------------------------------------------------
 
 		function Id(Id) {return document.getElementById(Id);}
 		function Cl(cl) {return document.getElementsByClassName(cl);}
 		
-		window.onresize = function() {center()};
+		window.onresize = function() {construct_ui()};
+		
+		function construct_ui() {
+	center_elem = Cl("center");
+	fill_height_elem = Cl("fill-height");
+	var i;
+	for (i=0;i<center_elem.length;i++) {
+		center_elem[i].style.marginTop = (window.innerHeight - center_elem[i].offsetHeight)/2 + "px";
+		center_elem[i].style.marginLeft = (window.innerWidth - center_elem[i].offsetWidth)/2 + "px";
+	}
+	for (i=0;i<fill_height_elem.length;i++) {
+		console.log(fill_height_elem[i]);
+		fill_height_elem[i].style.height = (window.innerHeight - fill_height_elem[i].offsetTop) + "px";
+	}
+		}
+		
 		</script>
 	</body>
 </html>

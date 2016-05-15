@@ -44,17 +44,16 @@ function titleSlide(heading,subheading,b_col,t_col) {
 
 function electionSlide(heading,b_col,t_col,poll) {
 	var div,head_cont,h1,h2;
-	
-	console.log(poll);
+
 	b_col = b_col || "#FFF";
 	t_col = t_col || "#000";
 	
 	div = document.createElement("div");
-	div.className = "flex-container-h flex-top";
+	div.className = "full-size";
 	div.style.background = b_col;
 	
 	head_cont = document.createElement("div");
-	head_cont.className = "flex-center text-center title_top";
+	head_cont.className = "title_top text-center";
 	
 	// Creating the actual heading
 	h1 = document.createElement("h1");
@@ -70,10 +69,20 @@ function electionSlide(heading,b_col,t_col,poll) {
 	h2.style.color = t_col
 	h2.dataset.animate = 2;
 	
+	candidate_cont = document.createElement("div");
+	candidate_cont.className = "candidates fill-height";
+	
+	for (var candidate in poll.candidates) {
+		candidate_obj = document.createElement("div");
+		candidate_obj.className = "candidate";
+		candidate_cont.appendChild(candidate_obj);
+	}
+	
 	head_cont.appendChild(h1);
 	head_cont.appendChild(h2);
 	
 	div.appendChild(head_cont);
+	div.appendChild(candidate_cont);
 	
 	return div;
 }
@@ -89,6 +98,7 @@ function Presentation() {
 		slide_cont = document.createElement("div");
 		slide_cont.id = "slide" + this.currentAddSlide;
 		slide_cont.className = "slide";
+		slide_cont.dataset.type = type;
 		slide_cont.style.left = (100+(100*(this.currentAddSlide-1))) + "%";
 		
 		slide = addSlide(type,data);
@@ -113,25 +123,27 @@ function Presentation() {
 		}
 		this.currentSlide ++;
 		}
+		if (Id("slide" + this.currentSlide).dataset.type == "election") {
+			Id("school_logo").style.opacity = "0";
+		} else {
+			Id("school_logo").style.opacity = "1";
+		}
 	}
 	
 	this.previousSlide = function() {
 			var i;
-			console.log(this.currentSlide);
 		if (this.currentSlide !== 1) {
 		for (i = 0; i < this.slides.length; i++) {
 		this.slides[i].style.left = (Number(this.slides[i].style.left.replace("%","")) + 100) + "%";
 		}
 		this.currentSlide --;
 	}
+	if (Id("slide" + this.currentSlide).dataset.type == "election") {
+			Id("school_logo").style.opacity = "0";
+		} else {
+			Id("school_logo").style.opacity = "1";
+		}
 	}
 }
 
-function center() {
-	center_elem = Cl("center");
-	var i;
-	for (i=0;i<center_elem.length;i++) {
-		center_elem[i].style.marginTop = (window.innerHeight - center_elem[i].offsetHeight)/2 + "px";
-		center_elem[i].style.marginLeft = (window.innerWidth - center_elem[i].offsetWidth)/2 + "px";
-	}
-}
+

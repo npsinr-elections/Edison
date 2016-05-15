@@ -4,11 +4,13 @@ html, body {
     overflow:hidden;
 }
 #school_logo {
-	position:absolute;
-	top:10px;
-	left:5px;
+	position:relative;
+	margin-top:10px;
+	margin-left:5px;
 	z-index:2;
 	color:#FFF;
+	width:500px;
+	transition-duration:0.4s;
 }
 #logo_pic {
 	float:left;
@@ -22,9 +24,6 @@ html, body {
 	z-index:4;
 	background-color:#000;
 	opacity:0.3;
-	display:flex;
-	justify-content:center;
-	align-items:center;
 	transition-duration:0.3s;
 }
 #left_hover {
@@ -44,9 +43,6 @@ html, body {
 	z-index:4;
 	background-color:#000;
 	opacity:0.3;
-	display:flex;
-	justify-content:center;
-	align-items:center;
 	transition-duration:0.3s;
 }
 #right_hover {
@@ -65,10 +61,30 @@ html, body {
   border:none;
   font-weight:900;
   outline:none;
+  position:absolute;
+  top:0;
+  left:40px;
+  bottom:0;
 }
 #left_button:active, #right_button:active {
 	border:none;
 	outline:none;
+}
+.candidates {
+	margin-top:20px;
+	width:100%;
+	height:50%;
+}
+
+.candidate {
+	height:47%;
+	width:30%;
+	margin: 1% 0 0 2.5%;
+	float:left;
+	border-style:solid;
+	border-width:2px;
+	border-radius:10px;
+	border-color:#FFF;
 }
 #right_button {
 	color:#FFF;
@@ -78,6 +94,10 @@ html, body {
 	 background:none;
   border:none;
   outline:none;
+  position:absolute;
+  top:0;
+  left:40px;
+  bottom:0;
 }
 .head_cont {
 	width:70%;
@@ -115,4 +135,7 @@ html, body {
 #right_hover:hover+#right,#right:hover {
 	right:0;
 	cursor:pointer;
+}
+.title_top {
+	margin-top:10px;
 }
