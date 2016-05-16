@@ -1,112 +1,201 @@
 {
-	"Prefect": [{
-		"image": "/candidateimages/default.gif",
-		"name": "Batman"
+	"polls": [{
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Superman"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Batman"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Spider-man"
+		}],
+		"message": "'Before you are a leader, success is all about growing yourself. When you become a leader, success is all about growing others.'",
+		"name": "Prefect",
+		"backColor": "#404040"
 	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Spiderman"
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Thor"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Hal Jordan"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Captain America"
+		}],
+		"message": "Leadership is the art of getting someone else to do something you want done because he wants to do it.",
+		"name": "Boy Vice Prefect",
+		"backColor": "#404040"
 	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Superman"
-	}],
-	"ExplorersVC": [{
-		"image": "/candidateimages/default.gif",
-		"name": "Donatello"
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Wonder Woman"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Invisible Woman"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Supergirl"
+		}],
+		"message": "",
+		"name": "Girl Vice Prefect",
+		"backColor": "#404040"
 	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Michelangelo"
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Martian Manhunter"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Dick Grayson"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Thing"
+		}],
+		"message": "'To strive, to seek, to find, but not to yield'",
+		"name": "Challengers Captain",
+		"backColor": "#6D0019"
 	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Silver Surfer"
-	}],
-	"PioneersVC": [{
-		"image": "/candidateimages/default.gif",
-		"name": "Tim Drake"
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Human Torch"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Mr. Fantastic"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Wally West"
+		}],
+		"message": "'To strive, to seek, to find, but not to yield'",
+		"name": "Challengers Vice Captain",
+		"backColor": "#6D0019"
 	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Supergirl"
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Kyle Rayner"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Superboy"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Leonardo"
+		}],
+		"message": "'Endeavour to reach beyond'",
+		"name": "Explorers Captain",
+		"backColor": "#4B0082"
 	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Iron Man"
-	}],
-	"ChallengersC": [{
-		"image": "/candidateimages/default.gif",
-		"name": "Thing"
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Raphael"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Donatello"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Michelangelo"
+		}],
+		"message": "'Endeavour to reach beyond'",
+		"name": "Explorers Vice Captain",
+		"backColor": "#4B0082"
 	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Human Torch"
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Silver Surfer"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Aquaman"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Green Arrow"
+		}],
+		"message": "'The spark that always glows; the light that always shows'",
+		"name": "Pioneers Captain",
+		"backColor": "#FF8833"
 	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Mr. Fantastic"
-	}],
-	"ExplorersC": [{
-		"image": "/candidateimages/default.gif",
-		"name": "Superboy"
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Tim Drake"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Iron Man"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Hercules"
+		}],
+		"message": "'The spark that always glows; the light that always shows'",
+		"name": "Pioneers Vice Captain",
+		"backColor": "#FF8833"
 	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Leonardo"
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Hercules"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Daredevil"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Orion"
+		}],
+		"message": "'Vigour, Valour, Victory'",
+		"name": "Voyagers Captain",
+		"backColor": "#80CEFF"
 	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Raphael"
-	}],
-	"VicePrefectF": [{
-		"image": "/candidateimages/default.gif",
-		"name": "Captain America"
-	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Martian Manhunter"
-	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Dick Grayson"
-	}],
-	"VoyagersC": [{
-		"image": "/candidateimages/default.gif",
-		"name": "Hercules"
-	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Daredevil"
-	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Orion"
-	}],
-	"PioneersC": [{
-		"image": "/candidateimages/default.gif",
-		"name": "Aquaman"
-	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Green Arrow"
-	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Barry Allen"
-	}],
-	"VicePrefectM": [{
-		"image": "/candidateimages/default.gif",
-		"name": "Thor"
-	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Hal Hordan"
-	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Wonder Woman"
-	}],
-	"ChallengersVC": [{
-		"image": "/candidateimages/default.gif",
-		"name": "Invisible Woman"
-	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Wally West"
-	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Kyle Rayner"
-	}],
-	"VoyagersVC": [{
-		"image": "/candidateimages/default.gif",
-		"name": "Black Panther"
-	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Wolverine"
-	}, {
-		"image": "/candidateimages/default.gif",
-		"name": "Billy Batson"
+		"foreColor": "#FFFFFF",
+		"candidates": [{
+			"image": "",
+			"votes": "",
+			"name": "Black Panther"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Wolverine"
+		}, {
+			"image": "",
+			"votes": "",
+			"name": "Billy Batson"
+		}],
+		"message": "'Vigour, Valour, Victory'",
+		"name": "Voyagers Vice Captain",
+		"backColor": "#80CEFF"
 	}]
 }

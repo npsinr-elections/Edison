@@ -42,6 +42,10 @@ div.panel-body {
 	text-align: right;
 }
 
+div.panel-heading {
+	position: relative;
+}
+
 div.candidateContainerElement {
 	text-align: left;
 	position: relative;
@@ -57,20 +61,29 @@ div.candidateContainerElement:last-of-type>input.textBox {
 	margin: initial;
 }
 
-button.deleteCandidateButton {
+button.deleteCandidateButton,
+button.deletePollButton {
 	position: absolute;
 	right: 0px;
 	top: 0px;
 	font-size: 40px;
 	background: transparent;
-	margin: none;
-	margin-top: -10px;
-	padding: none;
+	margin: 0px;
+	padding: 0px;
 	border: none;
 	color: #B3B3B3;
 }
 
-button.deleteCandidateButton:hover {
+button.deletePollButton {
+	margin-right: 15px;
+}
+
+button.deleteCandidateButton {
+	margin-top: -10px;
+}
+
+button.deleteCandidateButton:hover,
+button.deletePollButton:hover {
 	color: #999999;
 }
 

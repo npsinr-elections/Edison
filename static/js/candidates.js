@@ -140,27 +140,37 @@ function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue, s) {
 	});
 }
 
-function Poll(givenDumpId, givenIndex, givenValue) {
+function Poll(givenIndex, givenDumpId, givenValue) {
 	'use strict';
 
 	var value = givenValue,
 		candidates = [],
-		office = value.name,
-		foreColor = value.foreColor,
-		backColor = value.backColor,
+		office = value.name || '',
+		foreColor = value.foreColor || '#FFFFFF',
+		backColor = value.backColor || '#000000',
 		index = givenIndex,
 
 		dumpId = givenDumpId,
 		id = office.replace(/\s/g, '') + index,
 
 		parentElement,
-		deletePollButton,
 		officeErrorBox,
-		officeTextBox,
 		panel,
 		panelHeading,
 		panelBody,
 		addNewCandidateButton;
+
+	this.setIndex = function (i) {
+		index = i;
+	};
+
+	this.getIndex = function () {
+		return index;
+	};
+
+	this.getCandidates = function () {
+		return candidates;
+	};
 
 	function updateServer(givenInstruction) {
 		var xhr,
@@ -187,13 +197,25 @@ function Poll(givenDumpId, givenIndex, givenValue) {
 	function aCandidateIsEmpty() {
 		var isEmpty = true;
 
-		candidates.forEach(function (candidate, index) {
-			candidate.index = index;
+		candidates.forEach(function (candidate) {
 			isEmpty = isEmpty && !candidate.textBox.value.trim();
 		});
 
 		return isEmpty;
 	}
+
+	this.aCandidateIsEmpty = function () {
+		return aCandidateIsEmpty();
+	};
+
+	this.hasNoCandidates = function () {
+		if ((candidates.length !== 0) && aCandidateIsEmpty()) {
+			return candidates.length === 1;
+		}
+
+
+		return candidates.length === 0;
+	};
 
 	function addNewCandidate(candidateValue) {
 		var tempCandidate = new Candidate(candidates.length, index, id, candidateValue);
@@ -211,11 +233,9 @@ function Poll(givenDumpId, givenIndex, givenValue) {
 		}
 
 		tempCandidate.deleteCandidateButton.addEventListener('click', function () {
-			var index;
-
 			candidates.splice(tempCandidate.getIndex(), 1);
 			candidates.forEach(function (candidate, index) {
-				candidates[index].index = index;
+				candidates[index].setIndex(index);
 			});
 			if (aCandidateIsEmpty() && (candidates.length !== 0)) {
 				disableAddButton();
@@ -225,9 +245,7 @@ function Poll(givenDumpId, givenIndex, givenValue) {
 		});
 
 		tempCandidate.textBox.addEventListener('input', function () {
-			var isEmpty = true;
-
-			if (!this.value.replace(/\s/g, '') || aCandidateIsEmpty()) {
+			if (!this.value.trim() || aCandidateIsEmpty()) {
 				disableAddButton();
 			} else {
 				enableAddButton();
@@ -239,21 +257,17 @@ function Poll(givenDumpId, givenIndex, givenValue) {
 	officeErrorBox = document.createElement('p');
 	officeErrorBox.className = 'officeErrorBox';
 
-	officeTextBox = document.createElement('input');
-	officeTextBox.className = 'officeTextBox';
-	officeTextBox.type = 'text';
-	officeTextBox.placeholder = 'Enter a name.';
-	officeTextBox.value = value.name || '';
-	officeTextBox.addEventListener('input', function () {
+	this.officeTextBox = document.createElement('input');
+	this.officeTextBox.className = 'officeTextBox';
+	this.officeTextBox.type = 'text';
+	this.officeTextBox.placeholder = 'Enter a name.';
+	this.officeTextBox.value = value.name || '';
+	this.officeTextBox.addEventListener('input', function () {
 		var text = this.value.replace(' ', '');
 
 		if (text === '') {
-			officeErrorBox.innerHTML = 'Please do not leave this field empty.';
-		} else {
-			officeErrorBox.innerHTML = '';
-		}
-
-		if (!(/[\d\f\n\r\t\v_]/gi.test(text))) {
+			officeErrorBox.innerHTML = 'Please do not leave this field empty. Otherwise, this office may not be stored correctly.';
+		} else if (!(/[\d\f\n\r\t\v_]/gi.test(text))) {
 			updateServer({
 				'action': 'update',
 				'update': 'name',
@@ -265,13 +279,22 @@ function Poll(givenDumpId, givenIndex, givenValue) {
 		}
 	});
 
-	deletePollButton = document.createElement('button');
+	this.deletePollButton = document.createElement('button');
+	this.deletePollButton.className = 'deletePollButton';
+	this.deletePollButton.innerHTML = '&#10799;';
+	this.deletePollButton.addEventListener('click', function () {
+		parentElement.removeChild(panel);
+		updateServer({
+			'action': 'delete'
+		});
+	});
 
 	panelHeading = document.createElement('div');
 	panelHeading.className = 'panel-heading';
 	panelHeading.style.backgroundColor = backColor;
 	panelHeading.style.color = foreColor;
-	panelHeading.appendChild(officeTextBox);
+	panelHeading.appendChild(this.deletePollButton);
+	panelHeading.appendChild(this.officeTextBox);
 
 	addNewCandidateButton = document.createElement('button');
 	addNewCandidateButton.className = 'addNewCandidateButton';
@@ -293,32 +316,133 @@ function Poll(givenDumpId, givenIndex, givenValue) {
 	panel.appendChild(panelBody);
 
 	parentElement = document.getElementById(dumpId);
-	parentElement.appendChild(panel);
+	parentElement.insertBefore(panel, parentElement.lastChild);
 
 	value.candidates.forEach(function (candidateValue) {
 		addNewCandidate(candidateValue);
 	});
 }
 
-window.addEventListener('load', function () {
+function Interface(givenDumpId) {
 	'use strict';
 
-	var xhr,
+	var dumpId = givenDumpId,
+		xhr,
 		data,
-		polls = [];
+		polls = [],
+		blankValue = {
+			'name': '',
+			'foreColor': '',
+			'backColor': '',
+			'candidates': []
+		},
+
+		parentElement,
+		addNewPollButton;
+
+	function createOnServer() {
+		var instruction = {
+			'action': 'create',
+			'value': {
+				'name': '',
+				'foreColor': '',
+				'backColor': '',
+				'candidates': []
+			}
+		};
+
+		xhr = new XMLHttpRequest();
+		xhr.open('POST', '/pollAction', true);
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.send(JSON.stringify(instruction));
+	}
+
+	function enableAddButton() {
+		addNewPollButton.disabled = false;
+		addNewPollButton.title = 'Add an office';
+	}
+
+	function disableAddButton() {
+		addNewPollButton.disabled = true;
+		addNewPollButton.title = 'Please write the name of each office and add at least one candidate to each';
+	}
+
+	function aPollIsEmpty() {
+		var isEmpty = true;
+
+		polls.forEach(function (poll) {
+			isEmpty = isEmpty && (!poll.officeTextBox.value.trim() || poll.hasNoCandidates());
+		});
+
+		return isEmpty;
+	}
+
+	function addNewPoll(pollValue) {
+		var tempPoll;
+
+		if (!pollValue.name) {
+			tempPoll = new Poll(polls.length, dumpId, blankValue);
+			disableAddButton();
+			createOnServer();
+		} else {
+			tempPoll = new Poll(polls.length, dumpId, pollValue);
+		}
+
+		tempPoll.deletePollButton.addEventListener('click', function () {
+			polls.splice(tempPoll.getIndex(), 1);
+			polls.forEach(function (poll, index) {
+				polls[index].setIndex(index);
+			});
+			if (aPollIsEmpty() && (polls.length !== 0)) {
+				disableAddButton();
+			} else {
+				enableAddButton();
+			}
+		});
+
+		tempPoll.officeTextBox.addEventListener('input', function () {
+			if (!this.value.trim() || aPollIsEmpty()) {
+				disableAddButton();
+			} else {
+				enableAddButton();
+			}
+		});
+
+		tempPoll.getCandidates().forEach(function (candidate) {
+			candidate.textBox.addEventListener('input', function () {
+				if (tempPoll.hasNoCandidates()) {
+					disableAddButton();
+				} else {
+					enableAddButton();
+				}
+			});
+		});
+
+		polls.push(tempPoll);
+	}
+
+	addNewPollButton = document.createElement('button');
+	addNewPollButton.className = 'addNewPollButton';
+	addNewPollButton.innerHTML = '+';
+	addNewPollButton.addEventListener('click', function () {
+		addNewPoll({});
+	});
+
+	parentElement = document.getElementById(dumpId);
+	parentElement.appendChild(addNewPollButton);
 
 	xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === 4 && xhr.status === 200) {
 			data = JSON.parse(xhr.responseText);
 			data.polls.forEach(function (pollValue, index) {
-				polls.push(new Poll('container', index, pollValue));
+				addNewPoll(pollValue);
 			});
 		}
 	};
 	xhr.open('GET', '/getcandidates', true);
 	xhr.send();
-});
+}
 
 function exit() {
 	'use strict';
@@ -334,6 +458,6 @@ window.addEventListener('unload', exit);
 window.addEventListener('beforeunload', function (event) {
 	'use strict';
 
-	event.returnValue = 'All candidates without a name entered will be deleted. Continue?';
+	event.returnValue = 'All candidates without a name entered, and all office without both a name and a candidate will be deleted. Continue?';
 	exit();
 });

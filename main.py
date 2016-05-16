@@ -112,7 +112,11 @@ def pollAction():
 	
 	with open('candidates.json', 'r') as data_file:
 		action = instruction['action']
-		pollIndex = instruction['pollIndex']
+		
+		try:
+			pollIndex = instruction['pollIndex']
+		except KeyError:
+			pass
 		
 		try:
 			value = instruction['value']
@@ -130,6 +134,9 @@ def pollAction():
 			
 		elif action == 'delete':
 			del data['polls'][pollIndex]
+		
+		elif action == 'create':
+			data['polls'].append(value)
 	
 	with open('candidates.json', 'w') as data_file:
 		data_file.write(json.dumps(data))

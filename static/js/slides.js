@@ -14,11 +14,11 @@ function titleSlide(heading,subheading,b_col,t_col) {
 	t_col = t_col || "#000";
 	
 	div = document.createElement("div");
-	div.className = "flex-container";
+	div.className = "full-size";
 	div.style.background = b_col;
 	
 	head_cont = document.createElement("div");
-	head_cont.className = "flex-center text-center";
+	head_cont.className = "head_cont center text-center";
 	
 	// Creating the actual heading
 	h1 = document.createElement("h1");
@@ -97,6 +97,7 @@ function Presentation() {
 		
 		this.viewport.appendChild(slide_cont);
 		
+		
 		this.currentAddSlide ++;
 	}
 	this.start = function() {
@@ -123,5 +124,14 @@ function Presentation() {
 		}
 		this.currentSlide --;
 	}
+	}
+}
+
+function center() {
+	center_elem = Cl("center");
+	var i;
+	for (i=0;i<center_elem.length;i++) {
+		center_elem[i].style.marginTop = (window.innerHeight - center_elem[i].offsetHeight)/2 + "px";
+		center_elem[i].style.marginLeft = (window.innerWidth - center_elem[i].offsetWidth)/2 + "px";
 	}
 }
