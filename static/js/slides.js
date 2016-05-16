@@ -192,7 +192,7 @@ function Presentation() {
         slide_cont.id = "slide" + this.currentAddSlide;
         slide_cont.className = "slide";
         slide_cont.dataset.type = type;
-        slide_cont.style.left = (100 + (100 * (this.currentAddSlide - 1))) + "%";
+        slide_cont.style.left = "100%";
 
         slide = addSlide(type, data);
 
@@ -205,36 +205,38 @@ function Presentation() {
     }
     this.start = function() {
         this.slides = Cl("slide");
+         this.currentSlide = 0;
         this.nextSlide();
 
     }
     this.nextSlide = function() {
         var i;
-        if (this.currentSlide !== this.currentAddSlide - 1) {
-            for (i = 0; i < this.slides.length; i++) {
-                this.slides[i].style.left = (Number(this.slides[i].style.left.replace("%", "")) - 100) + "%";
-            }
-            this.currentSlide++;
+        if (this.currentSlide == 0) {
+        	this.slides[0].style.left = 0;
+        	this.currentSlide ++;
+        } else if (this.currentSlide !== this.currentAddSlide-1) {
+        	this.slides[this.currentSlide-1].style.left = "-100%";
+        	this.slides[this.currentSlide].style.left = "0";
+        	this.currentSlide ++;
         }
-        if (Id("slide" + this.currentSlide).dataset.type == "election") {
-            Id("school_logo").style.opacity = "0";
-        } else {
-            Id("school_logo").style.opacity = "1";
-        }
+        this.hideShowlogo();
     }
 
     this.previousSlide = function() {
         var i;
-        if (this.currentSlide !== 1) {
-            for (i = 0; i < this.slides.length; i++) {
-                this.slides[i].style.left = (Number(this.slides[i].style.left.replace("%", "")) + 100) + "%";
-            }
-            this.currentSlide--;
-        }
-        if (Id("slide" + this.currentSlide).dataset.type == "election") {
-            Id("school_logo").style.opacity = "0";
-        } else {
-            Id("school_logo").style.opacity = "1";
-        }
+      	if (this.currentSlide !== 1) {
+      		this.slides[this.currentSlide-1].style.left = "100%";
+      		this.slides[this.currentSlide-2].style.left = "0";
+      		this.currentSlide --
+      	}
+       this.hideShowlogo();
+    }
+    
+    this.hideShowlogo = function() {
+    	if (this.slides[this.currentSlide-1].dataset.type == "election") {
+    		Id("school_logo").style.opacity = "0";
+    	} else {
+    		Id("school_logo").style.opacity = "1";
+    	}
     }
 }

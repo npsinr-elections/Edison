@@ -6,6 +6,9 @@
     <link href="/static/css/slide.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/plugins/CSSPlugin.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/easing/EasePack.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.4/TweenLite.min.js"></script>
 </head>
 
 <body>
@@ -74,9 +77,11 @@
             document.onkeydown = function(e) {
                 switch (e.keyCode) {
                     case 37: // Left key code
+                    		e.preventDefault();
                         elections.previousSlide();
                         break;
                     case 39: // Right key code
+                    		e.preventDefault();
                         elections.nextSlide();
                         break;
                 }
