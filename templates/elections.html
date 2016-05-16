@@ -43,6 +43,11 @@
 				function vote_candidate(i,j) {
 					polls[i].vote(j);
 				}
+				
+				function undo_vote(i) {
+					polls[i].undo();
+				}
+				
         function createPolls() {
             data.polls.forEach(function(pollValue, index) {
                 polls.push(new Poll(index, pollValue.name, pollValue.foreColor, pollValue.backColor, pollValue.message));

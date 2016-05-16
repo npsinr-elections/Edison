@@ -89,8 +89,9 @@ function electionSlide(heading, b_col, t_col, poll) {
 		
 		undo_button = document.createElement("button");
 		undo_button.type = "button";
-		undo_button.className = "btn btn-warning btn-lg undo_btn";
+		undo_button.className = "btn btn-warning btn-lg undo_btn disabled";
 		undo_button.id = poll.undoId;
+		undo_button.dataset.number = poll.number;
 		undo_button.innerHTML = "Undo Vote";
 		
     if (poll.candidates.length <= 3) {
