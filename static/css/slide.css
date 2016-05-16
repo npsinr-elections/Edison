@@ -111,14 +111,19 @@ html, body {
 	border-width:2px;
 	border-radius:10px;
 	border-color:#FFF;
-	opacity:0.9;
+	opacity:1;
 	transition-duration:0.2s;
-
 }
-.candidate_anim:hover {
+#candidate_anim {
+	opacity:0.7;
+}
+#candidate_anim:hover {
 	opacity:1;
 }
-.candidate_anim:active {
+.end_btn,.undo_btn {
+	margin-left:5px;
+}
+#candidate_anim:active {
 	border-color:#5cb85c;
 	border-width:5px;
 	-webkit-box-shadow: inset 0px 0px 21px 0px rgba(0,0,0,0.75);

@@ -68,16 +68,38 @@ function Poll(number, office, foreColor, backColor, message) {
 	this.totalVotes = 0;
 	this.specificVotes = [];
 	this.finalWinner = {};
-
-	this.cl = "poll " + /*this.group.replace(" ", "");*/ this.office.replace(/\s/g, "");
-	this.id = /*this.group.replace(' ', '') +*/ this.office.replace(/\s/g, "");
-	//		var headingTag = document.createElement("h2");
-	//		headingTag.innerHTML = office;
-
+	
+	this.id = this.office.replace(/\s/g, "");
+	
+	this.startId = this.id + "start";
+	this.undoId = this.id + "undo";
+	this.endId = this.id + "end";
+	this.statusId = this.id + "status";
+	this.cand_class = this.id + "candidates";
+	
 	this.getTotalVotes = function () {
 		return votes.length;
 	};
-
+	
+	this.ready_ui = function () {
+		console.log("Attaching event handlers");
+		Id(this.startId).onclick = function () {
+			start_elections(this.dataset.number);
+		};
+		Id(this.undoId).style.display = "none";
+		Id(this.endId).style.display = "none";
+	};
+	
+	this.start_elections = function () {
+		Id(this.statusId).innerHTML = "Elections have begun";
+		var candidate_ui = Cl(this.cand_class);
+		Id(this.startId).style.display = "none";
+		Id(this.undoId).style.display = "inline-block";
+		Id(this.endId).style.display = "inline-block";
+		for (var i=0;i<candidate_ui.length;i++) {
+			candidate_ui[i].id = "candidate_anim"
+		}
+	}
 	this.addCandidate = function (details) {
 		this.candidates.push(new Candidate(candidateNumber, this.number, details, this.office));
 		this.specificVotes.push(0);
