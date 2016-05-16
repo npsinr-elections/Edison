@@ -43,7 +43,7 @@ function titleSlide(heading, subheading, b_col, t_col) {
 }
 
 function electionSlide(heading, b_col, t_col, poll) {
-    var div, head_cont, h1, h2, row_1, row_2, cand_width, c_name, c_image;
+    var div, head_cont, h1, h2, row_1, row_2, cand_width, c_name, c_image,start_button,end_button,undo_button;
 
     b_col = b_col || "#FFF";
     t_col = t_col || "#000";
@@ -71,7 +71,23 @@ function electionSlide(heading, b_col, t_col, poll) {
 
     candidate_cont = document.createElement("div");
     candidate_cont.className = "candidates fill-height";
+// <button type="button" class="btn btn-primary btn-lg">Large button</button>
 
+		start_button = document.createElement("button");
+		start_button.type = "button";
+		start_button.className = "btn btn-success btn-lg start_btn";
+		start_button.innerHTML = "Start Elections";
+		
+		end_button = document.createElement("button");
+		end_button.type = "button";
+		end_button.className = "btn btn-danger btn-lg end_btn";
+		end_button.innerHTML = "End Elections";
+		
+		undo_button = document.createElement("button");
+		undo_button.type = "button";
+		undo_button.className = "btn btn-warning btn-lg undo_btn";
+		undo_button.innerHTML = "Undo Vote";
+		
     if (poll.candidates.length <= 3) {
         cand_width = (Math.floor(100 / poll.candidates.length) - 1) + "%";
 
@@ -156,6 +172,7 @@ function electionSlide(heading, b_col, t_col, poll) {
 
     head_cont.appendChild(h1);
     head_cont.appendChild(h2);
+    head_cont.appendChild(start_button);
 
     div.appendChild(head_cont);
     div.appendChild(candidate_cont);
