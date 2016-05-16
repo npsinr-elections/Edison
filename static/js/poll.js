@@ -97,7 +97,10 @@ function Poll(number, office, foreColor, backColor, message) {
 		Id(this.undoId).style.display = "inline-block";
 		Id(this.endId).style.display = "inline-block";
 		for (var i=0;i<candidate_ui.length;i++) {
-			candidate_ui[i].id = "candidate_anim"
+			candidate_ui[i].id = "candidate_anim";
+			candidate_ui[i].onclick = function () {
+				vote_candidate(this.dataset.number,this.dataset.candNumber);
+			}
 		}
 	}
 	this.addCandidate = function (details) {
@@ -110,6 +113,7 @@ function Poll(number, office, foreColor, backColor, message) {
 		this.specificVotes[i] = this.candidates[i].vote();
 		this.evaluateWinner();
 		votes.push(i);
+		console.log("Voted for " + this.candidates[i].name + " in " + this.office + " office");
 	};
 
 	this.unvote = function (i) {

@@ -102,6 +102,8 @@ function electionSlide(heading, b_col, t_col, poll) {
             candidate_obj.style.width = cand_width;
             candidate_obj.style.height = "80%";
             candidate_obj.style.marginLeft = "1%";
+            candidate_obj.dataset.number = poll.number;
+            candidate_obj.dataset.candNumber = candidate;
 
             c_name = document.createElement("div");
             c_name.className = "cand-name";
