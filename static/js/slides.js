@@ -85,6 +85,7 @@ function electionSlide(heading, b_col, t_col, poll) {
 		end_button.type = "button";
 		end_button.className = "btn btn-danger btn-lg end_btn";
 		end_button.id = poll.endId;
+		end_button.dataset.number = poll.number;
 		end_button.innerHTML = "End Elections";
 		
 		undo_button = document.createElement("button");
