@@ -130,6 +130,10 @@
                 fill_height_elem[i].style.height = (window.innerHeight - fill_height_elem[i].offsetTop) + "px";
             }
         }
+        
+        window.addEventListener('beforeunload', function (event) {
+	event.returnValue = 'Exitting in the middle of ongoing elections might result in loss of data. Continue?';
+});
     </script>
 </body>
 
