@@ -44,6 +44,10 @@
 			polls[i].start_elections();
 		}
 
+		function end_elections(i) {
+			polls[i].end_elections();
+		}
+
 		function vote_candidate(i, j) {
 			polls[i].vote(j);
 		}
@@ -55,9 +59,9 @@
 		function createPolls() {
 			data.polls.forEach(function (pollValue, index) {
 				polls.push(new Poll(index, pollValue.name, pollValue.foreColor, pollValue.backColor, pollValue.message));
-				for (candidate in pollValue.candidates) {
-					polls[index].addCandidate(pollValue.candidates[candidate]);
-				}
+				pollValue.candidates.forEach(function (candidate) {
+					polls[index].addCandidate(candidate);
+				});
 			});
 			createPresentation();
 		};
@@ -130,7 +134,11 @@
 				fill_height_elem[i].style.height = (window.innerHeight - fill_height_elem[i].offsetTop) + "px";
 			}
 		}
+		window.addEventListener('beforeunload', function (event) {
+			event.returnValue = 'Exiting in the middle of ongoing elections might result in loss of data. Continue?';
+		});
 	</script>
+
 </body>
 
 </html>

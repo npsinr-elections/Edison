@@ -1,5 +1,4 @@
 /*jslint browser: true*/
-
 function electionSlide(heading, b_col, t_col, poll) {
 	'use strict';
 
