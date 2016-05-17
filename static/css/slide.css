@@ -6,11 +6,13 @@ body {
 }
 
 #school_logo {
-	position: absolute;
-	top: 10px;
-	left: 5px;
+	position: relative;
+	margin-top: 10px;
+	margin-left: 5px;
 	z-index: 2;
 	color: #FFF;
+	width: 500px;
+	transition-duration: 0.4s;
 }
 
 #logo_pic {
@@ -26,9 +28,6 @@ body {
 	z-index: 4;
 	background-color: #000;
 	opacity: 0.3;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	transition-duration: 0.3s;
 }
 
@@ -50,9 +49,6 @@ body {
 	z-index: 4;
 	background-color: #000;
 	opacity: 0.3;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	transition-duration: 0.3s;
 }
 
@@ -72,11 +68,85 @@ body {
 	background: none;
 	border: none;
 	font-weight: 900;
+	outline: none;
+	position: absolute;
+	top: 0;
+	left: 40px;
+	bottom: 0;
 }
 
 #left_button:active,
 #right_button:active {
 	border: none;
+	outline: none;
+}
+
+.candidates {
+	margin-top: 20px;
+	width: 100%;
+}
+
+.cand-image {
+	position: absolute;
+	top: -9999px;
+	bottom: -9999px;
+	left: -9999px;
+	right: -9999px;
+	margin: auto;
+	height: 100%;
+}
+
+.cand-name {
+	color: #FFF;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+	font-size: 35px;
+	font-size: 2.3vw;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: #808080;
+	background-color: rgba(128, 128, 128, 0.9);
+	border-style: solid;
+	border-width: 2px;
+	border-radius: 10px;
+	border-color: #FFF;
+}
+
+.start_btn {}
+
+.candidate {
+	position: relative;
+	overflow: hidden;
+	float: left;
+	border-style: solid;
+	border-width: 2px;
+	border-radius: 10px;
+	border-color: #FFF;
+	opacity: 1;
+	transition-duration: 0.2s;
+}
+
+#candidate_anim {
+	opacity: 0.7;
+}
+
+#candidate_anim:hover {
+	opacity: 1;
+}
+
+.end_btn,
+.undo_btn {
+	margin-left: 5px;
+}
+
+#candidate_anim:active {
+	border-color: #5cb85c;
+	border-width: 5px;
+	-webkit-box-shadow: inset 0px 0px 21px 0px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: inset 0px 0px 21px 0px rgba(0, 0, 0, 0.75);
+	box-shadow: inset 0px 0px 21px 0px rgba(0, 0, 0, 0.75);
 }
 
 #right_button {
@@ -86,12 +156,22 @@ body {
 	font-weight: 900;
 	background: none;
 	border: none;
+	outline: none;
+	position: absolute;
+	top: 0;
+	left: 40px;
+	bottom: 0;
 }
 
 .head_cont {
 	width: 70%;
 }
 
+.slide {
+	transition-duration: 0.5s;
+}
+
+.full-size,
 .slide {
 	transition-duration: 0.5s;
 }
@@ -129,4 +209,10 @@ body {
 #right:hover {
 	right: 0;
 	cursor: pointer;
+}
+
+.title_top {
+	margin-top: 10px;
+	width: 100%;
+	position: relative;
 }

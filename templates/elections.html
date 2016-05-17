@@ -5,14 +5,13 @@
 	<title>SLIDE TEST</title>
 	<link href="/static/css/slide.css" rel="stylesheet">
 	<link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
 </head>
 
 <body>
 	<div id="school_logo">
-		<img id="logo_pic" src="/static/images/logo_sml.png" style="vertical-align: middle" />
-		<h1 style="display: inline">National Public School Indiranagar</h1>
+		<img id="logo_pic" src="/static/images/logo_sml.png" />
+		<h1>National Public School Indiranagar</h1>
 	</div>
 	<div id="left_hover"></div>
 	<div id="left">
@@ -41,6 +40,17 @@
 		xhr.open("GET", url, true);
 		window.onload = xhr.send();
 
+		function start_elections(i) {
+			polls[i].start_elections();
+		}
+
+		function vote_candidate(i, j) {
+			polls[i].vote(j);
+		}
+
+		function undo_vote(i) {
+			polls[i].undo();
+		}
 
 		function createPolls() {
 			data.polls.forEach(function (pollValue, index) {
@@ -60,7 +70,13 @@
 					"subheading": polls[poll].message,
 					"b_col": polls[poll].backColor,
 					"t_col": polls[poll].foreColor
-				})
+				}, polls[poll])
+				elections.newSlide("election", {
+					"heading": polls[poll].office + " Elections",
+					"b_col": polls[poll].backColor,
+					"t_col": polls[poll].foreColor,
+					"poll": polls[poll]
+				}, polls[poll])
 			}
 
 			Id("left").onclick = function () {
@@ -69,19 +85,22 @@
 			Id("right").onclick = function () {
 				elections.nextSlide();
 			}
+
 			document.onkeydown = function (e) {
 				switch (e.keyCode) {
 				case 37: // Left key code
+					e.preventDefault();
 					elections.previousSlide();
 					break;
 				case 39: // Right key code
+					e.preventDefault();
 					elections.nextSlide();
 					break;
 				}
 			};
 
 			setTimeout(function () {
-				center();
+				construct_ui();
 				elections.start()
 			}, 500)
 		}
@@ -96,8 +115,21 @@
 		}
 
 		window.onresize = function () {
-			center();
+			construct_ui()
 		};
+
+		function construct_ui() {
+			center_elem = Cl("center");
+			fill_height_elem = Cl("fill-height");
+			var i;
+			for (i = 0; i < center_elem.length; i++) {
+				center_elem[i].style.marginTop = (window.innerHeight - center_elem[i].offsetHeight) / 2 + "px";
+				center_elem[i].style.marginLeft = (window.innerWidth - center_elem[i].offsetWidth) / 2 + "px";
+			}
+			for (i = 0; i < fill_height_elem.length; i++) {
+				fill_height_elem[i].style.height = (window.innerHeight - fill_height_elem[i].offsetTop) + "px";
+			}
+		}
 	</script>
 </body>
 
