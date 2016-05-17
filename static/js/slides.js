@@ -1,13 +1,13 @@
 function addSlide(type, data) {
     switch (type) {
         case "title":
-            return titleSlide(data.heading, data.subheading, data.b_col, data.t_col);
+            return titleSlide(data.heading, data.subheading, data.b_col, data.t_col,data.poll);
         case "election":
             return electionSlide(data.heading, data.b_col, data.t_col, data.poll)
     }
 }
 
-function titleSlide(heading, subheading, b_col, t_col) {
+function titleSlide(heading, subheading, b_col, t_col,poll) {
     var div, head_cont, h1, h2;
 
     b_col = b_col || "#FFF";
@@ -15,7 +15,9 @@ function titleSlide(heading, subheading, b_col, t_col) {
 
     div = document.createElement("div");
     div.className = "full-size";
+    div.id = poll.id+"title";
     div.style.background = b_col;
+    div.style.color = t_col;
 
     head_cont = document.createElement("div");
     head_cont.className = "head_cont center text-center";
@@ -24,14 +26,12 @@ function titleSlide(heading, subheading, b_col, t_col) {
     h1 = document.createElement("h1");
     h1.className = "title_h1";
     h1.innerHTML = heading;
-    h1.style.color = t_col
     h1.dataset.animate = 1;
 
     // Creating the subheading
     h2 = document.createElement("h2");
     h2.className = "title_h2";
     h2.innerHTML = subheading;
-    h2.style.color = t_col
     h2.dataset.animate = 2;
 
     head_cont.appendChild(h1);
@@ -50,6 +50,8 @@ function electionSlide(heading, b_col, t_col, poll) {
 
     div = document.createElement("div");
     div.className = "full-size";
+    div.id = poll.id+"election";
+    div.style.color = t_col;
     div.style.background = b_col;
 
     head_cont = document.createElement("div");
@@ -59,14 +61,12 @@ function electionSlide(heading, b_col, t_col, poll) {
     h1 = document.createElement("h1");
     h1.className = "title_h1";
     h1.innerHTML = heading;
-    h1.style.color = t_col
     h1.dataset.animate = 1;
 
     // Creating the subheading
     h2 = document.createElement("h2");
     h2.className = "title_h2";
     h2.innerHTML = "Candidates";
-    h2.style.color = t_col
     h2.dataset.animate = 2;
     h2.id = poll.statusId;
 
