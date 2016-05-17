@@ -43,7 +43,7 @@ function titleSlide(heading, subheading, b_col, t_col,poll) {
 }
 
 function electionSlide(heading, b_col, t_col, poll) {
-    var div, head_cont, h1, h2, row_1, row_2, cand_width, c_name, c_image,start_button,end_button,undo_button;
+    var div, head_cont, h1, h2, row_1, row_2, cand_width, c_name, c_image,start_button,end_button,undo_button,result_button;
 
     b_col = b_col || "#FFF";
     t_col = t_col || "#000";
@@ -76,7 +76,7 @@ function electionSlide(heading, b_col, t_col, poll) {
 
 		start_button = document.createElement("button");
 		start_button.type = "button";
-		start_button.className = "btn btn-success btn-lg start_btn";
+		start_button.className = "btn btn-primary btn-lg start_btn";
 		start_button.id = poll.startId;
 		start_button.dataset.number = poll.number;
 		start_button.innerHTML = "Start Elections";
@@ -94,6 +94,13 @@ function electionSlide(heading, b_col, t_col, poll) {
 		undo_button.id = poll.undoId;
 		undo_button.dataset.number = poll.number;
 		undo_button.innerHTML = "Undo Vote";
+		
+		result_button = document.createElement("button");
+		result_button.type = "button";
+		result_button.className = "btn btn-success btn-lg result_btn";
+		result_button.id = poll.resultId;
+		result_button.dataset.number = poll.number;
+		result_button.innerHTML = "Declare Results!";
 		
     if (poll.candidates.length <= 3) {
         cand_width = (Math.floor(100 / poll.candidates.length) - 1) + "%";
@@ -184,6 +191,7 @@ function electionSlide(heading, b_col, t_col, poll) {
     head_cont.appendChild(start_button);
     head_cont.appendChild(undo_button);
     head_cont.appendChild(end_button);
+    head_cont.appendChild(result_button);
 
     div.appendChild(head_cont);
     div.appendChild(candidate_cont);

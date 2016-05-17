@@ -51,6 +51,9 @@
 				function undo_vote(i) {
 					polls[i].undo();
 				}
+				function decl_result(i) {
+					console.log(polls[i].evaluateWinner());
+				}
 				
         function createPolls() {
             data.polls.forEach(function(pollValue, index) {

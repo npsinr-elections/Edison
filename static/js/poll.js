@@ -75,6 +75,7 @@ function Poll(number, office, foreColor, backColor, message) {
 	this.undoId = this.id + "undo";
 	this.endId = this.id + "end";
 	this.statusId = this.id + "status";
+	this.resultId = this.id + "result";
 	this.cand_class = this.id + "candidates";
 	
 	this.getTotalVotes = function () {
@@ -88,6 +89,7 @@ function Poll(number, office, foreColor, backColor, message) {
 		};
 		Id(this.undoId).style.display = "none";
 		Id(this.endId).style.display = "none";
+		Id(this.resultId).style.display = "none";
 	};
 	
 	this.start_elections = function () {
@@ -122,6 +124,10 @@ function Poll(number, office, foreColor, backColor, message) {
 		Id(this.endId).style.display = "none";
 		Id(this.undoId).style.display = "none";
 		
+		Id(this.resultId).style.display = "inline-block";
+		Id(this.resultId).onclick = function () {
+			decl_result(this.dataset.number);
+		}
 		var candidate_ui = Cl(this.cand_class);
 		for (var i=0;i<candidate_ui.length;i++) {
 			candidate_ui[i].id = "";
@@ -129,7 +135,6 @@ function Poll(number, office, foreColor, backColor, message) {
 			}
 		}
 		
-		this.declareWinner();
 	}
 	
 	this.update_status = function () {
