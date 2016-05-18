@@ -17,6 +17,7 @@ body {
 
 #logo_pic {
 	vertical-align: middle;
+	float:left;
 }
 
 #left {
