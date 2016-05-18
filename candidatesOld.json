@@ -1,42 +1,43 @@
 {
 	"polls": [{
 		"foreColor": "#FFFFFF",
+		"backColor": "#404040",
 		"candidates": [{
-			"image": "",
+			"image": "/candidateimages/SupermanRoss.png",
 			"votes": "",
 			"name": "Superman"
 		}, {
-			"image": "",
+			"image": "/candidateimages/main.jpg",
 			"votes": "",
 			"name": "Batman"
 		}, {
-			"image": "",
+			"image": "/candidateimages/53710b14a320b.png",
 			"votes": "",
 			"name": "Spider-man"
 		}],
-		"message": "'Before you are a leader, success is all about growing yourself. When you become a leader, success is all about growing others.'",
-		"name": "Prefect",
-		"backColor": "#404040"
+		"message": "Reach Out, Reach High, Reach Beyond",
+		"name": "Prefect"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#404040",
 		"candidates": [{
-			"image": "",
+			"image": "/candidateimages/thor.jpg",
 			"votes": "",
 			"name": "Thor"
 		}, {
-			"image": "",
+			"image": "/candidateimages/Hal_Jordan-9.jpg",
 			"votes": "",
 			"name": "Hal Jordan"
 		}, {
-			"image": "",
+			"image": "/candidateimages/Steven_Rogers_Earth-1610.png",
 			"votes": "",
 			"name": "Captain America"
 		}],
-		"message": "Leadership is the art of getting someone else to do something you want done because he wants to do it.",
-		"name": "Boy Vice Prefect",
-		"backColor": "#404040"
+		"message": "Reach Out, Reach High, Reach Beyond",
+		"name": "Boy Vice Prefect"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#404040",
 		"candidates": [{
 			"image": "",
 			"votes": "",
@@ -50,11 +51,11 @@
 			"votes": "",
 			"name": "Supergirl"
 		}],
-		"message": "",
-		"name": "Girl Vice Prefect",
-		"backColor": "#404040"
+		"message": "Reach Out, Reach High, Reach Beyond",
+		"name": "Girl Vice Prefect"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#6D0019",
 		"candidates": [{
 			"image": "",
 			"votes": "",
@@ -68,11 +69,11 @@
 			"votes": "",
 			"name": "Thing"
 		}],
-		"message": "'To strive, to seek, to find, but not to yield'",
-		"name": "Challengers Captain",
-		"backColor": "#6D0019"
+		"message": "To strive, to seek, to find, but not to yield",
+		"name": "Challengers Captain"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#6D0019",
 		"candidates": [{
 			"image": "",
 			"votes": "",
@@ -86,11 +87,11 @@
 			"votes": "",
 			"name": "Wally West"
 		}],
-		"message": "'To strive, to seek, to find, but not to yield'",
-		"name": "Challengers Vice Captain",
-		"backColor": "#6D0019"
+		"message": "To strive, to seek, to find, but not to yield",
+		"name": "Challengers Vice Captain"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#4B0082",
 		"candidates": [{
 			"image": "",
 			"votes": "",
@@ -104,11 +105,11 @@
 			"votes": "",
 			"name": "Leonardo"
 		}],
-		"message": "'Endeavour to reach beyond'",
-		"name": "Explorers Captain",
-		"backColor": "#4B0082"
+		"message": "Endeavour to reach beyond",
+		"name": "Explorers Captain"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#4B0082",
 		"candidates": [{
 			"image": "",
 			"votes": "",
@@ -122,11 +123,11 @@
 			"votes": "",
 			"name": "Michelangelo"
 		}],
-		"message": "'Endeavour to reach beyond'",
-		"name": "Explorers Vice Captain",
-		"backColor": "#4B0082"
+		"message": "Endeavour to reach beyond",
+		"name": "Explorers Vice Captain"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#FF8833",
 		"candidates": [{
 			"image": "",
 			"votes": "",
@@ -140,11 +141,11 @@
 			"votes": "",
 			"name": "Green Arrow"
 		}],
-		"message": "'The spark that always glows; the light that always shows'",
-		"name": "Pioneers Captain",
-		"backColor": "#FF8833"
+		"message": "The spark that always glows; the light that always shows",
+		"name": "Pioneers Captain"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#FF8833",
 		"candidates": [{
 			"image": "",
 			"votes": "",
@@ -158,11 +159,11 @@
 			"votes": "",
 			"name": "Hercules"
 		}],
-		"message": "'The spark that always glows; the light that always shows'",
-		"name": "Pioneers Vice Captain",
-		"backColor": "#FF8833"
+		"message": "The spark that always glows; the light that always shows",
+		"name": "Pioneers Vice Captain"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#80CEFF",
 		"candidates": [{
 			"image": "",
 			"votes": "",
@@ -176,11 +177,11 @@
 			"votes": "",
 			"name": "Orion"
 		}],
-		"message": "'Vigour, Valour, Victory'",
-		"name": "Voyagers Captain",
-		"backColor": "#80CEFF"
+		"message": "Vigour, Valour, Victory",
+		"name": "Voyagers Captain"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#80CEFF",
 		"candidates": [{
 			"image": "",
 			"votes": "",
@@ -194,8 +195,7 @@
 			"votes": "",
 			"name": "Billy Batson"
 		}],
-		"message": "'Vigour, Valour, Victory'",
-		"name": "Voyagers Vice Captain",
-		"backColor": "#80CEFF"
+		"message": "Vigour, Valour, Victory",
+		"name": "Voyagers Vice Captain"
 	}]
 }

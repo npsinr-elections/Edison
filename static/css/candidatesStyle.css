@@ -23,11 +23,11 @@ button.backgroundTextBox {
 button.backgroundTextBox {
 	color: #FFFFFF;
 	background-color: rgba(0, 0, 0, 0.7);
-	-o-transition: all 1s;
-	-ms-transition: all 1s;
-	-moz-transition: all 1s;
-	-webkit-transition: all 1s;
-	transition: all 1s;
+	-o-transition: all 0.5s;
+	-ms-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	transition: all 0.5s;
 }
 
 img.candidateImg {
@@ -36,10 +36,6 @@ img.candidateImg {
 
 div.imageBox:hover > button.backgroundTextBox {
 	opacity: 1;
-}
-
-div.panel-body {
-	text-align: right;
 }
 
 div.panel-heading {
@@ -61,11 +57,11 @@ div.candidateContainerElement:last-of-type>input.textBox {
 	margin: initial;
 }
 
+button.addNewCandidateButton,
 button.deleteCandidateButton,
-button.deletePollButton {
-	position: absolute;
-	right: 0px;
-	top: 0px;
+button.deletePollButton,
+button.addNewPollButton {
+	float: right;
 	font-size: 40px;
 	background: transparent;
 	margin: 0px;
@@ -75,16 +71,22 @@ button.deletePollButton {
 }
 
 button.deletePollButton {
-	margin-right: 15px;
+	margin-top: -10px;
+	padding-left: 10px;
 }
 
 button.deleteCandidateButton {
 	margin-top: -10px;
 }
 
-button.deleteCandidateButton:hover,
-button.deletePollButton:hover {
+button.addNewPollButton:hover,
+button.addNewCandidateButton:hover,
+button.deleteCandidateButton:hover {
 	color: #999999;
+}
+
+button.deletePollButton:hover {
+	opacity: 0.7;
 }
 
 input.textBox {
@@ -92,32 +94,20 @@ input.textBox {
 	padding: 10px 5px;
 	border: 1px solid transparent;
 	border-bottom: 1px solid #B3B3B3;
-	-o-transition: border 1s;
-	-ms-transition: border 1s;
-	-moz-transition: border 1s;
-	-webkit-transition: border 1s;
-	transition: border 1s;
+	-o-transition: border 0.5s;
+	-ms-transition: border 0.5s;
+	-moz-transition: border 0.5s;
+	-webkit-transition: border 0.5s;
+	transition: border 0.5s;
 	margin-bottom: 15px;
 }
 
 input.textBox:hover,
 input.textBox:focus {
-	border: 1px solid #B3B3B3 !important;
+	border: 1px solid #B3B3B3;
 }
 
-button.addNewCandidateButton {
-	font-size: 40px;
-	background: transparent;
-	margin: none;
-	padding: none;
-	border: none;
-	color: #B3B3B3;
-}
-
-button.addNewCandidateButton:hover {
-	color: #999999;
-}
-
+button.addNewPollButton:disabled,
 button.addNewCandidateButton:disabled {
 	color: #CCCCCC;
 	cursor: not-allowed;
@@ -136,20 +126,50 @@ p.officeErrorBox {
 	text-align: left;
 }
 
-input.officeTextBox {
+input.officeTextBox,
+input.messageBox {
 	width: 100%;
 	padding: 10px 5px;
 	background-color: transparent;
 	border: 1px solid transparent;
-	border-bottom: 1px solid #B3B3B3;
-	-o-transition: border 1s;
-	-ms-transition: border 1s;
-	-moz-transition: border 1s;
-	-webkit-transition: border 1s;
-	transition: border 1s;
+	transition: border 0.5s;
 }
 
-input.officeTextBox:focus,
-input.officeTextBox:hover {
-	border: 1px solid #B3B3B3;
+div.textBoxContainer {
+	overflow: hidden;
+}
+
+div.foreColorDiv,
+div.backColorDiv {
+	display: inline-block;
+	width: 40%;
+	position: relative;
+}
+
+input.foreColorInput,
+button.foreColorInputButton,
+input.backColorInput,
+button.backColorInputButton {
+	width: 100%;
+	height: 40px;
+}
+
+input.foreColorInput,
+input.backColorInput {
+	position: absolute;
+	z-index: 1;
+	opacity: 0;
+	cursor: pointer;
+}
+
+button.foreColorInputButton,
+button.backColorInputButton {
+	position: absolute;
+	z-index: 0;
+	border-radius: 5px;
+	border: none;
+}
+
+button.backColorInputButton {
+	margin-left: 10px;
 }
