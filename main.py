@@ -18,7 +18,7 @@ def home():
 			error_paths.append(paths)
 	print '---------------------------'
 	if len(error_paths) != 0:
-		print 'SOME FILES DO NOT EXIST OR WEREN'T FOUND:'
+		print 'SOME FILES DO NOT EXIST OR WEREN\'T FOUND:'
 		for paths in error_paths:
 			print paths
 	else:
@@ -59,6 +59,10 @@ def candidate():
 @app.get('/elections')
 def elections():
 	return open('templates/elections.html').read()
+
+@app.get('/elections2')
+def elections2():
+	return open('templates/elections2.html').read()
 
 @app.post('/uploadimage')
 def uploadimage():
