@@ -285,7 +285,7 @@ function Poll(givenIndex, givenDumpId, givenValue) {
 				'value': {
 					'name': '',
 					'image': '',
-					'votes': ''
+					'votes': 0
 				}
 			});
 		}
