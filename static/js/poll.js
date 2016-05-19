@@ -84,7 +84,7 @@ function Poll(number, office, foreColor, backColor, message) {
 
 	this.ready_ui = function () {
 		document.getElementById(this.startId).onclick = function () {
-			this.start_elections(this.dataset.number);
+			start_elections(this.dataset.number);
 		};
 		Id(this.undoId).style.display = "none";
 		Id(this.endId).style.display = "none";

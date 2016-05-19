@@ -23,8 +23,9 @@
     <script>
         // ------------------------------------------------------------------------------------------------------------------
         // POLL CREATION
-        var data, polls;
+        var data, polls,slide_map;
         polls = [];
+        slide_map = {};
         xhr = new XMLHttpRequest();
         var url = "/getcandidates";
         xhr.onreadystatechange = function() {
@@ -81,6 +82,8 @@
                     "t_col": polls[poll].foreColor,
                     "poll": polls[poll]
                 },polls[poll])
+                
+                slide_map[poll*2] = slide_map[(poll*2)+1] = polls[poll];
             }
 
             Id("left").onclick = function() {
