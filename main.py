@@ -9,7 +9,7 @@ app = Bottle()
 @app.route('/')
 def home():
 	error_paths = []
-	file_paths = ['templates','templates/index.html','templates/candidates.html','templates/poll.html','static','static/js','static/css','static/css/bootstrap.min.css','static/css/jumbotron-narrow.css','static/css/pollStyle.css','static/js/bootstrap.min.js','static/js/poll.js','candidatesOld.json','candidateimages','candidateimages/default.gif']
+	file_paths = ['templates','templates/index.html','templates/candidates.html','templates/poll.html','static','static/js','static/css','static/css/bootstrap.min.css','static/css/jumbotron-narrow.css','static/css/pollStyle.css','static/js/bootstrap.min.js','static/js/poll.js','candidates.json','candidateimages','candidateimages/default.gif']
 	for paths in file_paths:
 		if os.path.exists(paths):
 			print paths + ' .................OK'
