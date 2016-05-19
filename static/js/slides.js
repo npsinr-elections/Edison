@@ -26,13 +26,11 @@ function titleSlide(heading, subheading, b_col, t_col,poll) {
     h1 = document.createElement("h1");
     h1.className = "title_h1";
     h1.innerHTML = heading;
-    h1.dataset.animate = 1;
 
     // Creating the subheading
     h2 = document.createElement("h2");
     h2.className = "title_h2";
     h2.innerHTML = subheading;
-    h2.dataset.animate = 2;
 
     head_cont.appendChild(h1);
     head_cont.appendChild(h2);
@@ -61,13 +59,11 @@ function electionSlide(heading, b_col, t_col, poll) {
     h1 = document.createElement("h1");
     h1.className = "title_h1";
     h1.innerHTML = heading;
-    h1.dataset.animate = 1;
 
     // Creating the subheading
     h2 = document.createElement("h2");
     h2.className = "title_h2";
     h2.innerHTML = "Candidates";
-    h2.dataset.animate = 2;
     h2.id = poll.statusId;
 
     candidate_cont = document.createElement("div");
@@ -78,29 +74,40 @@ function electionSlide(heading, b_col, t_col, poll) {
 		start_button.type = "button";
 		start_button.className = "btn btn-primary btn-lg start_btn";
 		start_button.id = poll.startId;
-		start_button.dataset.number = poll.number;
 		start_button.innerHTML = "Start Elections";
+		start_button.onclick = function () {
+			slide_map[elections.currentSlide-1].start_elections();
+		}
 		
 		end_button = document.createElement("button");
 		end_button.type = "button";
 		end_button.className = "btn btn-danger btn-lg end_btn";
 		end_button.id = poll.endId;
-		end_button.dataset.number = poll.number;
-		end_button.innerHTML = "End Elections";
+		end_button.innerHTML = "End Elections"
+		end_button.style.display = "none";
+		end_button.onclick = function () {
+			slide_map[elections.currentSlide-1].end_elections();
+		}
 		
 		undo_button = document.createElement("button");
 		undo_button.type = "button";
 		undo_button.className = "btn btn-warning btn-lg undo_btn disabled";
 		undo_button.id = poll.undoId;
-		undo_button.dataset.number = poll.number;
 		undo_button.innerHTML = "Undo Vote";
+		undo_button.style.display = "none";
+		undo_button.onclick = function () {
+			slide_map[elections.currentSlide-1].undo();
+		}
 		
 		result_button = document.createElement("button");
 		result_button.type = "button";
 		result_button.className = "btn btn-success btn-lg result_btn";
 		result_button.id = poll.resultId;
-		result_button.dataset.number = poll.number;
 		result_button.innerHTML = "Declare Results!";
+		result_button.style.display = "none";
+		result_button.onclick = function () {
+			slide_map[elections.currentSlide-1].declareWinner();
+		}
 		
     if (poll.candidates.length <= 3) {
         cand_width = (Math.floor(100 / poll.candidates.length) - 1) + "%";
@@ -111,8 +118,6 @@ function electionSlide(heading, b_col, t_col, poll) {
             candidate_obj.style.width = cand_width;
             candidate_obj.style.height = "80%";
             candidate_obj.style.marginLeft = "1%";
-            candidate_obj.dataset.number = poll.number;
-            candidate_obj.dataset.candNumber = candidate;
 
             c_name = document.createElement("div");
             c_name.className = "cand-name";
@@ -204,13 +209,15 @@ function Presentation() {
     this.currentAddSlide = 1;
     this.currentSlide = 0;
     this.viewport = Id("viewport");
+    this.slide_types = [];
     this.newSlide = function(type, data, poll) {
         var n_slide, slide_cont;
-
+        
+				this.slide_types.push(type);
+				
         slide_cont = document.createElement("div");
         slide_cont.id = "slide" + this.currentAddSlide;
         slide_cont.className = "slide";
-        slide_cont.dataset.type = type;
         slide_cont.style.left = "100%";
 
         slide = addSlide(type, data);
@@ -218,8 +225,6 @@ function Presentation() {
         slide_cont.appendChild(slide);
 
         this.viewport.appendChild(slide_cont);
-
-				if (type == "election") {poll.ready_ui();};
         this.currentAddSlide++;
     }
     this.start = function() {
@@ -252,7 +257,7 @@ function Presentation() {
     }
     
     this.hideShowlogo = function() {
-    	if (this.slides[this.currentSlide-1].dataset.type == "election") {
+    	if (this.slide_types[this.currentSlide-1] == "election") {
     		Id("school_logo").style.opacity = "0";
     	} else {
     		Id("school_logo").style.opacity = "1";

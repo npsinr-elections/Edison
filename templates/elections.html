@@ -26,6 +26,7 @@
         var data, polls,slide_map;
         polls = [];
         slide_map = {};
+        var elections = new Presentation();
         xhr = new XMLHttpRequest();
         var url = "/getcandidates";
         xhr.onreadystatechange = function() {
@@ -37,24 +38,6 @@
         xhr.open("GET", url, true);
         window.onload = xhr.send();
 
-				function start_elections(i) {
-					polls[i].start_elections();
-				}
-				
-				function end_elections(i) {
-					polls[i].end_elections();
-				}
-				
-				function vote_candidate(i,j) {
-					polls[i].vote(j);
-				}
-				
-				function undo_vote(i) {
-					polls[i].undo();
-				}
-				function decl_result(i) {
-					console.log(polls[i].evaluateWinner());
-				}
 				
         function createPolls() {
             data.polls.forEach(function(pollValue, index) {
@@ -65,9 +48,15 @@
             });
             createPresentation();
         };
+        function childIndex(child) {
+        	var i = 0;
+						while( (child = child.previousSibling) != null ) {
+  						i++;
+						}
+						return i;
+        }
         // ------------------------------------------------------------------------------------------------------------------
         function createPresentation() {
-            var elections = new Presentation();
             for (poll in polls) {
                 elections.newSlide("title", {
                     "heading": polls[poll].office + " Elections",

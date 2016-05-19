@@ -117,7 +117,7 @@ body {
 
 .start_btn {}
 
-.candidate {
+.candidate{
 	position: relative;
 	overflow: hidden;
 	float: left;

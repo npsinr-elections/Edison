@@ -82,14 +82,6 @@ function Poll(number, office, foreColor, backColor, message) {
 		return this.votes.length;
 	};
 
-	this.ready_ui = function () {
-		document.getElementById(this.startId).onclick = function () {
-			start_elections(this.dataset.number);
-		};
-		Id(this.undoId).style.display = "none";
-		Id(this.endId).style.display = "none";
-		Id(this.resultId).style.display = "none";
-	};
 
 	this.start_elections = function () {
 		document.getElementById(this.statusId).innerHTML = "Elections have begun!";
@@ -97,23 +89,16 @@ function Poll(number, office, foreColor, backColor, message) {
 		document.getElementById(this.startId).style.display = "none";
 
 		document.getElementById(this.undoId).style.display = "inline-block";
-		document.getElementById(this.undoId).onclick = function () {
-			undo_vote(this.dataset.number);
-		};
+
 
 		document.getElementById(this.endId).style.display = "inline-block";
-		document.getElementById(this.endId).onclick = function () {
-			if (confirm("This action will end the elections for this office. Are you sure?")) {
-				end_elections(this.dataset.number);
-			}
-		};
 
 
 		for (var i = 0; i < candidate_ui.length; i++) {
 			candidate_ui[i].id = "candidate_anim";
-			candidate_ui[i].addEventListener('click', function () {
-				vote_candidate(this.dataset.number, this.dataset.candNumber);
-			});
+			candidate_ui[i].onclick = function () {
+            	slide_map[elections.currentSlide-1].vote(childIndex(this));
+            }
 		}
 	};
 
@@ -124,9 +109,7 @@ function Poll(number, office, foreColor, backColor, message) {
 		Id(this.undoId).style.display = "none";
 
 		Id(this.resultId).style.display = "inline-block";
-		Id(this.resultId).onclick = function () {
-			decl_result(this.dataset.number);
-		}
+
 		var candidate_ui = Cl(this.cand_class);
 		for (var i = 0; i < candidate_ui.length; i++) {
 			candidate_ui[i].id = "";
