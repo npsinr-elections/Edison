@@ -1,7 +1,7 @@
 /*jslint browser: true*/
 /*globals FormData*/
 
-function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue, s) {
+function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue) {
 	'use strict';
 
 	var value = givenValue,
