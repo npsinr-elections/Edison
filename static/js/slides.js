@@ -1,3 +1,4 @@
+/*jshint maxerr: 10000 */
 function addSlide(type, data) {
     switch (type) {
         case "title":

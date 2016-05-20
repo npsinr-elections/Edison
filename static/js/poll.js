@@ -89,7 +89,7 @@ function Poll(number, office, foreColor, backColor, message) {
 		
 		document.getElementByid(this.statusId).innerHTML = "Elections have begun!";
 		var candidate_ui = document.getElementsByClassName(this.cand_class);
-
+/* jshint loopfunc:true */
 		for (var i = 0; i < candidate_ui.length; i++) {
 			candidate_ui[i].id = "candidate_anim";
 			candidate_ui[i].onclick = function () {
