@@ -41,7 +41,7 @@ function titleSlide(heading, subheading, b_col, t_col,poll) {
 }
 
 function electionSlide(heading, b_col, t_col, poll) {
-    var div, head_cont, h1, h2, row_1, row_2, cand_width, c_name, c_image,start_button,end_button,undo_button,result_button;
+    var div, head_cont, h1, h2, row_1, row_2, cand_width, c_name, c_image;
 
     b_col = b_col || "#FFF";
     t_col = t_col || "#000";
@@ -68,47 +68,7 @@ function electionSlide(heading, b_col, t_col, poll) {
 
     candidate_cont = document.createElement("div");
     candidate_cont.className = "candidates fill-height";
-// <button type="button" class="btn btn-primary btn-lg">Large button</button>
 
-		start_button = document.createElement("button");
-		start_button.type = "button";
-		start_button.className = "btn btn-primary btn-lg start_btn";
-		start_button.id = poll.startId;
-		start_button.innerHTML = "Start Elections";
-		start_button.onclick = function () {
-			slide_map[elections.currentSlide-1].start_elections();
-		}
-		
-		end_button = document.createElement("button");
-		end_button.type = "button";
-		end_button.className = "btn btn-danger btn-lg end_btn";
-		end_button.id = poll.endId;
-		end_button.innerHTML = "End Elections"
-		end_button.style.display = "none";
-		end_button.onclick = function () {
-			slide_map[elections.currentSlide-1].end_elections();
-		}
-		
-		undo_button = document.createElement("button");
-		undo_button.type = "button";
-		undo_button.className = "btn btn-warning btn-lg undo_btn disabled";
-		undo_button.id = poll.undoId;
-		undo_button.innerHTML = "Undo Vote";
-		undo_button.style.display = "none";
-		undo_button.onclick = function () {
-			slide_map[elections.currentSlide-1].undo();
-		}
-		
-		result_button = document.createElement("button");
-		result_button.type = "button";
-		result_button.className = "btn btn-success btn-lg result_btn";
-		result_button.id = poll.resultId;
-		result_button.innerHTML = "Declare Results!";
-		result_button.style.display = "none";
-		result_button.onclick = function () {
-			slide_map[elections.currentSlide-1].declareWinner();
-		}
-		
     if (poll.candidates.length <= 3) {
         cand_width = (Math.floor(100 / poll.candidates.length) - 1) + "%";
 
@@ -193,10 +153,6 @@ function electionSlide(heading, b_col, t_col, poll) {
 
     head_cont.appendChild(h1);
     head_cont.appendChild(h2);
-    head_cont.appendChild(start_button);
-    head_cont.appendChild(undo_button);
-    head_cont.appendChild(end_button);
-    head_cont.appendChild(result_button);
 
     div.appendChild(head_cont);
     div.appendChild(candidate_cont);
@@ -244,6 +200,7 @@ function Presentation() {
         	this.currentSlide ++;
         }
         this.hideShowlogo();
+        this.navBtnUpdate();
     }
 
     this.previousSlide = function() {
@@ -254,6 +211,18 @@ function Presentation() {
       		this.currentSlide --
       	}
        this.hideShowlogo();
+       this.navBtnUpdate();
+    }
+    
+    this.navBtnUpdate = function () {
+    if (this.slide_types[this.currentSlide-1] == "election") {
+    	slide_map[this.currentSlide-1].navBtnUpdate();
+    } else {
+    	Id("start").style.display = "none";
+    	Id("end").style.display = "none";
+    	Id("undo").style.display = "none";
+    	Id("decl").style.display = "none";
+    }
     }
     
     this.hideShowlogo = function() {

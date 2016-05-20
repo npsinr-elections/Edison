@@ -9,6 +9,14 @@
 </head>
 
 <body>
+	<div id="top_hover"></div>
+	<div id="topnav">
+			<span id = "apptitle">Edison</span>
+			<button type="button" id = "start" class="btn btn-success btn-lg">Start Elections</button>
+			<button type="button" id = "undo" class="btn btn-warning btn-lg">Undo Vote</button>
+			<button type="button" id = "end" class="btn btn-danger btn-lg">End Elections</button>
+			<button type="button" id = "decl" class="btn btn-success btn-lg">Declare Results</button>
+	</div>
     <div id="school_logo">
         <img id="logo_pic" src="/static/images/logo_sml.png" />
         <h1>National Public School Indiranagar</h1>
@@ -80,6 +88,18 @@
             }
             Id("right").onclick = function() {
                 elections.nextSlide();
+            }
+            Id("start").onclick = function() {
+            	slide_map[elections.currentSlide-1].start_elections();
+            }
+            Id("end").onclick = function() {
+            	slide_map[elections.currentSlide-1].end_elections();
+            }
+            Id("undo").onclick = function() {
+            	slide_map[elections.currentSlide-1].undo();
+            }
+            Id("decl").onclick = function () {
+            	slide_map[elections.currentSlide-1].declareWinner();
             }
 
             document.onkeydown = function(e) {

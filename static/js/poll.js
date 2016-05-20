@@ -63,6 +63,11 @@ function Poll(number, office, foreColor, backColor, message) {
 	this.backColor = backColor;
 
 	this.message = message;
+	
+	this.started = false;
+	this.ended = false;
+	
+	this.undo = false;
 
 	this.candidates = []; //reset
 	this.totalVotes = 0;
@@ -71,11 +76,7 @@ function Poll(number, office, foreColor, backColor, message) {
 
 	this.id = this.office.replace(/\s/g, "");
 
-	this.startId = this.id + "start";
-	this.undoId = this.id + "undo";
-	this.endId = this.id + "end";
 	this.statusId = this.id + "status";
-	this.resultId = this.id + "result";
 	this.cand_class = this.id + "candidates";
 
 	this.getTotalVotes = function () {
@@ -84,15 +85,10 @@ function Poll(number, office, foreColor, backColor, message) {
 
 
 	this.start_elections = function () {
+		this.started = true;
+		
 		document.getElementById(this.statusId).innerHTML = "Elections have begun!";
 		var candidate_ui = document.getElementsByClassName(this.cand_class);
-		document.getElementById(this.startId).style.display = "none";
-
-		document.getElementById(this.undoId).style.display = "inline-block";
-
-
-		document.getElementById(this.endId).style.display = "inline-block";
-
 
 		for (var i = 0; i < candidate_ui.length; i++) {
 			candidate_ui[i].id = "candidate_anim";
@@ -100,20 +96,48 @@ function Poll(number, office, foreColor, backColor, message) {
             	slide_map[elections.currentSlide-1].vote(childIndex(this));
             }
 		}
+		this.navBtnUpdate();
 	};
 
 	this.end_elections = function () {
+		this.ended = true;
+		
 		Id(this.statusId).innerHTML = "Elections have ended!";
-
-		Id(this.endId).style.display = "none";
-		Id(this.undoId).style.display = "none";
-
-		Id(this.resultId).style.display = "inline-block";
 
 		var candidate_ui = Cl(this.cand_class);
 		for (var i = 0; i < candidate_ui.length; i++) {
 			candidate_ui[i].id = "";
 			candidate_ui[i].onclick = function () {};
+		}
+		this.navBtnUpdate();
+	}
+	
+	this.navBtnUpdate = function () {
+		if (this.started == true) {
+    		Id("start").style.display = "none";
+    		if (this.ended == true) {
+    			Id("end").style.display = "none";
+    			Id("decl").style.display = "inline-block";
+    			Id("undo").style.display = "none";
+    		} else {
+    			Id("end").style.display = "inline-block";
+    			Id("decl").style.display = "none";
+    			Id("undo").style.display = "inline-block";
+    			this.undoBtnUpdate();
+    		}
+    	} else {
+    		Id("start").style.display = "inline-block";
+    		Id("end").style.display = "none";
+    		Id("decl").style.display = "none";
+    		Id("undo").style.display = "none";
+    	}
+	}
+	
+	this.undoBtnUpdate = function () {
+		if (this.votes.length == 0) {
+			Id("undo").className = "btn btn-warning btn-lg undo_btn disabled";
+		} else if (this.votes.length == 1) {
+			Id("undo").className = "btn btn-warning btn-lg undo_btn";
 		}
 	}
 
@@ -136,9 +160,7 @@ function Poll(number, office, foreColor, backColor, message) {
 		this.evaluateWinner();
 		this.votes.push(i);
 		console.log("Voted for " + this.candidates[i].name + " in " + this.office + " office");
-		if (this.votes.length == 1) {
-			document.getElementById(this.undoId).className = "btn btn-warning btn-lg undo_btn";
-		}
+		this.undoBtnUpdate();
 		this.update_status();
 	};
 
@@ -149,9 +171,7 @@ function Poll(number, office, foreColor, backColor, message) {
 
 	this.undo = function () {
 		this.unvote(this.votes[this.votes.length - 1]);
-		if (this.votes.length === 0) {
-			document.getElementById(this.undoId).className = "btn btn-warning btn-lg undo_btn disabled";
-		}
+		this.undoBtnUpdate();
 		this.update_status();
 	};
 
