@@ -1,201 +1,201 @@
 {
 	"polls": [{
 		"foreColor": "#FFFFFF",
+		"backColor": "#404040",
 		"candidates": [{
 			"image": "/candidateimages/SupermanRoss.png",
-			"votes": 0,
+			"votes": "",
 			"name": "Superman"
 		}, {
 			"image": "/candidateimages/main.jpg",
-			"votes": 0,
+			"votes": "",
 			"name": "Batman"
 		}, {
 			"image": "/candidateimages/53710b14a320b.png",
-			"votes": 0,
+			"votes": "",
 			"name": "Spider-man"
 		}],
 		"message": "Reach Out, Reach High, Reach Beyond",
-		"name": "Prefect",
-		"backColor": "#404040"
+		"name": "Prefect"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#404040",
 		"candidates": [{
 			"image": "/candidateimages/thor.jpg",
-			"votes": 0,
+			"votes": "",
 			"name": "Thor"
 		}, {
 			"image": "/candidateimages/Hal_Jordan-9.jpg",
-			"votes": 0,
+			"votes": "",
 			"name": "Hal Jordan"
 		}, {
 			"image": "/candidateimages/Steven_Rogers_Earth-1610.png",
-			"votes": 0,
+			"votes": "",
 			"name": "Captain America"
 		}],
 		"message": "Reach Out, Reach High, Reach Beyond",
-		"name": "Boy Vice Prefect",
-		"backColor": "#404040"
+		"name": "Boy Vice Prefect"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#404040",
 		"candidates": [{
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Wonder Woman"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Invisible Woman"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Supergirl"
 		}],
 		"message": "Reach Out, Reach High, Reach Beyond",
-		"name": "Girl Vice Prefect",
-		"backColor": "#404040"
+		"name": "Girl Vice Prefect"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#6D0019",
 		"candidates": [{
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Martian Manhunter"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Dick Grayson"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Thing"
 		}],
 		"message": "To strive, to seek, to find, but not to yield",
-		"name": "Challengers Captain",
-		"backColor": "#6D0019"
+		"name": "Challengers Captain"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#6D0019",
 		"candidates": [{
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Human Torch"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Mr. Fantastic"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Wally West"
 		}],
 		"message": "To strive, to seek, to find, but not to yield",
-		"name": "Challengers Vice Captain",
-		"backColor": "#6D0019"
+		"name": "Challengers Vice Captain"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#4B0082",
 		"candidates": [{
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Kyle Rayner"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Superboy"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Leonardo"
 		}],
 		"message": "Endeavour to reach beyond",
-		"name": "Explorers Captain",
-		"backColor": "#4B0082"
+		"name": "Explorers Captain"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#4B0082",
 		"candidates": [{
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Raphael"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Donatello"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Michelangelo"
 		}],
 		"message": "Endeavour to reach beyond",
-		"name": "Explorers Vice Captain",
-		"backColor": "#4B0082"
+		"name": "Explorers Vice Captain"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#FF8833",
 		"candidates": [{
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Silver Surfer"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Aquaman"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Green Arrow"
 		}],
 		"message": "The spark that always glows; the light that always shows",
-		"name": "Pioneers Captain",
-		"backColor": "#FF8833"
+		"name": "Pioneers Captain"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#FF8833",
 		"candidates": [{
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Tim Drake"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Iron Man"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Hercules"
 		}],
 		"message": "The spark that always glows; the light that always shows",
-		"name": "Pioneers Vice Captain",
-		"backColor": "#FF8833"
+		"name": "Pioneers Vice Captain"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#80CEFF",
 		"candidates": [{
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Hercules"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Daredevil"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Orion"
 		}],
 		"message": "Vigour, Valour, Victory",
-		"name": "Voyagers Captain",
-		"backColor": "#80CEFF"
+		"name": "Voyagers Captain"
 	}, {
 		"foreColor": "#FFFFFF",
+		"backColor": "#80CEFF",
 		"candidates": [{
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Black Panther"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Wolverine"
 		}, {
 			"image": "",
-			"votes": 0,
+			"votes": "",
 			"name": "Billy Batson"
 		}],
 		"message": "Vigour, Valour, Victory",
-		"name": "Voyagers Vice Captain",
-		"backColor": "#80CEFF"
+		"name": "Voyagers Vice Captain"
 	}]
 }

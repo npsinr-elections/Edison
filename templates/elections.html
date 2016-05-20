@@ -19,139 +19,149 @@
 </head>
 
 <body>
-	<div id="school_logo">
-		<img id="logo_pic" src="/static/images/logo_sml.png" />
-		<h1>National Public School Indiranagar</h1>
+	<div id="top_hover"></div>
+	<div id="topnav">
+			<span id = "apptitle">Edison</span>
+			<button type="button" id = "start" class="btn btn-success btn-lg">Start Elections</button>
+			<button type="button" id = "undo" class="btn btn-warning btn-lg">Undo Vote</button>
+			<button type="button" id = "end" class="btn btn-danger btn-lg">End Elections</button>
+			<button type="button" id = "decl" class="btn btn-success btn-lg">Declare Results</button>
 	</div>
-	<div id="left_hover"></div>
-	<div id="left">
-		<button id="left_button"> &#60;</button>
-	</div>
-	<div id="viewport"></div>
-	<div id="right_hover"></div>
-	<div id="right">
-		<button id="right_button"> &#62;</button>
-	</div>
-	<script>
-		// ------------------------------------------------------------------------------------------------------------------
-		// POLL CREATION
-		var data, polls;
-		polls = [];
-		xhr = new XMLHttpRequest();
-		var url = "/getcandidates";
-		xhr.onreadystatechange = function () {
-			if (xhr.readyState == 4 && xhr.status == 200) {
-				data = JSON.parse(xhr.responseText);
-				createPolls();
-			}
-		};
-		xhr.open("GET", url, true);
-		window.onload = xhr.send();
+    <div id="school_logo">
+        <img id="logo_pic" src="/static/images/logo_sml.png" />
+        <h1>National Public School Indiranagar</h1>
+    </div>
+    <div id="left_hover"></div>
+    <div id="left"><button id="left_button"> 	&#60;</button></div>
+    <div id="viewport"></div>
+    <div id="right_hover"></div>
+    <div id="right"><button id="right_button"> 	&#62;</button></div>
+    <script src="/static/js/slides.js"></script>
+    <script src="/static/js/poll.js"></script>
+    <script>
+        // ------------------------------------------------------------------------------------------------------------------
+        // POLL CREATION
+        var data, polls,slide_map;
+        polls = [];
+        slide_map = {};
+        var elections = new Presentation();
+        xhr = new XMLHttpRequest();
+        var url = "/getcandidates";
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                data = JSON.parse(xhr.responseText);
+                createPolls();
+            }
+        };
+        xhr.open("GET", url, true);
+        window.onload = xhr.send();
 
-		function start_elections(i) {
-			polls[i].start_elections();
-		}
+				
+        function createPolls() {
+            data.polls.forEach(function(pollValue, index) {
+                polls.push(new Poll(index, pollValue.name, pollValue.foreColor, pollValue.backColor, pollValue.message));
+                for (candidate in pollValue.candidates) {
+                    polls[index].addCandidate(pollValue.candidates[candidate]);
+                }
+            });
+            createPresentation();
+        };
+        function childIndex(child) {
+        	var i = 0;
+						while( (child = child.previousSibling) != null ) {
+  						i++;
+						}
+						return i;
+        }
+        // ------------------------------------------------------------------------------------------------------------------
+        function createPresentation() {
+            for (poll in polls) {
+                elections.newSlide("title", {
+                    "heading": polls[poll].office + " Elections",
+                    "subheading": polls[poll].message,
+                    "b_col": polls[poll].backColor,
+                    "t_col": polls[poll].foreColor,
+                    "poll":polls[poll]
+                },polls[poll])
+                elections.newSlide("election", {
+                    "heading": polls[poll].office + " Elections",
+                    "b_col": polls[poll].backColor,
+                    "t_col": polls[poll].foreColor,
+                    "poll": polls[poll]
+                },polls[poll])
+                
+                slide_map[poll*2] = slide_map[(poll*2)+1] = polls[poll];
+            }
 
-		function end_elections(i) {
-			polls[i].end_elections();
-		}
+            id("left").onclick = function() {
+                elections.previousSlide();
+            }
+            id("right").onclick = function() {
+                elections.nextSlide();
+            }
+            id("start").onclick = function() {
+            	slide_map[elections.currentSlide-1].start_elections();
+            }
+            id("end").onclick = function() {
+            	slide_map[elections.currentSlide-1].end_elections();
+            }
+            id("undo").onclick = function() {
+            	slide_map[elections.currentSlide-1].undo();
+            }
+            id("decl").onclick = function () {
+            	slide_map[elections.currentSlide-1].declareWinner();
+            }
 
-		function vote_candidate(i, j) {
-			polls[i].vote(j);
-		}
+            document.onkeydown = function(e) {
+                switch (e.keyCode) {
+                    case 37: // Left key code
+                    		e.preventDefault();
+                        elections.previousSlide();
+                        break;
+                    case 39: // Right key code
+                    		e.preventDefault();
+                        elections.nextSlide();
+                        break;
+                }
+            };
 
-		function undo_vote(i) {
-			polls[i].undo();
-		}
+            setTimeout(function() {
+                construct_ui();
+                elections.start()
+            }, 500)
+        }
+        // -------------------------------------------------------------------------------------------------------
 
-		function decl_result(i) {
-			console.log(polls[i].evaluateWinner());
-		}
+        function id(Id) {
+            return document.getElementById(Id);
+        }
 
-		function createPolls() {
-			data.polls.forEach(function (pollValue, index) {
-				polls.push(new Poll(index, pollValue.name, pollValue.foreColor, pollValue.backColor, pollValue.message));
-				for (candidate in pollValue.candidates) {
-					polls[index].addCandidate(pollValue.candidates[candidate]);
-				}
-			});
-			createPresentation();
-		};
-		// ------------------------------------------------------------------------------------------------------------------
-		function createPresentation() {
-			var elections = new Presentation();
-			for (poll in polls) {
-				elections.newSlide("title", {
-					"heading": polls[poll].office + " Elections",
-					"subheading": polls[poll].message,
-					"b_col": polls[poll].backColor,
-					"t_col": polls[poll].foreColor,
-					"poll": polls[poll]
-				}, polls[poll])
-				elections.newSlide("election", {
-					"heading": polls[poll].office + " Elections",
-					"b_col": polls[poll].backColor,
-					"t_col": polls[poll].foreColor,
-					"poll": polls[poll]
-				}, polls[poll])
-			}
+        function cl(cl) {
+            return document.getElementsByClassName(cl);
+        }
 
-			Id("left").onclick = function () {
-				elections.previousSlide();
-			}
-			Id("right").onclick = function () {
-				elections.nextSlide();
-			}
+        window.onresize = function() {
+            construct_ui()
+        };
 
-			document.onkeydown = function (e) {
-				switch (e.keyCode) {
-				case 37: // Left key code
-					e.preventDefault();
-					elections.previousSlide();
-					break;
-				case 39: // Right key code
-					e.preventDefault();
-					elections.nextSlide();
-					break;
-				}
-			};
+        function construct_ui() {
+            center_elem = cl("center");
+            fill_height_elem = cl("fill-height");
+            var i;
+            for (i = 0; i < center_elem.length; i++) {
+                center_elem[i].style.marginTop = (window.innerHeight - center_elem[i].offsetHeight) / 2 + "px";
+                center_elem[i].style.marginLeft = (window.innerWidth - center_elem[i].offsetWidth) / 2 + "px";
+            }
+            for (i = 0; i < fill_height_elem.length; i++) {
+                fill_height_elem[i].style.height = (window.innerHeight - fill_height_elem[i].offsetTop) + "px";
+            }
+        }
+        
+        window.addEventListener('beforeunload', function (event) {
+	event.returnValue = 'Exitting in the middle of ongoing elections might result in loss of data. Continue?';
+});
+    </script>
 
-			setTimeout(function () {
-				construct_ui();
-				elections.start()
-			}, 500)
-		}
-		// -------------------------------------------------------------------------------------------------------
-
-		function Id(Id) {
-			return document.getElementById(Id);
-		}
-
-		function Cl(cl) {
-			return document.getElementsByClassName(cl);
-		}
-
-		window.onresize = function () {
-			construct_ui()
-		};
-
-		function construct_ui() {
-			center_elem = Cl("center");
-			fill_height_elem = Cl("fill-height");
-			var i;
-			for (i = 0; i < center_elem.length; i++) {
-				center_elem[i].style.marginTop = (window.innerHeight - center_elem[i].offsetHeight) / 2 + "px";
-				center_elem[i].style.marginLeft = (window.innerWidth - center_elem[i].offsetWidth) / 2 + "px";
-			}
-			for (i = 0; i < fill_height_elem.length; i++) {
-				fill_height_elem[i].style.height = (window.innerHeight - fill_height_elem[i].offsetTop) + "px";
-			}
-		}
-
-		window.addEventListener('beforeunload', function (event) {
-			event.returnValue = 'Exiting in the middle of ongoing elections might result in loss of data. Continue?';
-		});
-	</script>
 </body>
 
 </html>
