@@ -1,13 +1,13 @@
 function addSlide(type, data) {
     switch (type) {
         case "title":
-            return titleSlide(data.heading, data.subheading, data.b_col, data.t_col,data.poll);
+            return titleSlide(data.heading, data.subheading, data.b_col, data.t_col, data.poll);
         case "election":
-            return electionSlide(data.heading, data.b_col, data.t_col, data.poll)
+            return electionSlide(data.heading, data.b_col, data.t_col, data.poll);
     }
 }
 
-function titleSlide(heading, subheading, b_col, t_col,poll) {
+function titleSlide(heading, subheading, b_col, t_col, poll) {
     var div, head_cont, h1, h2;
 
     b_col = b_col || "#FFF";
@@ -15,7 +15,7 @@ function titleSlide(heading, subheading, b_col, t_col,poll) {
 
     div = document.createElement("div");
     div.className = "full-size";
-    div.id = poll.id+"title";
+    div.id = poll.id + "title";
     div.style.background = b_col;
     div.style.color = t_col;
 
@@ -48,7 +48,7 @@ function electionSlide(heading, b_col, t_col, poll) {
 
     div = document.createElement("div");
     div.className = "full-size";
-    div.id = poll.id+"election";
+    div.id = poll.id + "election";
     div.style.color = t_col;
     div.style.background = b_col;
 
@@ -82,12 +82,12 @@ function electionSlide(heading, b_col, t_col, poll) {
             c_name = document.createElement("div");
             c_name.className = "cand-name";
             c_name.innerHTML = poll.candidates[candidate].name;
-            
+
             c_image = document.createElement("img");
             c_image.src = poll.candidates[candidate].image;
             c_image.className = "cand-image";
-						
-						candidate_obj.appendChild(c_image);
+
+            candidate_obj.appendChild(c_image);
             candidate_obj.appendChild(c_name);
 
             candidate_cont.appendChild(candidate_obj);
@@ -112,12 +112,12 @@ function electionSlide(heading, b_col, t_col, poll) {
             c_name = document.createElement("div");
             c_name.className = "cand-name";
             c_name.innerHTML = poll.candidates[i].name;
-            
+
             c_image = document.createElement("img");
             c_image.src = poll.candidates[i].image;
             c_image.className = "cand-image";
-						
-						candidate_obj.appendChild(c_image);
+
+            candidate_obj.appendChild(c_image);
 
             candidate_obj.appendChild(c_name);
             row_1.appendChild(candidate_obj);
@@ -133,20 +133,20 @@ function electionSlide(heading, b_col, t_col, poll) {
             c_name = document.createElement("div");
             c_name.className = "cand-name";
             c_name.innerHTML = poll.candidates[i].name;
-            
+
             c_image = document.createElement("img");
             c_image.src = poll.candidates[i].image;
             c_image.className = "cand-image";
-						
-						candidate_obj.appendChild(c_image);
+
+            candidate_obj.appendChild(c_image);
 
             candidate_obj.appendChild(c_name);
             row_2.appendChild(candidate_obj);
-            
-            total_width += cand_width+1;
+
+            total_width += cand_width + 1;
         }
-        
-        row_2.style.marginLeft = ((100-total_width)/2) + "%";
+
+        row_2.style.marginLeft = ((100 - total_width) / 2) + "%";
         candidate_cont.appendChild(row_1);
         candidate_cont.appendChild(row_2);
     }
@@ -164,13 +164,13 @@ function electionSlide(heading, b_col, t_col, poll) {
 function Presentation() {
     this.currentAddSlide = 1;
     this.currentSlide = 0;
-    this.viewport = Id("viewport");
+    this.viewport = id("viewport");
     this.slide_types = [];
     this.newSlide = function(type, data, poll) {
         var n_slide, slide_cont;
-        
-				this.slide_types.push(type);
-				
+
+        this.slide_types.push(type);
+
         slide_cont = document.createElement("div");
         slide_cont.id = "slide" + this.currentAddSlide;
         slide_cont.className = "slide";
@@ -182,54 +182,54 @@ function Presentation() {
 
         this.viewport.appendChild(slide_cont);
         this.currentAddSlide++;
-    }
+    };
     this.start = function() {
-        this.slides = Cl("slide");
-         this.currentSlide = 0;
+        this.slides = cl("slide");
+        this.currentSlide = 0;
         this.nextSlide();
 
-    }
+    };
     this.nextSlide = function() {
         var i;
-        if (this.currentSlide == 0) {
-        	this.slides[0].style.left = 0;
-        	this.currentSlide ++;
-        } else if (this.currentSlide !== this.currentAddSlide-1) {
-        	this.slides[this.currentSlide-1].style.left = "-100%";
-        	this.slides[this.currentSlide].style.left = "0";
-        	this.currentSlide ++;
+        if (this.currentSlide === 0) {
+            this.slides[0].style.left = 0;
+            this.currentSlide++;
+        } else if (this.currentSlide !== this.currentAddSlide - 1) {
+            this.slides[this.currentSlide - 1].style.left = "-100%";
+            this.slides[this.currentSlide].style.left = "0";
+            this.currentSlide++;
         }
         this.hideShowlogo();
         this.navBtnUpdate();
-    }
+    };
 
     this.previousSlide = function() {
         var i;
-      	if (this.currentSlide !== 1) {
-      		this.slides[this.currentSlide-1].style.left = "100%";
-      		this.slides[this.currentSlide-2].style.left = "0";
-      		this.currentSlide --
-      	}
-       this.hideShowlogo();
-       this.navBtnUpdate();
-    }
-    
-    this.navBtnUpdate = function () {
-    if (this.slide_types[this.currentSlide-1] == "election") {
-    	slide_map[this.currentSlide-1].navBtnUpdate();
-    } else {
-    	Id("start").style.display = "none";
-    	Id("end").style.display = "none";
-    	Id("undo").style.display = "none";
-    	Id("decl").style.display = "none";
-    }
-    }
-    
+        if (this.currentSlide !== 1) {
+            this.slides[this.currentSlide - 1].style.left = "100%";
+            this.slides[this.currentSlide - 2].style.left = "0";
+            this.currentSlide--;
+        }
+        this.hideShowlogo();
+        this.navBtnUpdate();
+    };
+
+    this.navBtnUpdate = function() {
+        if (this.slide_types[this.currentSlide - 1] == "election") {
+            slide_map[this.currentSlide - 1].navBtnUpdate();
+        } else {
+            id("start").style.display = "none";
+            id("end").style.display = "none";
+            id("undo").style.display = "none";
+            id("decl").style.display = "none";
+        }
+    };
+
     this.hideShowlogo = function() {
-    	if (this.slide_types[this.currentSlide-1] == "election") {
-    		Id("school_logo").style.opacity = "0";
-    	} else {
-    		Id("school_logo").style.opacity = "1";
-    	}
-    }
+        if (this.slide_types[this.currentSlide - 1] == "election") {
+            id("school_logo").style.opacity = "0";
+        } else {
+            id("school_logo").style.opacity = "1";
+        }
+    };
 }

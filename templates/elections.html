@@ -83,22 +83,22 @@
                 slide_map[poll*2] = slide_map[(poll*2)+1] = polls[poll];
             }
 
-            Id("left").onclick = function() {
+            id("left").onclick = function() {
                 elections.previousSlide();
             }
-            Id("right").onclick = function() {
+            id("right").onclick = function() {
                 elections.nextSlide();
             }
-            Id("start").onclick = function() {
+            id("start").onclick = function() {
             	slide_map[elections.currentSlide-1].start_elections();
             }
-            Id("end").onclick = function() {
+            id("end").onclick = function() {
             	slide_map[elections.currentSlide-1].end_elections();
             }
-            Id("undo").onclick = function() {
+            id("undo").onclick = function() {
             	slide_map[elections.currentSlide-1].undo();
             }
-            Id("decl").onclick = function () {
+            id("decl").onclick = function () {
             	slide_map[elections.currentSlide-1].declareWinner();
             }
 
@@ -122,11 +122,11 @@
         }
         // -------------------------------------------------------------------------------------------------------
 
-        function Id(Id) {
+        function id(Id) {
             return document.getElementById(Id);
         }
 
-        function Cl(cl) {
+        function cl(cl) {
             return document.getElementsByClassName(cl);
         }
 
@@ -135,8 +135,8 @@
         };
 
         function construct_ui() {
-            center_elem = Cl("center");
-            fill_height_elem = Cl("fill-height");
+            center_elem = cl("center");
+            fill_height_elem = cl("fill-height");
             var i;
             for (i = 0; i < center_elem.length; i++) {
                 center_elem[i].style.marginTop = (window.innerHeight - center_elem[i].offsetHeight) / 2 + "px";

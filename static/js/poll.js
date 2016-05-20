@@ -87,14 +87,14 @@ function Poll(number, office, foreColor, backColor, message) {
 	this.start_elections = function () {
 		this.started = true;
 		
-		document.getElementById(this.statusId).innerHTML = "Elections have begun!";
+		document.getElementByid(this.statusId).innerHTML = "Elections have begun!";
 		var candidate_ui = document.getElementsByClassName(this.cand_class);
 
 		for (var i = 0; i < candidate_ui.length; i++) {
 			candidate_ui[i].id = "candidate_anim";
 			candidate_ui[i].onclick = function () {
             	slide_map[elections.currentSlide-1].vote(childIndex(this));
-            }
+            };
 		}
 		this.navBtnUpdate();
 	};
@@ -102,50 +102,50 @@ function Poll(number, office, foreColor, backColor, message) {
 	this.end_elections = function () {
 		this.ended = true;
 		
-		Id(this.statusId).innerHTML = "Elections have ended!";
+		id(this.statusId).innerHTML = "Elections have ended!";
 
-		var candidate_ui = Cl(this.cand_class);
+		var candidate_ui = cl(this.cand_class);
 		for (var i = 0; i < candidate_ui.length; i++) {
 			candidate_ui[i].id = "";
 			candidate_ui[i].onclick = function () {};
 		}
 		this.navBtnUpdate();
-	}
+	};
 	
 	this.navBtnUpdate = function () {
-		if (this.started == true) {
-    		Id("start").style.display = "none";
-    		if (this.ended == true) {
-    			Id("end").style.display = "none";
-    			Id("decl").style.display = "inline-block";
-    			Id("undo").style.display = "none";
+		if (this.started === true) {
+    		id("start").style.display = "none";
+    		if (this.ended === true) {
+    			id("end").style.display = "none";
+    			id("decl").style.display = "inline-block";
+    			id("undo").style.display = "none";
     		} else {
-    			Id("end").style.display = "inline-block";
-    			Id("decl").style.display = "none";
-    			Id("undo").style.display = "inline-block";
+    			id("end").style.display = "inline-block";
+    			id("decl").style.display = "none";
+    			id("undo").style.display = "inline-block";
     			this.undoBtnUpdate();
     		}
     	} else {
-    		Id("start").style.display = "inline-block";
-    		Id("end").style.display = "none";
-    		Id("decl").style.display = "none";
-    		Id("undo").style.display = "none";
+    		id("start").style.display = "inline-block";
+    		id("end").style.display = "none";
+    		id("decl").style.display = "none";
+    		id("undo").style.display = "none";
     	}
-	}
+	};
 	
 	this.undoBtnUpdate = function () {
-		if (this.votes.length == 0) {
-			Id("undo").className = "btn btn-warning btn-lg undo_btn disabled";
+		if (this.votes.length === 0) {
+			id("undo").className = "btn btn-warning btn-lg undo_btn disabled";
 		} else if (this.votes.length == 1) {
-			Id("undo").className = "btn btn-warning btn-lg undo_btn";
+			id("undo").className = "btn btn-warning btn-lg undo_btn";
 		}
-	}
+	};
 
 	this.update_status = function () {
 		if (this.votes.length == 1) {
-			document.getElementById(this.statusId).innerHTML = "1 vote has been registered.";
+			document.getElementByid(this.statusId).innerHTML = "1 vote has been registered.";
 		} else {
-			document.getElementById(this.statusId).innerHTML = this.votes.length + " votes have been registered";
+			document.getElementByid(this.statusId).innerHTML = this.votes.length + " votes have been registered";
 		}
 	};
 
@@ -228,16 +228,16 @@ function Poll(number, office, foreColor, backColor, message) {
 function resetDisplayedVotes(candidate) {
 	'use strict';
 
-	document.getElementById("votes" + candidate.id).innerHTML = candidate.votes;
+	document.getElementByid("votes" + candidate.id).innerHTML = candidate.votes;
 }
 
 function showIfWinner(candidate) {
 	'use strict';
 
 	if (candidate.isWinner) {
-		document.getElementById(candidate.id).classList.add("winner");
+		document.getElementByid(candidate.id).classList.add("winner");
 	} else {
-		document.getElementById(candidate.id).classList.remove("winner");
+		document.getElementByid(candidate.id).classList.remove("winner");
 	}
 	resetDisplayedVotes(candidate);
 }
