@@ -87,7 +87,7 @@ function Poll(number, office, foreColor, backColor, message) {
 	this.start_elections = function () {
 		this.started = true;
 		
-		document.getElementByid(this.statusId).innerHTML = "Elections have begun!";
+		id(this.statusId).innerHTML = "Elections have begun!";
 		var candidate_ui = document.getElementsByClassName(this.cand_class);
 /* jshint loopfunc:true */
 		for (var i = 0; i < candidate_ui.length; i++) {
@@ -143,9 +143,9 @@ function Poll(number, office, foreColor, backColor, message) {
 
 	this.update_status = function () {
 		if (this.votes.length == 1) {
-			document.getElementByid(this.statusId).innerHTML = "1 vote has been registered.";
+			id(this.statusId).innerHTML = "1 vote has been registered.";
 		} else {
-			document.getElementByid(this.statusId).innerHTML = this.votes.length + " votes have been registered";
+			id(this.statusId).innerHTML = this.votes.length + " votes have been registered";
 		}
 	};
 
@@ -228,16 +228,16 @@ function Poll(number, office, foreColor, backColor, message) {
 function resetDisplayedVotes(candidate) {
 	'use strict';
 
-	document.getElementByid("votes" + candidate.id).innerHTML = candidate.votes;
+	id("votes" + candidate.id).innerHTML = candidate.votes;
 }
 
 function showIfWinner(candidate) {
 	'use strict';
 
 	if (candidate.isWinner) {
-		document.getElementByid(candidate.id).classList.add("winner");
+		id(candidate.id).classList.add("winner");
 	} else {
-		document.getElementByid(candidate.id).classList.remove("winner");
+		id(candidate.id).classList.remove("winner");
 	}
 	resetDisplayedVotes(candidate);
 }

@@ -9,31 +9,26 @@ app = Bottle()
 @app.route('/')
 def home():
 	error_paths = []
-	file_paths = ["templates","templates/index.html","templates/candidates.html","templates/poll.html","static","static/js","static/css","static/css/bootstrap.min.css","static/css/jumbotron-narrow.css","static/css/pollStyle.css","static/js/bootstrap.min.js","static/js/poll.js","candidatesOld.json","candidateimages","candidateimages/default.gif"]
+	file_paths = ['templates','templates/index.html','templates/candidates.html','templates/poll.html','static','static/js','static/css','static/css/bootstrap.min.css','static/css/jumbotron-narrow.css','static/css/pollStyle.css','static/js/bootstrap.min.js','static/js/poll.js','candidates.json','candidateimages','candidateimages/default.gif']
 	for paths in file_paths:
 		if os.path.exists(paths):
-			print paths + " .................OK"
+			print paths + ' .................OK'
 		else:
-			print paths + ".................. NOT FOUND"
+			print paths + '.................. NOT FOUND'
 			error_paths.append(paths)
-	print "---------------------------"
+	print '---------------------------'
 	if len(error_paths) != 0:
-		print "SOME FILES DO NOT EXIST OR WEREN'T FOUND:"
+		print 'SOME FILES DO NOT EXIST OR WEREN\'T FOUND:'
 		for paths in error_paths:
 			print paths
 	else:
-		print "ALL FILES WERE FOUND. YOU ARE GOOD TO GO!"
-	print "---------------------------"
-	return open("templates/index.html").read()
+		print 'ALL FILES WERE FOUND. YOU ARE GOOD TO GO!'
+	print '---------------------------'
+	return open('templates/index.html').read()
 
-@app.post('/updateserver')
-def updateserver():
-	with open('candidatesOld.json', 'w') as outfile:
-		json.dump(request.json, outfile)
-
-@app.get("/getcandidates")
+@app.get('/getcandidates')
 def getcandidates():
-	with open("candidates.json") as json_file:
+	with open('candidates.json') as json_file:
 		json_data = json.load(json_file)
 	return json_data
 
@@ -59,26 +54,25 @@ def returncimages(filename):
 
 @app.get('/candidates')
 def candidate():
-	return open("templates/candidates.html").read()
-
-@app.get('/candidates2')
-def candidate():
-	return open("templates/candidatesOld.html").read()
+	return open('templates/candidates.html').read()
 
 @app.get('/elections')
 def elections():
-	return open("templates/elections.html").read()
+	return open('templates/elections.html').read()
+
+@app.get('/elections2')
+def elections2():
+	return open('templates/elections2.html').read()
 
 @app.post('/uploadimage')
 def uploadimage():
-	image = request.files.get("file")
+	image = request.files.get('file')
 	name, ext = os.path.splitext(image.filename)
 	if ext not in ('.png','.jpg','.jpeg','.gif'):
 		return 'File extension not allowed.'
-	save_path = "candidateimages"
+	save_path = 'candidateimages'
 	image.save(save_path, overwrite = True)
-	return "/candidateimages/" + str(image.filename)
-
+	return '/candidateimages/' + str(image.filename)
 
 @app.post('/candidateAction')
 def candidateAction():
@@ -144,10 +138,16 @@ def pollAction():
 @app.post('/exit')
 def exit():
 	data = {}
+	candidateIndex = 0
+	pollIndex = 0
 	
 	with open('candidates.json', 'r') as data_file:
 		data = json.load(data_file)
-		candidateIndex = 0
+	
+	while pollIndex < len(data['polls']):
+		if data['polls'][pollIndex]['name'] == '':
+			del data['polls'][pollIndex]
+		pollIndex += 1
 		
 	for pollIndex in range(len(data['polls'])):
 		while candidateIndex < len(data['polls'][pollIndex]['candidates']):

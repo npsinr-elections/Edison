@@ -1,9 +1,7 @@
 /*jslint browser: true*/
-/*globals
-	FormData
-*/
+/*globals FormData*/
 
-function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue, s) {
+function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue) {
 	'use strict';
 
 	var value = givenValue,
@@ -16,7 +14,6 @@ function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue, s) {
 		fileInput,
 		backgroundTextBox,
 		errorBox,
-		textBox,
 
 		candidateIndex = givenIndex,
 		pollIndex = givenPollIndex;
@@ -42,12 +39,17 @@ function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue, s) {
 		xhr.send(JSON.stringify(instruction));
 	}
 
+	function clearErrors() {
+		while (errorBox.lastChild) {
+			errorBox.removeChild(errorBox.lastChild);
+		}
+	}
+
 	img = document.createElement('img');
 	img.className = 'candidateImg';
 	img.src = value.image || '/candidateimages/default.gif';
 
 	backgroundTextBox = document.createElement('button');
-	backgroundTextBox.innerHTML = 'Upload Image';
 	backgroundTextBox.className = 'backgroundTextBox';
 	if (!value.image) {
 		backgroundTextBox.style.opacity = 1;
@@ -55,7 +57,6 @@ function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue, s) {
 
 	fileInput = document.createElement('input');
 	fileInput.type = 'file';
-	fileInput.innerHTML = 'Update Image';
 	fileInput.className = 'fileInput';
 	fileInput.addEventListener('change', function () {
 		var formData,
@@ -76,7 +77,9 @@ function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue, s) {
 				value.image = imagePath;
 				img.src = imagePath;
 				backgroundTextBox.removeAttribute('style');
-				backgroundTextBox.innerHTML = 'Update Image';
+				backgroundTextBox.removeChild(backgroundTextBox.lastChild);
+				backgroundTextBox.appendChild(document.createTextNode('Update Image'));
+				fileInput.title = 'Update Image';
 
 				updateServer({
 					'action': 'update',
@@ -87,6 +90,14 @@ function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue, s) {
 		};
 		xhr.send(formData);
 	});
+
+	if (value.image) {
+		backgroundTextBox.appendChild(document.createTextNode('Update Image'));
+		fileInput.title = 'Update Image';
+	} else {
+		backgroundTextBox.appendChild(document.createTextNode('Upload Image'));
+		fileInput.title = 'Upload Image';
+	}
 
 	imageBox = document.createElement('div');
 	imageBox.className = 'imageBox';
@@ -105,22 +116,32 @@ function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue, s) {
 	this.textBox.addEventListener('input', function () {
 		var text = this.value.replace(' ', '');
 
-		if (!(/[\d\f\n\r\t\v_]/gi.test(text))) {
+		if (text === '') {
+			clearErrors();
+			errorBox.appendChild(document.createTextNode('Please do not leave this field empty. Otherwise, the candidate may not be stored correctly.'));
+		} else if (!(/[\d\f\n\r\t\v_]/gi.test(text))) {
 			updateServer({
 				'action': 'update',
 				'update': 'name',
 				'value': this.value.trim()
 			});
-			errorBox.innerHTML = '';
+			clearErrors();
 		} else {
-			errorBox.innerHTML = 'Please enter only Latin letters, periods and spaces. Otherwise, the name will not be stored correctly.';
+			clearErrors();
+			errorBox.appendChild(document.createTextNode('Please enter only Latin letters, periods and spaces. Otherwise, the name will not be stored correctly.'));
 		}
 	});
 
 	this.deleteCandidateButton = document.createElement('button');
-	this.deleteCandidateButton.innerHTML = '&#10799;';
+	this.deleteCandidateButton.appendChild(document.createTextNode('\u00D7'));
 	this.deleteCandidateButton.title = 'Delete this candidate.';
 	this.deleteCandidateButton.className = 'deleteCandidateButton';
+	this.deleteCandidateButton.addEventListener('click', function () {
+		parentElement.removeChild(containerElement);
+		updateServer({
+			'action': 'delete'
+		});
+	});
 
 	containerElement = document.createElement('div');
 	containerElement.className = 'candidateContainerElement';
@@ -131,13 +152,6 @@ function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue, s) {
 
 	parentElement = document.getElementById(givenDumpId);
 	parentElement.insertBefore(containerElement, parentElement.lastChild);
-
-	this.deleteCandidateButton.addEventListener('click', function () {
-		parentElement.removeChild(containerElement);
-		updateServer({
-			'action': 'delete'
-		});
-	});
 }
 
 function Poll(givenIndex, givenDumpId, givenValue) {
@@ -154,10 +168,22 @@ function Poll(givenIndex, givenDumpId, givenValue) {
 		id = office.replace(/\s/g, '') + index,
 
 		parentElement,
+		deletePollButton,
+		officeTextBox,
+		messageTextBox,
+		textBoxContainer,
 		officeErrorBox,
 		panel,
 		panelHeading,
 		panelBody,
+
+		controls,
+		foreColorDiv,
+		foreColorInput,
+		foreColorInputButton,
+		backColorDiv,
+		backColorInput,
+		backColorInputButton,
 		addNewCandidateButton;
 
 	this.setIndex = function (i) {
@@ -194,6 +220,34 @@ function Poll(givenIndex, givenDumpId, givenValue) {
 		addNewCandidateButton.title = 'Please fill in the names of all the candidates first.';
 	}
 
+	function updateForeColor(color) {
+		foreColor = color;
+		deletePollButton.style.color = foreColor;
+		officeTextBox.style.borderBottomColor = foreColor;
+		panelHeading.style.color = foreColor;
+		foreColorInputButton.style.color = foreColor;
+		backColorInputButton.style.color = foreColor;
+
+		updateServer({
+			'action': 'update',
+			'update': 'foreColor',
+			'value': foreColor
+		});
+	}
+
+	function updateBackColor(color) {
+		backColor = color;
+		panelHeading.style.backgroundColor = backColor;
+		foreColorInputButton.style.backgroundColor = backColor;
+		backColorInputButton.style.backgroundColor = backColor;
+
+		updateServer({
+			'action': 'update',
+			'update': 'backColor',
+			'value': backColor
+		});
+	}
+
 	function aCandidateIsEmpty() {
 		var isEmpty = true;
 
@@ -204,10 +258,6 @@ function Poll(givenIndex, givenDumpId, givenValue) {
 		return isEmpty;
 	}
 
-	this.aCandidateIsEmpty = function () {
-		return aCandidateIsEmpty();
-	};
-
 	this.hasNoCandidates = function () {
 		if ((candidates.length !== 0) && aCandidateIsEmpty()) {
 			return candidates.length === 1;
@@ -215,6 +265,14 @@ function Poll(givenIndex, givenDumpId, givenValue) {
 
 
 		return candidates.length === 0;
+	};
+
+	this.getOfficeTextBox = function () {
+		return officeTextBox;
+	};
+
+	this.getDeletePollButton = function () {
+		return deletePollButton;
 	};
 
 	function addNewCandidate(candidateValue) {
@@ -227,7 +285,7 @@ function Poll(givenIndex, givenDumpId, givenValue) {
 				'value': {
 					'name': '',
 					'image': '',
-					'votes': ''
+					'votes': 0
 				}
 			});
 		}
@@ -235,7 +293,7 @@ function Poll(givenIndex, givenDumpId, givenValue) {
 		tempCandidate.deleteCandidateButton.addEventListener('click', function () {
 			candidates.splice(tempCandidate.getIndex(), 1);
 			candidates.forEach(function (candidate, index) {
-				candidates[index].setIndex(index);
+				candidate.setIndex(index);
 			});
 			if (aCandidateIsEmpty() && (candidates.length !== 0)) {
 				disableAddButton();
@@ -254,35 +312,87 @@ function Poll(givenIndex, givenDumpId, givenValue) {
 		candidates.push(tempCandidate);
 	}
 
+	function clearErrors() {
+		while (officeErrorBox.lastChild) {
+			officeErrorBox.removeChild(officeErrorBox.lastChild);
+		}
+	}
+
 	officeErrorBox = document.createElement('p');
 	officeErrorBox.className = 'officeErrorBox';
 
-	this.officeTextBox = document.createElement('input');
-	this.officeTextBox.className = 'officeTextBox';
-	this.officeTextBox.type = 'text';
-	this.officeTextBox.placeholder = 'Enter a name.';
-	this.officeTextBox.value = value.name || '';
-	this.officeTextBox.addEventListener('input', function () {
+	officeTextBox = document.createElement('input');
+	officeTextBox.className = 'officeTextBox';
+	officeTextBox.style.borderBottom = '1px solid ' + foreColor;
+	officeTextBox.type = 'text';
+	officeTextBox.placeholder = 'Enter a name.';
+	officeTextBox.value = value.name || '';
+	officeTextBox.addEventListener('input', function () {
 		var text = this.value.replace(' ', '');
 
 		if (text === '') {
-			officeErrorBox.innerHTML = 'Please do not leave this field empty. Otherwise, this office may not be stored correctly.';
+			clearErrors();
+			officeErrorBox.appendChild(document.createTextNode('Please do not leave this field empty. Otherwise, this office may not be stored correctly.'));
 		} else if (!(/[\d\f\n\r\t\v_]/gi.test(text))) {
 			updateServer({
 				'action': 'update',
 				'update': 'name',
 				'value': this.value.trim()
 			});
-			officeErrorBox.innerHTML = '';
+			clearErrors();
 		} else {
-			officeErrorBox.innerHTML = 'Please enter only Latin letters, periods and spaces. Otherwise, the name will not be stored correctly.';
+			clearErrors();
+			officeErrorBox.appendChild(document.createTextNode('Please enter only Latin letters, periods and spaces. Otherwise, the name will not be stored correctly.'));
 		}
 	});
+	officeTextBox.addEventListener('focus', function () {
+		this.style.borderColor = foreColor;
+	});
+	officeTextBox.addEventListener('mouseover', function () {
+		this.style.borderColor = foreColor;
+	});
+	officeTextBox.addEventListener('blur', function () {
+		this.style.borderColor = 'transparent';
+		this.style.borderBottomColor = foreColor;
+	});
+	officeTextBox.addEventListener('mouseout', function () {
+		this.style.borderColor = 'transparent';
+		this.style.borderBottomColor = foreColor;
+	});
 
-	this.deletePollButton = document.createElement('button');
-	this.deletePollButton.className = 'deletePollButton';
-	this.deletePollButton.innerHTML = '&#10799;';
-	this.deletePollButton.addEventListener('click', function () {
+	textBoxContainer = document.createElement('div');
+	textBoxContainer.className = 'textBoxContainer';
+	textBoxContainer.appendChild(officeTextBox);
+
+	messageTextBox = document.createElement('input');
+	messageTextBox.className = 'messageBox';
+	messageTextBox.placeholder = 'Enter an optional message';
+	messageTextBox.value = value.message;
+	messageTextBox.addEventListener('input', function () {
+		updateServer({
+			'action': 'update',
+			'update': 'message',
+			'value': this.value
+		});
+	});
+	messageTextBox.addEventListener('focus', function () {
+		this.style.borderColor = foreColor;
+	});
+	messageTextBox.addEventListener('mouseover', function () {
+		this.style.borderColor = foreColor;
+	});
+	messageTextBox.addEventListener('blur', function () {
+		this.style.borderColor = 'transparent';
+	});
+	messageTextBox.addEventListener('mouseout', function () {
+		this.style.borderColor = 'transparent';
+	});
+
+	deletePollButton = document.createElement('button');
+	deletePollButton.className = 'deletePollButton';
+	deletePollButton.style.color = foreColor;
+	deletePollButton.appendChild(document.createTextNode('\u00D7'));
+	deletePollButton.addEventListener('click', function () {
 		parentElement.removeChild(panel);
 		updateServer({
 			'action': 'delete'
@@ -293,22 +403,83 @@ function Poll(givenIndex, givenDumpId, givenValue) {
 	panelHeading.className = 'panel-heading';
 	panelHeading.style.backgroundColor = backColor;
 	panelHeading.style.color = foreColor;
-	panelHeading.appendChild(this.deletePollButton);
-	panelHeading.appendChild(this.officeTextBox);
+	panelHeading.appendChild(deletePollButton);
+	panelHeading.appendChild(textBoxContainer);
+	panelHeading.appendChild(messageTextBox);
+
+	foreColorInputButton = document.createElement('button');
+	foreColorInputButton.className = 'foreColorInputButton';
+	foreColorInputButton.style.color = foreColor;
+	foreColorInputButton.style.backgroundColor = backColor;
+	foreColorInputButton.appendChild(document.createTextNode('Choose Foreground Color'));
+
+	foreColorInput = document.createElement('input');
+	foreColorInput.className = 'foreColorInput';
+	foreColorInput.type = 'color';
+	foreColorInput.value = '!';
+
+	backColorInputButton = document.createElement('button');
+	backColorInputButton.className = 'backColorInputButton';
+	backColorInputButton.style.color = foreColor;
+	backColorInputButton.style.backgroundColor = backColor;
+	backColorInputButton.appendChild(document.createTextNode('Choose Background Color'));
+
+	backColorInput = document.createElement('input');
+	backColorInput.className = 'backColorInput';
+	backColorInput.type = 'color';
+	backColorInput.value = '!';
+
+	if (foreColorInput.value === '!') {
+		foreColorInput.type = 'text';
+		foreColorInput.className += ' jscolor';
+		foreColorInput.addEventListener('change', function () {
+			updateForeColor('#' + this.value);
+		});
+
+		backColorInput.type = 'text';
+		backColorInput.className += ' jscolor';
+		backColorInput.addEventListener('change', function () {
+			updateBackColor('#' + this.value);
+		});
+	} else {
+		foreColorInput.value = foreColor;
+		foreColorInput.addEventListener('change', function () {
+			updateForeColor(this.value);
+		});
+		backColorInput.value = backColor;
+		backColorInput.addEventListener('change', function () {
+			updateBackColor(this.value);
+		});
+	}
+
+	foreColorDiv = document.createElement('div');
+	foreColorDiv.className = 'foreColorDiv';
+	foreColorDiv.appendChild(foreColorInputButton);
+	foreColorDiv.appendChild(foreColorInput);
+
+	backColorDiv = document.createElement('div');
+	backColorDiv.className = 'backColorDiv';
+	backColorDiv.appendChild(backColorInputButton);
+	backColorDiv.appendChild(backColorInput);
 
 	addNewCandidateButton = document.createElement('button');
 	addNewCandidateButton.className = 'addNewCandidateButton';
-	addNewCandidateButton.innerHTML = '+';
+	addNewCandidateButton.appendChild(document.createTextNode('+'));
 	addNewCandidateButton.title = 'Add a candidate';
 	addNewCandidateButton.addEventListener('click', function () {
 		addNewCandidate({});
 	});
 
+	controls = document.createElement('div');
+	controls.appendChild(foreColorDiv);
+	controls.appendChild(backColorDiv);
+	controls.appendChild(addNewCandidateButton);
+
 	panelBody = document.createElement('div');
 	panelBody.className = 'panel-body';
 	panelBody.id = id;
 	panelBody.appendChild(officeErrorBox);
-	panelBody.appendChild(addNewCandidateButton);
+	panelBody.appendChild(controls);
 
 	panel = document.createElement('div');
 	panel.className = 'panel panel-default';
@@ -334,6 +505,7 @@ function Interface(givenDumpId) {
 			'name': '',
 			'foreColor': '',
 			'backColor': '',
+			'message': '',
 			'candidates': []
 		},
 
@@ -343,12 +515,7 @@ function Interface(givenDumpId) {
 	function createOnServer() {
 		var instruction = {
 			'action': 'create',
-			'value': {
-				'name': '',
-				'foreColor': '',
-				'backColor': '',
-				'candidates': []
-			}
+			'value': blankValue
 		};
 
 		xhr = new XMLHttpRequest();
@@ -371,7 +538,7 @@ function Interface(givenDumpId) {
 		var isEmpty = true;
 
 		polls.forEach(function (poll) {
-			isEmpty = isEmpty && (!poll.officeTextBox.value.trim() || poll.hasNoCandidates());
+			isEmpty = isEmpty && (!poll.getOfficeTextBox().value.trim() || poll.hasNoCandidates());
 		});
 
 		return isEmpty;
@@ -388,10 +555,10 @@ function Interface(givenDumpId) {
 			tempPoll = new Poll(polls.length, dumpId, pollValue);
 		}
 
-		tempPoll.deletePollButton.addEventListener('click', function () {
+		tempPoll.getDeletePollButton().addEventListener('click', function () {
 			polls.splice(tempPoll.getIndex(), 1);
 			polls.forEach(function (poll, index) {
-				polls[index].setIndex(index);
+				poll.setIndex(index);
 			});
 			if (aPollIsEmpty() && (polls.length !== 0)) {
 				disableAddButton();
@@ -400,7 +567,7 @@ function Interface(givenDumpId) {
 			}
 		});
 
-		tempPoll.officeTextBox.addEventListener('input', function () {
+		tempPoll.getOfficeTextBox().addEventListener('input', function () {
 			if (!this.value.trim() || aPollIsEmpty()) {
 				disableAddButton();
 			} else {
@@ -410,7 +577,7 @@ function Interface(givenDumpId) {
 
 		tempPoll.getCandidates().forEach(function (candidate) {
 			candidate.textBox.addEventListener('input', function () {
-				if (tempPoll.hasNoCandidates()) {
+				if (aPollIsEmpty()) {
 					disableAddButton();
 				} else {
 					enableAddButton();
@@ -423,7 +590,8 @@ function Interface(givenDumpId) {
 
 	addNewPollButton = document.createElement('button');
 	addNewPollButton.className = 'addNewPollButton';
-	addNewPollButton.innerHTML = '+';
+	addNewPollButton.title = 'Add an Office';
+	addNewPollButton.appendChild(document.createTextNode('+'));
 	addNewPollButton.addEventListener('click', function () {
 		addNewPoll({});
 	});
