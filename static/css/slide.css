@@ -164,10 +164,6 @@ body {
 	opacity: 1;
 }
 
-.end_btn,
-.undo_btn {
-	margin-left: 5px;
-}
 
 #candidate_anim:active {
 	border-color: #5cb85c;
