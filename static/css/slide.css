@@ -153,6 +153,7 @@ body {
 	border-radius: 10px;
 	border-color: #FFF;
 	opacity: 1;
+	margin-left:1%;
 	transition-duration: 0.2s;
 }
 
