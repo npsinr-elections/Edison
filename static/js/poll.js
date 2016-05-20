@@ -224,20 +224,3 @@ function Poll(number, office, foreColor, backColor, message) {
 		return this.finalWinner;
 	};
 }
-
-function resetDisplayedVotes(candidate) {
-	'use strict';
-
-	id("votes" + candidate.id).innerHTML = candidate.votes;
-}
-
-function showIfWinner(candidate) {
-	'use strict';
-
-	if (candidate.isWinner) {
-		id(candidate.id).classList.add("winner");
-	} else {
-		id(candidate.id).classList.remove("winner");
-	}
-	resetDisplayedVotes(candidate);
-}
