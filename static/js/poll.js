@@ -1,4 +1,5 @@
 /*jslint browser: true */
+/*globals id, cl*/
 //defines an error
 
 //defines a generic candidate
@@ -63,10 +64,10 @@ function Poll(number, office, foreColor, backColor, message) {
 	this.backColor = backColor;
 
 	this.message = message;
-	
+
 	this.started = false;
 	this.ended = false;
-	
+
 	this.undo = false;
 
 	this.candidates = []; //reset
@@ -86,22 +87,22 @@ function Poll(number, office, foreColor, backColor, message) {
 
 	this.start_elections = function () {
 		this.started = true;
-		
+
 		id(this.statusId).innerHTML = "Elections have begun!";
 		var candidate_ui = document.getElementsByClassName(this.cand_class);
-/* jshint loopfunc:true */
+		/* jshint loopfunc:true */
 		for (var i = 0; i < candidate_ui.length; i++) {
 			candidate_ui[i].id = "candidate_anim";
 			candidate_ui[i].onclick = function () {
-            	slide_map[elections.currentSlide-1].vote(childIndex(this));
-            };
+				slide_map[elections.currentSlide - 1].vote(childIndex(this));
+			};
 		}
 		this.navBtnUpdate();
 	};
 
 	this.end_elections = function () {
 		this.ended = true;
-		
+
 		id(this.statusId).innerHTML = "Elections have ended!";
 
 		var candidate_ui = cl(this.cand_class);
@@ -111,28 +112,28 @@ function Poll(number, office, foreColor, backColor, message) {
 		}
 		this.navBtnUpdate();
 	};
-	
+
 	this.navBtnUpdate = function () {
 		if (this.started === true) {
-    		id("start").style.display = "none";
-    		if (this.ended === true) {
-    			id("end").style.display = "none";
-    			id("decl").style.display = "inline-block";
-    			id("undo").style.display = "none";
-    		} else {
-    			id("end").style.display = "inline-block";
-    			id("decl").style.display = "none";
-    			id("undo").style.display = "inline-block";
-    			this.undoBtnUpdate();
-    		}
-    	} else {
-    		id("start").style.display = "inline-block";
-    		id("end").style.display = "none";
-    		id("decl").style.display = "none";
-    		id("undo").style.display = "none";
-    	}
+			id("start").style.display = "none";
+			if (this.ended === true) {
+				id("end").style.display = "none";
+				id("decl").style.display = "inline-block";
+				id("undo").style.display = "none";
+			} else {
+				id("end").style.display = "inline-block";
+				id("decl").style.display = "none";
+				id("undo").style.display = "inline-block";
+				this.undoBtnUpdate();
+			}
+		} else {
+			id("start").style.display = "inline-block";
+			id("end").style.display = "none";
+			id("decl").style.display = "none";
+			id("undo").style.display = "none";
+		}
 	};
-	
+
 	this.undoBtnUpdate = function () {
 		if (this.votes.length === 0) {
 			id("undo").className = "btn btn-warning btn-lg undo_btn disabled";

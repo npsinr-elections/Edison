@@ -1,0 +1,152 @@
+html,
+body {
+	height: 100%;
+	width: 100%;
+	margin: 0em;
+	padding: 0em;
+	overflow: hidden;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+div#nav {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	width: 100%;
+	padding: 1em 1.5em;
+	z-index: 999;
+	bottom: auto;
+	transition: opacity 0.5s;
+}
+
+div#nav:hover {
+	opacity: 1 !important;
+}
+
+div#navBarButtonGroup {
+	position: float;
+	float: right;
+}
+
+div#navBarButtonGroup>button {
+	border: none;
+	padding: 0.5em 1em;
+	margin-left: 0.5em;
+}
+
+div.slide {
+	width: 100%;
+	height: 100%;
+	margin: 0em;
+	padding: 0em;
+	position: absolute;
+	transition-duration: 0.5s;
+}
+
+div.centeredContainer {
+	text-align: center;
+	position: absolute;
+	width: 100%;
+}
+
+h1 {
+	font-size: 4.375em;
+}
+
+h2 {
+	font-size: 2.5em;
+}
+
+h2.winnerDeclaration {
+	position: absolute;
+	text-align: center;
+	margin-bottom: 0.5em;
+	bottom: 100%;
+	right: 0em;
+	left: 0em;
+	width: 100%;
+}
+
+h3 {
+	margin: 0em;
+	padding: 0.25em;
+	display: inline-block;
+}
+
+button.startButton {
+	font-size: 1.5em;
+	border: none;
+	padding: 0.5em 1.5em;
+	margin-top: 0.5em;
+}
+
+div.candidateButtonGroup {
+	text-align: center;
+	position: absolute;
+	margin: 0em;
+	padding: 0em;
+	width: 100%;
+	height: 50%
+}
+
+button.candidateButton {
+	display: inline-block;
+	position: relative;
+	height: 100%;
+	margin: 0em 0.5%;
+	padding: 0em;
+	border-width: 1px;
+	border-style: solid;
+	outline: none !important;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: top;
+	transition: opacity 0.5s;
+	transition: width 0.5s;
+}
+
+button.candidateButton.winner {
+	box-shadow: 0em 1em black;
+}
+
+div.candidateText {
+	position: absolute;
+	display: block;
+	bottom: 0em;
+	width: 100%;
+	font-size: 1.5em;
+	transition: color 0.5s;
+	transition: background-color 0.5s;
+}
+
+div.candidateName,
+div.candidateVotes {
+	padding: 0.5em 0.5em !important;
+	display: block;
+	position: float;
+}
+
+div.candidateName {
+	float: left;
+	height: 100%;
+}
+
+div.candidateVotes {
+	float: right;
+	min-width: 2em;
+	height: 100%;
+}
+
+div.controls {
+	position: absolute;
+	bottom: 1.5em;
+	right: 1.5em;
+}
+
+div.controls>button {
+	border-style: solid;
+	border-width: 1px;
+	padding: 0.5em 1em;
+	margin-left: 0.5em;
+}

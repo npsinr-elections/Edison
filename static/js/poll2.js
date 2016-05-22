@@ -39,4 +39,32 @@ function Poll(noOfCandidates) {
 		var candidate = votes.pop();
 		candidate.unvote();
 	};
+
+	this.getWhetherLeaders = function () {
+		var leaders = [],
+			scores = [],
+			max = 0,
+			noOfLeaders = 0;
+
+		candidates.forEach(function (candidate) {
+			scores.push(candidate.getVotes());
+		});
+		max = Math.max.apply(null, scores);
+		candidates.forEach(function (candidate, index) {
+			if (candidate.getVotes() === max) {
+				leaders.push(true);
+				noOfLeaders += 1;
+			} else {
+				leaders.push(false);
+			}
+		});
+		if (noOfLeaders === candidates.length) {
+			leaders = [];
+			candidates.forEach(function () {
+				leaders.push(false);
+			});
+		}
+
+		return leaders;
+	};
 }
