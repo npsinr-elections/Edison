@@ -418,7 +418,7 @@ function FirstInterface(givenDumpId) {
 		setNavColorsAndContents();
 	}
 
-	function confirm(givenMessage, givenFunction) {
+	function confirm(givenMessage, givenIfFunction, givenElseFunction) {
 		var container,
 			messageBox,
 			message,
@@ -426,6 +426,8 @@ function FirstInterface(givenDumpId) {
 			controls,
 			okButton,
 			cancelButton;
+
+		givenElseFunction = givenElseFunction || function () {};
 
 		message = document.createElement('p');
 		message.className = 'confirmMessage';
@@ -435,13 +437,14 @@ function FirstInterface(givenDumpId) {
 		okButton.appendChild(document.createTextNode('Okay'));
 		okButton.addEventListener('click', function () {
 			parentElement.removeChild(container);
-			givenFunction();
+			givenIfFunction();
 		});
 
 		cancelButton = document.createElement('button');
 		cancelButton.appendChild(document.createTextNode('Cancel'));
 		cancelButton.addEventListener('click', function () {
 			parentElement.removeChild(container);
+			givenElseFunction();
 		});
 
 		controls = document.createElement('div');
@@ -476,6 +479,7 @@ function FirstInterface(givenDumpId) {
 		tempInterfacePoll.getNextPollButton().addEventListener('click', nextSlide);
 
 		tempInterfacePoll.getEndPollButton().addEventListener('click', function () {
+			this.disabled = true;
 			confirm('This will end this election and no further votes will be registered. This cannot be undone. Continue?', function () {
 				tempInterfacePoll.end();
 				if (currentSlide !== slides.length - 2) {
@@ -483,13 +487,17 @@ function FirstInterface(givenDumpId) {
 				} else {
 					tempInterfacePoll.getControls().appendChild(resultsButton);
 				}
+			}, function () {
+				tempInterfacePoll.getEndPollButton().disabled = false;
 			});
 		});
 
 		tempInterfacePoll.getResetPollButton().addEventListener('click', function () {
+			this.disabled = true;
 			confirm('This will reset all progress in the election for this office. This action cannot be undone. Continue?', function () {
 				tempInterfacePoll.reset();
 			});
+			this.disabled = false;
 		});
 
 		interfacePolls.push(tempInterfacePoll);
