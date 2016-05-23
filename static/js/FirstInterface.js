@@ -272,6 +272,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	startButton.addEventListener('click', function () {
 		headingSlide.style.left = '-100%';
 		electionSlide.style.left = '0em';
+		this.disabled = true;
 	});
 
 	centeredContainer = document.createElement('div');
@@ -593,7 +594,10 @@ function FirstInterface(givenDumpId) {
 	startElectionsButton.style.color = '#000000';
 	startElectionsButton.style.backgroundColor = '#FFFFFF';
 	startElectionsButton.appendChild(document.createTextNode('Start Elections'));
-	startElectionsButton.addEventListener('click', nextSlide);
+	startElectionsButton.addEventListener('click', function () {
+		nextSlide();
+		this.disabled = true;
+	});
 
 	welcomeHeading = document.createElement('h1');
 
