@@ -11,7 +11,6 @@ function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, gi
 
 		name = candidateValue.name,
 		image = candidateValue.image || '/candidateimages/default.gif',
-		votes = candidateValue.votes = 0,
 
 		foreColor = givenForeColor,
 		backColor = givenBackColor,
@@ -20,7 +19,8 @@ function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, gi
 		candidateButton,
 		candidateText,
 		candidateName,
-		candidateVotes;
+		candidateVotes,
+		displayedVotes;
 
 	this.getCandidateButton = function () {
 		return candidateButton;
@@ -48,7 +48,9 @@ function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, gi
 	};
 
 	this.updateVotes = function () {
-		candidateVotes.innerHTML = candidate.getVotes();
+		candidateVotes.removeChild(displayedVotes);
+		displayedVotes = document.createTextNode(candidate.getVotes());
+		candidateVotes.appendChild(displayedVotes);
 	};
 
 	this.getCandidateDetails = function () {
@@ -63,9 +65,11 @@ function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, gi
 	candidateName.className = 'candidateName';
 	candidateName.appendChild(document.createTextNode(name));
 
+	displayedVotes = document.createTextNode(candidate.getVotes());
+
 	candidateVotes = document.createElement('div');
 	candidateVotes.className = 'candidateVotes';
-	candidateVotes.appendChild(document.createTextNode('0'));
+	candidateVotes.appendChild(displayedVotes);
 
 	candidateText = document.createElement('div');
 	candidateText.className = 'candidateText';
@@ -81,7 +85,9 @@ function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, gi
 	candidateButton.appendChild(candidateText);
 	candidateButton.addEventListener('click', function () {
 		candidate.vote();
-		candidateVotes.innerHTML = candidate.getVotes();
+		candidateVotes.removeChild(displayedVotes);
+		displayedVotes = document.createTextNode(candidate.getVotes());
+		candidateVotes.appendChild(displayedVotes);
 	});
 
 	parentElement = document.getElementById(dumpId);
