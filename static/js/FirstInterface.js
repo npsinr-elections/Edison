@@ -497,8 +497,10 @@ function FirstInterface(givenDumpId) {
 			this.disabled = true;
 			confirm('This will reset all progress in the election for this office. This action cannot be undone. Continue?', function () {
 				tempInterfacePoll.reset();
+				tempInterfacePoll.getResetPollButton().disabled = false;
+			}, function () {
+				tempInterfacePoll.getResetPollButton().disabled = false;
 			});
-			this.disabled = false;
 		});
 
 		interfacePolls.push(tempInterfacePoll);
