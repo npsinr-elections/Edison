@@ -320,6 +320,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	nextPollButton.style.display = 'none';
 	nextPollButton.addEventListener('click', function () {
 		electionSlide.style.left = '-100%';
+		this.disabled = true;
 	});
 
 	controls = document.createElement('div');
