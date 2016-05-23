@@ -67,4 +67,21 @@ function Poll(noOfCandidates) {
 
 		return leaders;
 	};
+
+	this.getWinnerIndexes = function () {
+		var scores = [],
+			indexes = [],
+			max = 0;
+
+		candidates.forEach(function (candidate) {
+			scores.push(candidate.getVotes());
+		});
+		max = Math.max.apply(null, scores);
+		candidates.forEach(function (candidate, index) {
+			if (candidate.getVotes() === max) {
+				indexes.push(index);
+			}
+		});
+		return indexes;
+	};
 }

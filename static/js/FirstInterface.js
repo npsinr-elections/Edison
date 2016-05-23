@@ -51,6 +51,14 @@ function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, gi
 		candidateVotes.innerHTML = candidate.getVotes();
 	};
 
+	this.getCandidateDetails = function () {
+		return {
+			'name': name,
+			'image': image,
+			'votes': candidate.getVotes()
+		};
+	};
+
 	candidateName = document.createElement('div');
 	candidateName.className = 'candidateName';
 	candidateName.appendChild(document.createTextNode(name));
@@ -121,6 +129,10 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		return headingSlide;
 	};
 
+	this.getElectionSlide = function () {
+		return electionSlide;
+	};
+
 	this.getStartButton = function () {
 		return startButton;
 	};
@@ -137,6 +149,29 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		return nextPollButton;
 	};
 
+	this.getName = function () {
+		return name;
+	};
+
+	this.getForeColor = function () {
+		return foreColor;
+	};
+
+	this.getBackColor = function () {
+		return backColor;
+	};
+
+	this.getWinnerDetails = function () {
+		var indexes = poll.getWinnerIndexes(),
+			winnerDetails = [];
+
+		indexes.forEach(function (index) {
+			winnerDetails.push(interfaceCandidates[index].getCandidateDetails());
+		});
+
+		return winnerDetails;
+	};
+
 	function vote(givenIndex) {
 		poll.addToVotes(givenIndex);
 		poll.getWhetherLeaders().forEach(function (isLeader, index) {
@@ -145,7 +180,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		votes += 1;
 		if (votes === 1) {
 			undoButton.style.display = 'inline-block';
-			endPollButton.disabled = false;
+			endPollButton.style.display = 'inline-block';
 		}
 	}
 
@@ -158,11 +193,11 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		votes -= 1;
 		if (votes === 0) {
 			undoButton.style.display = 'none';
-			endPollButton.disabled = true;
+			endPollButton.style.display = 'none';
 		}
 	}
 
-	function centerAndResizeElements() {
+	function centerElements() {
 		centeredContainer.style.bottom = (window.innerHeight - centeredContainer.offsetHeight) / 2 + "px";
 		candidateButtonGroup.style.bottom = (window.innerHeight - candidateButtonGroup.offsetHeight) / 2 + "px";
 	}
@@ -223,7 +258,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 	endPollButton = document.createElement('button');
 	endPollButton.className = 'endPollButton';
-	endPollButton.disabled = true;
 	endPollButton.style.backgroundColor = backColor;
 	endPollButton.style.color = foreColor;
 	endPollButton.style.display = 'none';
@@ -232,7 +266,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		this.style.display = 'none';
 		undoButton.style.display = 'none';
 		declareResults();
-		centerAndResizeElements();
+		centerElements();
 	});
 
 	undoButton = document.createElement('button');
@@ -277,8 +311,8 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		interfaceCandidate.getCandidateButton().style.width = width;
 	});
 
-	centerAndResizeElements();
-	window.addEventListener('resize', centerAndResizeElements);
+	centerElements();
+	window.addEventListener('resize', centerElements);
 }
 
 function FirstInterface(givenDumpId) {
@@ -299,17 +333,19 @@ function FirstInterface(givenDumpId) {
 		navBarButtonGroup,
 		endThisElectionButton,
 
+		introSlide,
+		centeredContainer,
+		welcomeHeading,
+		messageHeading,
+		startElectionsButton,
+
 		resultsButton,
 		resultsSlide,
-		resultsTable;
-
-	function showNavBar() {
-		navBar.style.opacity = 1;
-	}
-
-	function hideNavBar() {
-		navBar.style.opacity = 0;
-	}
+		resultsTable,
+		headerRow,
+		officeNameTd,
+		winnerTd,
+		votesTd;
 
 	function setNavColorsAndContents() {
 		navBar.style.color = slides[currentSlide].style.backgroundColor;
@@ -318,14 +354,17 @@ function FirstInterface(givenDumpId) {
 		if (endThisElectionButton !== undefined) {
 			navBarButtonGroup.removeChild(endThisElectionButton);
 		}
-		endThisElectionButton = interfacePolls[currentSlide].getEndPollButton();
-		navBarButtonGroup.appendChild(endThisElectionButton);
+		if (currentSlide > 0 && currentSlide < slides.length - 1) {
+			endThisElectionButton = interfacePolls[currentSlide - 1].getEndPollButton();
+			navBarButtonGroup.appendChild(endThisElectionButton);
+		}
 	}
 
 	function nextSlide() {
 		currentSlide += 1;
+		slides[currentSlide - 1].style.left = '-100%';
 		slides[currentSlide].style.left = '0%';
-		showNavBar();
+
 		setNavColorsAndContents();
 	}
 
@@ -333,13 +372,9 @@ function FirstInterface(givenDumpId) {
 		var tempInterfacePoll = new InterfacePoll(dumpId, pollValue, index);
 
 		slides.push(tempInterfacePoll.getHeadingSlide());
-		tempInterfacePoll.getStartButton().addEventListener('click', function () {
-			setTimeout(hideNavBar, 500);
-			tempInterfacePoll.getEndPollButton().style.display = 'inline-block';
-		});
 		tempInterfacePoll.getNextPollButton().addEventListener('click', nextSlide);
 		tempInterfacePoll.getEndPollButton().addEventListener('click', function () {
-			if (currentSlide !== slides.length - 1) {
+			if (currentSlide !== slides.length - 2) {
 				tempInterfacePoll.getNextPollButton().style.display = 'inline-block';
 			} else {
 				tempInterfacePoll.getControls().appendChild(resultsButton);
@@ -359,9 +394,63 @@ function FirstInterface(givenDumpId) {
 		});
 	}
 
-	resultsButton = document.createElement('button');
-	resultsButton.id = 'resultsButton';
-	resultsButton.appendChild(document.createTextNode('See all results'));
+	function centerElements() {
+		centeredContainer.style.bottom = (window.innerHeight - centeredContainer.offsetHeight) / 2 + "px";
+		resultsTable.style.bottom = (window.innerHeight - resultsTable.offsetHeight) / 2 + "px";
+	}
+
+	function prepSlidesAndNav() {
+		slides.unshift(introSlide);
+		slides.push(resultsSlide);
+
+		introSlide.style.backgroundImage = 'url(\'' + data.image + '\')';
+		resultsSlide.style.backgroundImage = 'url(\'' + data.image + '\')';
+		welcomeHeading.appendChild(document.createTextNode('Welcome to the ' + data.name + ' elections'));
+		messageHeading.appendChild(document.createTextNode(data.message));
+
+		centerElements();
+		adjustSlides();
+		setNavColorsAndContents();
+	}
+
+	function displayResults() {
+		interfacePolls.forEach(function (interfacePoll) {
+			var tempTrs = [],
+				tempPollNameTd;
+
+			tempPollNameTd = document.createElement('td');
+			tempPollNameTd.style.backgroundColor = interfacePoll.getBackColor();
+			tempPollNameTd.style.color = interfacePoll.getForeColor();
+			tempPollNameTd.appendChild(document.createTextNode(interfacePoll.getName()));
+			tempPollNameTd.rowSpan = interfacePoll.getWinnerDetails().length;
+
+			interfacePoll.getWinnerDetails().forEach(function (winnerDetails) {
+				var tempTr = document.createElement('tr'),
+					tempCandidateImage = document.createElement('img'),
+					tempCandidateImageTd = document.createElement('td'),
+					tempCandidateNameTd = document.createElement('td'),
+					tempCandidateVotesTd = document.createElement('td');
+
+				tempCandidateImage.src = winnerDetails.image || '/static/images/default.gif';
+
+				tempCandidateImageTd.appendChild(tempCandidateImage);
+
+				tempCandidateNameTd.appendChild(document.createTextNode(winnerDetails.name));
+
+				tempCandidateVotesTd.appendChild(document.createTextNode(winnerDetails.votes));
+
+				tempTr.appendChild(tempCandidateImageTd);
+				tempTr.appendChild(tempCandidateNameTd);
+				tempTr.appendChild(tempCandidateVotesTd);
+				tempTrs.push(tempTr);
+			});
+
+			tempTrs[0].insertBefore(tempPollNameTd, tempTrs[0].firstElementChild);
+			tempTrs.forEach(function (tr) {
+				resultsTable.appendChild(tr);
+			});
+		});
+	}
 
 	navBarHeading = document.createElement('h3');
 	navBarHeading.appendChild(document.createTextNode('Edison'));
@@ -374,8 +463,70 @@ function FirstInterface(givenDumpId) {
 	navBar.appendChild(navBarHeading);
 	navBar.appendChild(navBarButtonGroup);
 
+	startElectionsButton = document.createElement('button');
+	startElectionsButton.className = 'startButton';
+	startElectionsButton.style.color = '#000000';
+	startElectionsButton.style.backgroundColor = '#FFFFFF';
+	startElectionsButton.appendChild(document.createTextNode('Start Elections'));
+	startElectionsButton.addEventListener('click', nextSlide);
+
+	welcomeHeading = document.createElement('h1');
+
+	messageHeading = document.createElement('h2');
+
+	centeredContainer = document.createElement('div');
+	centeredContainer.className = 'centeredContainer';
+	centeredContainer.appendChild(welcomeHeading);
+	centeredContainer.appendChild(messageHeading);
+	centeredContainer.appendChild(startElectionsButton);
+
+	introSlide = document.createElement('div');
+	introSlide.className = 'slide';
+	introSlide.id = 'introSlide';
+	introSlide.style.backgroundColor = '#000000';
+	introSlide.style.color = '#FFFFFF';
+	introSlide.appendChild(centeredContainer);
+
+	resultsButton = document.createElement('button');
+	resultsButton.id = 'resultsButton';
+	resultsButton.appendChild(document.createTextNode('See all results'));
+	resultsButton.addEventListener('click', function () {
+		displayResults();
+		nextSlide();
+		interfacePolls[interfacePolls.length - 1].getElectionSlide().style.left = '-100%';
+	});
+
+	officeNameTd = document.createElement('td');
+	officeNameTd.appendChild(document.createTextNode('Office'));
+
+	winnerTd = document.createElement('td');
+	winnerTd.colSpan = 2;
+	winnerTd.appendChild(document.createTextNode('Candidate'));
+
+	votesTd = document.createElement('td');
+	votesTd.appendChild(document.createTextNode('Votes'));
+
+	headerRow = document.createElement('tr');
+	headerRow.id = 'headerRow';
+	headerRow.appendChild(officeNameTd);
+	headerRow.appendChild(winnerTd);
+	headerRow.appendChild(votesTd);
+
+	resultsTable = document.createElement('table');
+	resultsTable.id = 'resultsTable';
+	resultsTable.appendChild(headerRow);
+
+	resultsSlide = document.createElement('div');
+	resultsSlide.className = 'slide';
+	resultsSlide.id = 'resultsSlide';
+	resultsSlide.style.backgroundColor = '#000000';
+	resultsSlide.style.color = '#FFFFFF';
+	resultsSlide.appendChild(resultsTable);
+
 	parentElement = document.getElementById(dumpId);
 	parentElement.appendChild(navBar);
+	parentElement.appendChild(introSlide);
+	parentElement.appendChild(resultsSlide);
 
 	xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
@@ -384,8 +535,7 @@ function FirstInterface(givenDumpId) {
 			data.polls.forEach(function (poll, index) {
 				createNewInterfacePoll(poll, index);
 			});
-			adjustSlides();
-			setNavColorsAndContents();
+			prepSlidesAndNav();
 		}
 	};
 	xhr.open('GET', '/getcandidates', true);
