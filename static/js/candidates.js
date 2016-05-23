@@ -587,7 +587,7 @@ function Interface(givenDumpId) {
 
 		polls.push(tempPoll);
 	}
-	function CreateNameMessage(givenValue,givenDumpId) {
+	function createNameMessage(givenValue,givenDumpId) {
 		var value = givenValue,
 
 		parentElement,
@@ -597,7 +597,7 @@ function Interface(givenDumpId) {
 		imageBox,
 		fileInput,
 		backgroundTextBox,
-		errorBox,messageTextBox;
+		errorBox,messageTextBox,textBox,panel,panelBody,panelHeading;
 		function updateServer(givenInstruction) {
 		var xhr,
 			instruction = givenInstruction;
@@ -675,12 +675,12 @@ function Interface(givenDumpId) {
 	errorBox = document.createElement('p');
 	errorBox.className = 'errorBox';
 
-	this.textBox = document.createElement('input');
-	this.textBox.className = 'textBox';
-	this.textBox.type = 'text';
-	this.textBox.placeholder = 'Enter a name.';
-	this.textBox.value = value.name || '';
-	this.textBox.addEventListener('input', function () {
+	textBox = document.createElement('input');
+	textBox.className = 'textBox';
+	textBox.type = 'text';
+	textBox.placeholder = 'Enter a name.';
+	textBox.value = value.name || '';
+	textBox.addEventListener('input', function () {
 		var text = this.value.replace(' ', '');
 
 		if (text === '') {
@@ -699,7 +699,7 @@ function Interface(givenDumpId) {
 	});
 	
 	messageTextBox = document.createElement('input');
-	messageTextBox.className = 'messageBox';
+	messageTextBox.className = 'textBox';
 	messageTextBox.placeholder = 'Enter an optional message';
 	messageTextBox.value = value.message;
 	messageTextBox.addEventListener('input', function () {
@@ -709,14 +709,27 @@ function Interface(givenDumpId) {
 		});
 	});
 	containerElement = document.createElement('div');
-	containerElement.className = 'candidateContainerElement';
 	containerElement.appendChild(imageBox);
-	containerElement.appendChild(this.deleteCandidateButton);
 	containerElement.appendChild(errorBox);
-	containerElement.appendChild(this.textBox);
+	containerElement.appendChild(textBox);
+	containerElement.appendChild(messageTextBox);
+	
+	panelHeading = document.createElement('div');
+	panelHeading.className = 'panel-heading';
+	panelHeading.appendChild(document.createTextNode('Election Details'))
+	
+	panelBody = document.createElement('div');
+	panelBody.className = 'panel-body';
+	panelBody.appendChild(containerElement);
+
+	panel = document.createElement('div');
+	panel.className = 'panel panel-primary';
+	panel.appendChild(panelHeading);
+	panel.appendChild(panelBody);
 
 	parentElement = document.getElementById(givenDumpId);
-	parentElement.appendChild(containerElement);
+	parentElement.appendChild(panel);
+	parentElement.appendChild(addNewPollButton);
 	}
 
 	addNewPollButton = document.createElement('button');
@@ -726,14 +739,13 @@ function Interface(givenDumpId) {
 	addNewPollButton.addEventListener('click', function () {
 		addNewPoll({});
 	});
-
-	parentElement = document.getElementById(dumpId);
-	parentElement.appendChild(addNewPollButton);
+	
 
 	xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === 4 && xhr.status === 200) {
 			data = JSON.parse(xhr.responseText);
+			createNameMessage(data,givenDumpId);
 			data.polls.forEach(function (pollValue, index) {
 				addNewPoll(pollValue);
 			});
