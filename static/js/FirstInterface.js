@@ -252,6 +252,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 	this.end = function () {
 		endPollButton.style.display = 'none';
+		endPollButton.disabled = true;
 		undoButton.style.display = 'none';
 		resetPollButton.style.display = 'none';
 		declareResults();
