@@ -125,6 +125,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		candidateButtonGroup,
 
 		controls,
+		resetPollButton,
 		endPollButton,
 		undoButton,
 		nextPollButton,
@@ -145,6 +146,10 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 	this.getEndPollButton = function () {
 		return endPollButton;
+	};
+
+	this.getResetPollButton = function () {
+		return resetPollButton;
 	};
 
 	this.getControls = function () {
@@ -187,6 +192,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		if (votes === 1) {
 			undoButton.style.display = 'inline-block';
 			endPollButton.style.display = 'inline-block';
+			resetPollButton.style.display = 'inline-block';
 		}
 	}
 
@@ -200,7 +206,20 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		if (votes === 0) {
 			undoButton.style.display = 'none';
 			endPollButton.style.display = 'none';
+			resetPollButton.style.display = 'none';
 		}
+	}
+
+	function reset() {
+		votes = 0;
+		poll.reset();
+		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
+			interfaceCandidates[index].setLeaderState(isLeader);
+			interfaceCandidates[index].updateVotes();
+		});
+		undoButton.style.display = 'none';
+		endPollButton.style.display = 'none';
+		resetPollButton.style.display = 'none';
 	}
 
 	function centerElements() {
@@ -220,9 +239,14 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 	function declareResults() {
 		poll.getWhetherLeaders(false).forEach(function (isLeader, index) {
+			interfaceCandidates[index].setLeaderState(isLeader);
 			interfaceCandidates[index].removeIfNotLeader(isLeader);
 		});
-		winnerDeclaration.appendChild(document.createTextNode('We Have a Winner!'));
+		if (poll.getWinnerIndexes().length === 1) {
+			winnerDeclaration.appendChild(document.createTextNode('We have our winner!'));
+		} else {
+			winnerDeclaration.appendChild(document.createTextNode('We have our winners!'));
+		}
 	}
 
 	titleBox = document.createElement('h1');
@@ -261,6 +285,13 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	candidateButtonGroup.id = id;
 	candidateButtonGroup.appendChild(winnerDeclaration);
 
+	resetPollButton = document.createElement('button');
+	resetPollButton.style.backgroundColor = backColor;
+	resetPollButton.style.color = foreColor;
+	resetPollButton.style.display = 'none';
+	resetPollButton.appendChild(document.createTextNode('Reset This Election'));
+	resetPollButton.addEventListener('click', reset);
+
 	endPollButton = document.createElement('button');
 	endPollButton.className = 'endPollButton';
 	endPollButton.style.backgroundColor = backColor;
@@ -270,6 +301,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	endPollButton.addEventListener('click', function () {
 		this.style.display = 'none';
 		undoButton.style.display = 'none';
+		resetPollButton.style.display = 'none';
 		declareResults();
 		centerElements();
 	});
@@ -335,7 +367,10 @@ function FirstInterface(givenDumpId) {
 		parentElement,
 		navBar,
 		navBarHeading,
+		pollNameHeading,
+		pollName,
 		navBarButtonGroup,
+		resetThisElectionButton,
 		endThisElectionButton,
 
 		introSlide,
@@ -358,10 +393,18 @@ function FirstInterface(givenDumpId) {
 
 		if (endThisElectionButton !== undefined) {
 			navBarButtonGroup.removeChild(endThisElectionButton);
+			navBarButtonGroup.removeChild(resetThisElectionButton);
+			pollNameHeading.removeChild(pollName);
 		}
 		if (currentSlide > 0 && currentSlide < slides.length - 1) {
+			resetThisElectionButton = interfacePolls[currentSlide - 1].getResetPollButton();
+
+			navBarButtonGroup.appendChild(resetThisElectionButton);
 			endThisElectionButton = interfacePolls[currentSlide - 1].getEndPollButton();
 			navBarButtonGroup.appendChild(endThisElectionButton);
+
+			pollName = document.createTextNode('- ' + interfacePolls[currentSlide - 1].getName() + ' Elections');
+			pollNameHeading.appendChild(pollName);
 		}
 	}
 
@@ -458,7 +501,14 @@ function FirstInterface(givenDumpId) {
 	}
 
 	navBarHeading = document.createElement('h3');
+	navBarHeading.className = 'navBarHeading';
 	navBarHeading.appendChild(document.createTextNode('Edison'));
+
+	pollName = document.createTextNode('');
+
+	pollNameHeading = document.createElement('h3');
+	pollNameHeading.className = 'pollNameHeading';
+	pollNameHeading.appendChild(pollName);
 
 	navBarButtonGroup = document.createElement('div');
 	navBarButtonGroup.id = 'navBarButtonGroup';
@@ -466,6 +516,7 @@ function FirstInterface(givenDumpId) {
 	navBar = document.createElement('div');
 	navBar.id = 'nav';
 	navBar.appendChild(navBarHeading);
+	navBar.appendChild(pollNameHeading);
 	navBar.appendChild(navBarButtonGroup);
 
 	startElectionsButton = document.createElement('button');

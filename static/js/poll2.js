@@ -14,6 +14,10 @@ function Candidate() {
 	this.getVotes = function () {
 		return votes;
 	};
+
+	this.reset = function () {
+		votes = 0;
+	};
 }
 
 function Poll(noOfCandidates) {
@@ -83,5 +87,12 @@ function Poll(noOfCandidates) {
 			}
 		});
 		return indexes;
+	};
+
+	this.reset = function () {
+		votes = [];
+		candidates.forEach(function (candidate) {
+			candidate.reset();
+		});
 	};
 }
