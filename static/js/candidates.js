@@ -587,6 +587,137 @@ function Interface(givenDumpId) {
 
 		polls.push(tempPoll);
 	}
+	function CreateNameMessage(givenValue,givenDumpId) {
+		var value = givenValue,
+
+		parentElement,
+		containerElement,
+
+		img,
+		imageBox,
+		fileInput,
+		backgroundTextBox,
+		errorBox,messageTextBox;
+		function updateServer(givenInstruction) {
+		var xhr,
+			instruction = givenInstruction;
+		xhr = new XMLHttpRequest();
+		xhr.open('POST', '/electionAction', true);
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.send(JSON.stringify(instruction));
+	}
+
+	function clearErrors() {
+		while (errorBox.lastChild) {
+			errorBox.removeChild(errorBox.lastChild);
+		}
+	}
+
+	img = document.createElement('img');
+	img.className = 'candidateImg';
+	img.src = value.image || '/candidateimages/default.gif';
+
+	backgroundTextBox = document.createElement('button');
+	backgroundTextBox.className = 'backgroundTextBox';
+	if (!value.image) {
+		backgroundTextBox.style.opacity = 1;
+	}
+
+	fileInput = document.createElement('input');
+	fileInput.type = 'file';
+	fileInput.className = 'fileInput';
+	fileInput.addEventListener('change', function () {
+		var formData,
+			xhr,
+			image,
+			imagePath;
+
+		image = this.files[0];
+
+		formData = new FormData();
+		formData.append('file', image);
+
+		xhr = new XMLHttpRequest();
+		xhr.open('POST', '/uploadimage', true);
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				imagePath = xhr.responseText;
+				value.image = imagePath;
+				img.src = imagePath;
+				backgroundTextBox.removeAttribute('style');
+				backgroundTextBox.removeChild(backgroundTextBox.lastChild);
+				backgroundTextBox.appendChild(document.createTextNode('Update Image'));
+				fileInput.title = 'Update Image';
+
+				updateServer({
+					'update': 'image',
+					'value': imagePath
+				});
+			}
+		};
+		xhr.send(formData);
+	});
+
+	if (value.image) {
+		backgroundTextBox.appendChild(document.createTextNode('Update Image'));
+		fileInput.title = 'Update Image';
+	} else {
+		backgroundTextBox.appendChild(document.createTextNode('Upload Image'));
+		fileInput.title = 'Upload Image';
+	}
+
+	imageBox = document.createElement('div');
+	imageBox.className = 'imageBox';
+	imageBox.appendChild(img);
+	imageBox.appendChild(backgroundTextBox);
+	imageBox.appendChild(fileInput);
+
+	errorBox = document.createElement('p');
+	errorBox.className = 'errorBox';
+
+	this.textBox = document.createElement('input');
+	this.textBox.className = 'textBox';
+	this.textBox.type = 'text';
+	this.textBox.placeholder = 'Enter a name.';
+	this.textBox.value = value.name || '';
+	this.textBox.addEventListener('input', function () {
+		var text = this.value.replace(' ', '');
+
+		if (text === '') {
+			clearErrors();
+			errorBox.appendChild(document.createTextNode('Please do not leave this field empty. Otherwise, the election name may not be stored correctly.'));
+		} else if (!(/[\d\f\n\r\t\v_]/gi.test(text))) {
+			updateServer({
+				'update': 'name',
+				'value': this.value.trim()
+			});
+			clearErrors();
+		} else {
+			clearErrors();
+			errorBox.appendChild(document.createTextNode('Please enter only Latin letters, periods and spaces. Otherwise, the name will not be stored correctly.'));
+		}
+	});
+	
+	messageTextBox = document.createElement('input');
+	messageTextBox.className = 'messageBox';
+	messageTextBox.placeholder = 'Enter an optional message';
+	messageTextBox.value = value.message;
+	messageTextBox.addEventListener('input', function () {
+		updateServer({
+			'update': 'message',
+			'value': this.value
+		});
+	});
+	containerElement = document.createElement('div');
+	containerElement.className = 'candidateContainerElement';
+	containerElement.appendChild(imageBox);
+	containerElement.appendChild(this.deleteCandidateButton);
+	containerElement.appendChild(errorBox);
+	containerElement.appendChild(this.textBox);
+
+	parentElement = document.getElementById(givenDumpId);
+	parentElement.appendChild(containerElement);
+	}
 
 	addNewPollButton = document.createElement('button');
 	addNewPollButton.className = 'addNewPollButton';

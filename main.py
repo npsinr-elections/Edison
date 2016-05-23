@@ -131,6 +131,23 @@ def pollAction():
 	with open('candidates.json', 'w') as data_file:
 		data_file.write(json.dumps(data))
 
+@app.post('/electionAction')
+def electionAction():
+	instruction = request.json
+	
+	with open('candidates.json', 'r') as data_file:
+		try:
+			update = instruction['update']
+			value = instruction['value']
+		except KeyError:
+			pass
+		
+		data = json.load(data_file)
+		data[update] = value
+		
+	with open('candidates.json', 'w') as data_file:
+		data_file.write(json.dumps(data))
+	
 @app.post('/exit')
 def exit():
 	data = {}
