@@ -129,6 +129,10 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		return endPollButton;
 	};
 
+	this.getControls = function () {
+		return controls;
+	};
+
 	this.getNextPollButton = function () {
 		return nextPollButton;
 	};
@@ -141,6 +145,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		votes += 1;
 		if (votes === 1) {
 			undoButton.style.display = 'inline-block';
+			endPollButton.disabled = false;
 		}
 	}
 
@@ -153,6 +158,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		votes -= 1;
 		if (votes === 0) {
 			undoButton.style.display = 'none';
+			endPollButton.disabled = true;
 		}
 	}
 
@@ -217,6 +223,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 	endPollButton = document.createElement('button');
 	endPollButton.className = 'endPollButton';
+	endPollButton.disabled = true;
 	endPollButton.style.backgroundColor = backColor;
 	endPollButton.style.color = foreColor;
 	endPollButton.style.display = 'none';
@@ -290,7 +297,11 @@ function FirstInterface(givenDumpId) {
 		navBar,
 		navBarHeading,
 		navBarButtonGroup,
-		endThisElectionButton;
+		endThisElectionButton,
+
+		resultsButton,
+		resultsSlide,
+		resultsTable;
 
 	function showNavBar() {
 		navBar.style.opacity = 1;
@@ -330,6 +341,8 @@ function FirstInterface(givenDumpId) {
 		tempInterfacePoll.getEndPollButton().addEventListener('click', function () {
 			if (currentSlide !== slides.length - 1) {
 				tempInterfacePoll.getNextPollButton().style.display = 'inline-block';
+			} else {
+				tempInterfacePoll.getControls().appendChild(resultsButton);
 			}
 		});
 
@@ -345,6 +358,10 @@ function FirstInterface(givenDumpId) {
 			}
 		});
 	}
+
+	resultsButton = document.createElement('button');
+	resultsButton.id = 'resultsButton';
+	resultsButton.appendChild(document.createTextNode('See all results'));
 
 	navBarHeading = document.createElement('h3');
 	navBarHeading.appendChild(document.createTextNode('Edison'));

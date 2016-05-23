@@ -35,6 +35,10 @@ div#navBarButtonGroup>button {
 	margin-left: 0.5em;
 }
 
+button:disabled {
+	cursor: not-allowed;
+}
+
 div.slide {
 	width: 100%;
 	height: 100%;
@@ -134,7 +138,6 @@ div.candidateName {
 
 div.candidateVotes {
 	float: right;
-	min-width: 2em;
 	height: 100%;
 }
 
@@ -149,4 +152,9 @@ div.controls>button {
 	border-width: 1px;
 	padding: 0.5em 1em;
 	margin-left: 0.5em;
+}
+
+button#resultsButton {
+	background-color: #000000;
+	color: #FFFFFF;
 }
