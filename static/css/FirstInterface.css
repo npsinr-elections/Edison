@@ -5,7 +5,7 @@ body {
 	margin: 0em;
 	padding: 0em;
 	overflow: hidden;
-	font-family: 'Product Sans';
+	font-family: 'Product Sans', 'Helvetica Neue', Helvetica, Arial;
 }
 
 div#nav {
@@ -25,7 +25,7 @@ div#navBarButtonGroup {
 
 div#navBarButtonGroup>button {
 	border: none;
-	padding: 0.5em 1em;
+	padding: 0.75em 1em;
 	margin-left: 0.5em;
 }
 
@@ -84,6 +84,8 @@ h2.winnerDeclaration {
 	right: 0em;
 	left: 0em;
 	width: 100%;
+	opacity: 0;
+	transition: opacity 0.5s;
 }
 
 h3 {
@@ -91,6 +93,7 @@ h3 {
 	padding: 0.25em;
 	display: inline-block;
 	font-weight: normal;
+	font-size: 1.5em;
 }
 
 h3.pollNameHeading {
@@ -176,6 +179,7 @@ div.controls>button {
 
 div#resultsSlide {
 	overflow-y: scroll;
+	left: 100%;
 }
 
 button#resultsButton {
@@ -200,16 +204,62 @@ table#resultsTable>tr#headerRow {
 table#resultsTable>tr>td {
 	padding: 0.5em;
 	border: 1px solid #000000;
+	font-size: 1.5em;
 }
 
 table#resultsTable>tr>td>img {
-	width: 12.5em;
+	width: 25%;
+	margin-right: 2em;
+	vertical-align: middle;
+}
+
+table#resultsTable>tr>td.imageAndNameTd {
+	text-align: left;
+}
+
+div.confirmContainer {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+	background-color: rgba(0, 0, 0, 0.7);
+	z-index: 9999;
+}
+
+div.confirmMessageBox {
+	background-color: #FFFFFF;
+	position: absolute;
+	width: 50%;
+	display: block;
+	margin: 0em auto;
+	padding: 1.5em;
+}
+
+p.confirmMessage {
+	margin: 0em;
+	padding-bottom: 2em;
+	margin-bottom: 0.75em;
+	clear: right;
+	border-bottom: 1px solid #B3B3B3;
+}
+
+div.confirmControls {
+	float: right;
+}
+
+div.confirmControls>button {
+	border: none;
+	background-color: #000000;
+	color: #FFFFFF;
+	padding: 0.5em 1em;
+	margin-left: 0.5em;
 }
 
 @font-face {
-  font-family: 'Product Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Product Sans'), local('ProductSans-Regular'), url("/static/fonts/ProductSans.woff2") format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+	font-family: 'Product Sans';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Product Sans'), local('ProductSans-Regular'), url("/static/fonts/ProductSans.woff2") format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
 }

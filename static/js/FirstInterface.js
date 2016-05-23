@@ -132,6 +132,61 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 		width;
 
+	function vote(givenIndex) {
+		poll.addToVotes(givenIndex);
+		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
+			interfaceCandidates[index].setLeaderState(isLeader);
+		});
+		votes += 1;
+		if (votes === 1) {
+			undoButton.style.display = 'inline-block';
+			endPollButton.style.display = 'inline-block';
+			resetPollButton.style.display = 'inline-block';
+		}
+	}
+
+	function undoVote() {
+		poll.undo();
+		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
+			interfaceCandidates[index].setLeaderState(isLeader);
+			interfaceCandidates[index].updateVotes();
+		});
+		votes -= 1;
+		if (votes === 0) {
+			undoButton.style.display = 'none';
+			endPollButton.style.display = 'none';
+			resetPollButton.style.display = 'none';
+		}
+	}
+
+	function centerElements() {
+		centeredContainer.style.bottom = (window.innerHeight - centeredContainer.offsetHeight) / 2 + "px";
+		candidateButtonGroup.style.bottom = (window.innerHeight - candidateButtonGroup.offsetHeight) / 2 + "px";
+	}
+
+	function createNewInterfaceCandidate(givenCandidateValue, index) {
+		var tempInterfaceCandidate = new InterfaceCandidate(id, givenCandidateValue, poll.getCandidates()[index], foreColor, backColor);
+
+		tempInterfaceCandidate.getCandidateButton().addEventListener('click', function () {
+			vote(index);
+		});
+
+		interfaceCandidates.push(tempInterfaceCandidate);
+	}
+
+	function declareResults() {
+		poll.getWhetherLeaders(false).forEach(function (isLeader, index) {
+			interfaceCandidates[index].setLeaderState(isLeader);
+			interfaceCandidates[index].removeIfNotLeader(isLeader);
+		});
+		if (poll.getWinnerIndexes().length === 1) {
+			winnerDeclaration.appendChild(document.createTextNode('We have our winner!'));
+		} else {
+			winnerDeclaration.appendChild(document.createTextNode('We have our winners!'));
+		}
+		winnerDeclaration.style.opacity = 1;
+	}
+
 	this.getHeadingSlide = function () {
 		return headingSlide;
 	};
@@ -183,34 +238,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		return winnerDetails;
 	};
 
-	function vote(givenIndex) {
-		poll.addToVotes(givenIndex);
-		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
-			interfaceCandidates[index].setLeaderState(isLeader);
-		});
-		votes += 1;
-		if (votes === 1) {
-			undoButton.style.display = 'inline-block';
-			endPollButton.style.display = 'inline-block';
-			resetPollButton.style.display = 'inline-block';
-		}
-	}
-
-	function undoVote() {
-		poll.undo();
-		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
-			interfaceCandidates[index].setLeaderState(isLeader);
-			interfaceCandidates[index].updateVotes();
-		});
-		votes -= 1;
-		if (votes === 0) {
-			undoButton.style.display = 'none';
-			endPollButton.style.display = 'none';
-			resetPollButton.style.display = 'none';
-		}
-	}
-
-	function reset() {
+	this.reset = function () {
 		votes = 0;
 		poll.reset();
 		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
@@ -220,34 +248,14 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		undoButton.style.display = 'none';
 		endPollButton.style.display = 'none';
 		resetPollButton.style.display = 'none';
-	}
+	};
 
-	function centerElements() {
-		centeredContainer.style.bottom = (window.innerHeight - centeredContainer.offsetHeight) / 2 + "px";
-		candidateButtonGroup.style.bottom = (window.innerHeight - candidateButtonGroup.offsetHeight) / 2 + "px";
-	}
-
-	function createNewInterfaceCandidate(givenCandidateValue, index) {
-		var tempInterfaceCandidate = new InterfaceCandidate(id, givenCandidateValue, poll.getCandidates()[index], foreColor, backColor);
-
-		tempInterfaceCandidate.getCandidateButton().addEventListener('click', function () {
-			vote(index);
-		});
-
-		interfaceCandidates.push(tempInterfaceCandidate);
-	}
-
-	function declareResults() {
-		poll.getWhetherLeaders(false).forEach(function (isLeader, index) {
-			interfaceCandidates[index].setLeaderState(isLeader);
-			interfaceCandidates[index].removeIfNotLeader(isLeader);
-		});
-		if (poll.getWinnerIndexes().length === 1) {
-			winnerDeclaration.appendChild(document.createTextNode('We have our winner!'));
-		} else {
-			winnerDeclaration.appendChild(document.createTextNode('We have our winners!'));
-		}
-	}
+	this.end = function () {
+		endPollButton.style.display = 'none';
+		undoButton.style.display = 'none';
+		resetPollButton.style.display = 'none';
+		declareResults();
+	};
 
 	titleBox = document.createElement('h1');
 	titleBox.appendChild(document.createTextNode(name.concat(' Election')));
@@ -290,7 +298,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	resetPollButton.style.color = foreColor;
 	resetPollButton.style.display = 'none';
 	resetPollButton.appendChild(document.createTextNode('Reset This Election'));
-	resetPollButton.addEventListener('click', reset);
 
 	endPollButton = document.createElement('button');
 	endPollButton.className = 'endPollButton';
@@ -298,13 +305,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	endPollButton.style.color = foreColor;
 	endPollButton.style.display = 'none';
 	endPollButton.appendChild(document.createTextNode('End This Election'));
-	endPollButton.addEventListener('click', function () {
-		this.style.display = 'none';
-		undoButton.style.display = 'none';
-		resetPollButton.style.display = 'none';
-		declareResults();
-		centerElements();
-	});
 
 	undoButton = document.createElement('button');
 	undoButton.appendChild(document.createTextNode('Undo'));
@@ -416,17 +416,78 @@ function FirstInterface(givenDumpId) {
 		setNavColorsAndContents();
 	}
 
+	function confirm(givenMessage, givenFunction) {
+		var container,
+			messageBox,
+			message,
+			messageText = document.createTextNode(givenMessage),
+			controls,
+			okButton,
+			cancelButton;
+
+		message = document.createElement('p');
+		message.className = 'confirmMessage';
+		message.appendChild(messageText);
+
+		okButton = document.createElement('button');
+		okButton.appendChild(document.createTextNode('Okay'));
+		okButton.addEventListener('click', function () {
+			parentElement.removeChild(container);
+			givenFunction();
+		});
+
+		cancelButton = document.createElement('button');
+		cancelButton.appendChild(document.createTextNode('Cancel'));
+		cancelButton.addEventListener('click', function () {
+			parentElement.removeChild(container);
+		});
+
+		controls = document.createElement('div');
+		controls.className = 'confirmControls';
+		controls.appendChild(okButton);
+		controls.appendChild(cancelButton);
+
+		messageBox = document.createElement('div');
+		messageBox.className = 'confirmMessageBox';
+		messageBox.appendChild(message);
+		messageBox.appendChild(controls);
+
+		container = document.createElement('div');
+		container.className = 'confirmContainer';
+		container.appendChild(messageBox);
+
+		parentElement.appendChild(container);
+
+		messageBox.style.top = (window.innerHeight - messageBox.offsetHeight) / 2 + "px";
+		messageBox.style.left = (window.innerWidth - messageBox.offsetWidth) / 2 + "px";
+
+		window.addEventListener('resize', function () {
+			messageBox.style.top = (window.innerHeight - messageBox.offsetHeight) / 2 + "px";
+			messageBox.style.left = (window.innerWidth - messageBox.offsetWidth) / 2 + "px";
+		});
+	}
+
 	function createNewInterfacePoll(pollValue, index) {
 		var tempInterfacePoll = new InterfacePoll(dumpId, pollValue, index);
 
 		slides.push(tempInterfacePoll.getHeadingSlide());
 		tempInterfacePoll.getNextPollButton().addEventListener('click', nextSlide);
+
 		tempInterfacePoll.getEndPollButton().addEventListener('click', function () {
-			if (currentSlide !== slides.length - 2) {
-				tempInterfacePoll.getNextPollButton().style.display = 'inline-block';
-			} else {
-				tempInterfacePoll.getControls().appendChild(resultsButton);
-			}
+			confirm('This will end this election and no further votes will be registered. This cannot be undone. Continue?', function () {
+				tempInterfacePoll.end();
+				if (currentSlide !== slides.length - 2) {
+					tempInterfacePoll.getNextPollButton().style.display = 'inline-block';
+				} else {
+					tempInterfacePoll.getControls().appendChild(resultsButton);
+				}
+			});
+		});
+
+		tempInterfacePoll.getResetPollButton().addEventListener('click', function () {
+			confirm('This will reset all progress in the election for this office. This action cannot be undone. Continue?', function () {
+				tempInterfacePoll.reset();
+			});
 		});
 
 		interfacePolls.push(tempInterfacePoll);
@@ -475,20 +536,18 @@ function FirstInterface(givenDumpId) {
 			interfacePoll.getWinnerDetails().forEach(function (winnerDetails) {
 				var tempTr = document.createElement('tr'),
 					tempCandidateImage = document.createElement('img'),
-					tempCandidateImageTd = document.createElement('td'),
-					tempCandidateNameTd = document.createElement('td'),
+					tempCandidateImageAndNameTd = document.createElement('td'),
 					tempCandidateVotesTd = document.createElement('td');
 
 				tempCandidateImage.src = winnerDetails.image || '/static/images/default.gif';
 
-				tempCandidateImageTd.appendChild(tempCandidateImage);
-
-				tempCandidateNameTd.appendChild(document.createTextNode(winnerDetails.name));
+				tempCandidateImageAndNameTd.className = 'imageAndNameTd';
+				tempCandidateImageAndNameTd.appendChild(tempCandidateImage);
+				tempCandidateImageAndNameTd.appendChild(document.createTextNode(winnerDetails.name));
 
 				tempCandidateVotesTd.appendChild(document.createTextNode(winnerDetails.votes));
 
-				tempTr.appendChild(tempCandidateImageTd);
-				tempTr.appendChild(tempCandidateNameTd);
+				tempTr.appendChild(tempCandidateImageAndNameTd);
 				tempTr.appendChild(tempCandidateVotesTd);
 				tempTrs.push(tempTr);
 			});
@@ -556,7 +615,6 @@ function FirstInterface(givenDumpId) {
 	officeNameTd.appendChild(document.createTextNode('Office'));
 
 	winnerTd = document.createElement('td');
-	winnerTd.colSpan = 2;
 	winnerTd.appendChild(document.createTextNode('Candidate'));
 
 	votesTd = document.createElement('td');
