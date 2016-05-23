@@ -174,7 +174,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 	function vote(givenIndex) {
 		poll.addToVotes(givenIndex);
-		poll.getWhetherLeaders().forEach(function (isLeader, index) {
+		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
 			interfaceCandidates[index].setLeaderState(isLeader);
 		});
 		votes += 1;
@@ -186,7 +186,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 	function undoVote() {
 		poll.undo();
-		poll.getWhetherLeaders().forEach(function (isLeader, index) {
+		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
 			interfaceCandidates[index].setLeaderState(isLeader);
 			interfaceCandidates[index].updateVotes();
 		});
@@ -213,9 +213,8 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	}
 
 	function declareResults() {
-		poll.getWhetherLeaders().forEach(function (isLeader, index) {
+		poll.getWhetherLeaders(false).forEach(function (isLeader, index) {
 			interfaceCandidates[index].removeIfNotLeader(isLeader);
-
 		});
 		winnerDeclaration.appendChild(document.createTextNode('We Have a Winner!'));
 	}

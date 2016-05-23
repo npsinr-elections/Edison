@@ -40,7 +40,7 @@ function Poll(noOfCandidates) {
 		candidate.unvote();
 	};
 
-	this.getWhetherLeaders = function () {
+	this.getWhetherLeaders = function (isAllTieNotAllowed) {
 		var leaders = [],
 			scores = [],
 			max = 0,
@@ -58,7 +58,7 @@ function Poll(noOfCandidates) {
 				leaders.push(false);
 			}
 		});
-		if (noOfLeaders === candidates.length) {
+		if (isAllTieNotAllowed && noOfLeaders === candidates.length) {
 			leaders = [];
 			candidates.forEach(function () {
 				leaders.push(false);
