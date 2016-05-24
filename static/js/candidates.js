@@ -728,8 +728,7 @@ function Interface(givenDumpId) {
 	panel.appendChild(panelBody);
 
 	parentElement = document.getElementById(givenDumpId);
-	parentElement.appendChild(panel);
-	parentElement.appendChild(addNewPollButton);
+	parentElement.insertBefore(panel, parentElement.lastChild);
 	}
 
 	addNewPollButton = document.createElement('button');
@@ -740,6 +739,8 @@ function Interface(givenDumpId) {
 		addNewPoll({});
 	});
 	
+	parentElement = document.getElementById(dumpId);
+	parentElement.appendChild(addNewPollButton);
 
 	xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
