@@ -48,9 +48,9 @@ def returnfonts(filename):
 def returnimages(filename):
 	return static_file(filename, root='static/images')
 
-@app.get('/candidateimages/<filename>')
+@app.get('/savedimages/<filename>')
 def returncimages(filename):
-	return static_file(filename, root='candidateimages')
+	return static_file(filename, root='savedimages')
 
 @app.get('/candidates')
 def candidate():
@@ -66,9 +66,9 @@ def uploadimage():
 	name, ext = os.path.splitext(image.filename)
 	if ext not in ('.png','.jpg','.jpeg','.gif'):
 		return 'File extension not allowed.'
-	save_path = 'candidateimages'
+	save_path = 'savedimages'
 	image.save(save_path, overwrite = True)
-	return '/candidateimages/' + str(image.filename)
+	return '/savedimages/' + str(image.filename)
 
 @app.post('/candidateAction')
 def candidateAction():

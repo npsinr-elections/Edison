@@ -10,7 +10,7 @@ function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, gi
 		candidate = givenCandidate,
 
 		name = candidateValue.name,
-		image = candidateValue.image || '/candidateimages/default.gif',
+		image = candidateValue.image || '/savedimages/default.gif',
 
 		foreColor = givenForeColor,
 		backColor = givenBackColor,

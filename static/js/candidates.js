@@ -47,7 +47,7 @@ function Candidate(givenIndex, givenPollIndex, givenDumpId, givenValue) {
 
 	img = document.createElement('img');
 	img.className = 'candidateImg';
-	img.src = value.image || '/candidateimages/default.gif';
+	img.src = value.image || '/savedimages/default.gif';
 
 	backgroundTextBox = document.createElement('button');
 	backgroundTextBox.className = 'backgroundTextBox';
@@ -615,7 +615,7 @@ function Interface(givenDumpId) {
 
 	img = document.createElement('img');
 	img.className = 'candidateImg';
-	img.src = value.image || '/candidateimages/default.gif';
+	img.src = value.image || '/savedimages/default.gif';
 
 	backgroundTextBox = document.createElement('button');
 	backgroundTextBox.className = 'backgroundTextBox';
