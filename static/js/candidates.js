@@ -716,7 +716,7 @@ function Interface(givenDumpId) {
 	
 	panelHeading = document.createElement('div');
 	panelHeading.className = 'panel-heading';
-	panelHeading.appendChild(document.createTextNode('Election Details'))
+	panelHeading.appendChild(document.createTextNode('Election Details'));
 	
 	panelBody = document.createElement('div');
 	panelBody.className = 'panel-body';
