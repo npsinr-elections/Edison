@@ -178,6 +178,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 			interfaceCandidates[index].setLeaderState(isLeader);
 		});
 		votes += 1;
+		updateServer(givenIndex,poll.getCandidateVotes(givenIndex));
 		if (votes === 1) {
 			undoButton.style.display = 'inline-block';
 			endPollButton.style.display = 'inline-block';
@@ -191,6 +192,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
 			interfaceCandidates[index].setLeaderState(isLeader);
 			interfaceCandidates[index].updateVotes();
+			updateServer(index,poll.getCandidateVotes(index));
 		});
 		votes -= 1;
 		if (votes === 0) {
@@ -279,16 +281,18 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		return winnerDetails;
 	};
 
-	this.reset = function () {
+	this.reset = function (update) {
 		votes = 0;
 		poll.reset();
 		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
 			interfaceCandidates[index].setLeaderState(isLeader);
 			interfaceCandidates[index].updateVotes();
 		});
+		if (update) {
 		poll.getCandidates().forEach(function (candidate, index) {
 			updateServer(index,candidate.getVotes());
 		});
+		}
 		if (winnerDeclaration.firstChild) {
 		winnerDeclaration.removeChild(winnerDeclaration.firstChild);
 		}
@@ -299,7 +303,10 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		endPollButton.style.display = 'none';
 		resetPollButton.style.display = 'none';
 		nextPollButton.style.display = 'none';
-		updateEnded(false);
+		ended = false;
+		if (update) {
+			updateEnded(false);
+		}
 	};
 
 	this.end = function () {
@@ -312,6 +319,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		poll.getCandidates().forEach(function (candidate, index) {
 			updateServer(index,candidate.getVotes());
 		});
+		ended = true;
 		updateEnded(true);
 	};
 	
@@ -334,6 +342,31 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		headingSlide.style.left = '-100%';
 		electionSlide.style.left = '0em';
 		this.disabled = true;
+		
+		if (ended === true) {
+			endPollButton.style.display = 'none';
+			nextPollButton.style.display = 'inline-block';
+			endPollButton.disabled = true;
+			undoButton.style.display = 'none';
+			resetPollButton.style.display = 'inline-block';
+			declareResults();
+		} else {
+			var started = false;
+			candidates.forEach(function (candidate, index) {
+				if (candidate.votes !== 0) {
+					started = true;
+				}
+			});
+			
+			if (started) {
+				poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
+					interfaceCandidates[index].setLeaderState(isLeader);
+				});
+				endPollButton.style.display = 'inline-block';
+				endPollButton.disabled = false;
+				resetPollButton.style.display = 'inline-block';
+			}
+		}
 	});
 
 	centeredContainer = document.createElement('div');
@@ -415,9 +448,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	centerElements();
 	window.addEventListener('resize', centerElements);
 	
-	if (ended === true) {
-		this.end();
-	}
 }
 
 function FirstInterface(givenDumpId) {
@@ -446,7 +476,8 @@ function FirstInterface(givenDumpId) {
 		welcomeHeading,
 		messageHeading,
 		startElectionsButton,
-
+		resetElectionsButton,
+		
 		resultsButton,
 		resultsSlide,
 		resultsTable,
@@ -561,7 +592,7 @@ function FirstInterface(givenDumpId) {
 		tempInterfacePoll.getResetPollButton().addEventListener('click', function () {
 			this.disabled = true;
 			confirm('This will reset all progress in the election for this office. This action cannot be undone. Continue?', function () {
-				tempInterfacePoll.reset();
+				tempInterfacePoll.reset(true);
 				tempInterfacePoll.getResetPollButton().disabled = false;
 			}, function () {
 				tempInterfacePoll.getResetPollButton().disabled = false;
@@ -665,7 +696,37 @@ function FirstInterface(givenDumpId) {
 		nextSlide();
 		this.disabled = true;
 	});
-
+	
+	resetElectionsButton = document.createElement('button');
+	resetElectionsButton.className = 'startButton';
+	resetElectionsButton.style.color = '#000000';
+	resetElectionsButton.style.backgroundColor = '#FFFFFF';
+	resetElectionsButton.appendChild(document.createTextNode('Reset Election Votes'));
+	resetElectionsButton.addEventListener('click', function () {
+		resetElectionsButton.disabled = true;
+		confirm('This action will reset all votes for every office. This cannot be undone. Continue?', function () {
+		var xhr;
+		console.log("RAN");
+		xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+		if (xhr.readyState === 4 && xhr.status === 200) {
+			interfacePolls.forEach(function (interfacePoll) {
+				interfacePoll.reset(false);
+			});
+			if (resetElectionsButton.firstChild) {
+				resetElectionsButton.removeChild(resetElectionsButton.firstChild);
+			}
+			resetElectionsButton.style.display = 'none';
+		}
+		};
+		xhr.open('POST', '/resetVotes', true);
+		xhr.send();
+		},function () {
+			resetElectionsButton.disabled = false;
+		});
+	
+	});
+	
 	welcomeHeading = document.createElement('h1');
 
 	messageHeading = document.createElement('h2');
@@ -675,6 +736,7 @@ function FirstInterface(givenDumpId) {
 	centeredContainer.appendChild(welcomeHeading);
 	centeredContainer.appendChild(messageHeading);
 	centeredContainer.appendChild(startElectionsButton);
+	centeredContainer.appendChild(resetElectionsButton);
 
 	introSlide = document.createElement('div');
 	introSlide.className = 'slide';

@@ -166,7 +166,19 @@ def electionAction():
 		
 	with open('candidates.json', 'w') as data_file:
 		data_file.write(json.dumps(data))
+
+@app.post('/resetVotes')
+def resetVotes():
+	with open('candidates.json','r') as data_file:
+		data = json.load(data_file)
+		for poll in data['polls']:
+			poll['ended'] = False
+			for candidate in poll['candidates']:
+				candidate['votes'] = 0
 	
+	with open('candidates.json', 'w') as data_file:
+		data_file.write(json.dumps(data))
+
 @app.post('/exit')
 def exit():
 	data = {}

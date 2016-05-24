@@ -38,6 +38,10 @@ function Poll(noOfCandidates) {
 		return candidates;
 	};
 	
+	this.getCandidateVotes = function (i) {
+		return candidates[i].getVotes();
+	}
+	
 	this.addToVotes = function (i) {
 		votes.push(candidates[i]);
 	};

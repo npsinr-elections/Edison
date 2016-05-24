@@ -105,7 +105,7 @@ button.startButton {
 	font-size: 1.5em;
 	border: none;
 	padding: 0.5em 1.5em;
-	margin-top: 0.5em;
+	margin:0.5em;
 }
 
 div.candidateButtonGroup {
