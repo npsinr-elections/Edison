@@ -46,6 +46,13 @@ function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, gi
 			}, 500);
 		}
 	};
+	
+	this.showOnUi = function (width) {
+		candidateButton.disabled = false;
+			candidateButton.style.opacity = 1;
+			candidateButton.style.width = width;
+			candidateButton.style.display = 'inline-block';
+	};
 
 	this.updateVotes = function () {
 		candidateVotes.removeChild(displayedVotes);
@@ -99,7 +106,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 	var dumpId = givenDumpId,
 		id = givenPollValue.name.replace(/\s/g, '') + givenIndex,
-
+		pollIndex = givenIndex,
 		pollValue = givenPollValue,
 		poll = new Poll(pollValue.candidates.length),
 
@@ -132,6 +139,38 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 		width;
 
+	function updateServer(candidateIndex,voteCount) {
+		var xhr,
+			instruction = {
+					'action': 'update',
+					'update': 'votes',
+					'value': voteCount
+				};
+
+		instruction.pollIndex = pollIndex;
+		instruction.candidateIndex = candidateIndex;
+
+		xhr = new XMLHttpRequest();
+		xhr.open('POST', '/candidateAction', true);
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.send(JSON.stringify(instruction));
+	}
+	
+	function updateEnded(givenInstruction) {
+		var xhr,
+			instruction = {
+			'action': 'update',
+			'update': 'ended',
+			'value': true
+		};
+
+		instruction.pollIndex = pollIndex;
+
+		xhr = new XMLHttpRequest();
+		xhr.open('POST', '/pollAction', true);
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.send(JSON.stringify(instruction));
+	}
 	function vote(givenIndex) {
 		poll.addToVotes(givenIndex);
 		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
@@ -141,6 +180,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		if (votes === 1) {
 			undoButton.style.display = 'inline-block';
 			endPollButton.style.display = 'inline-block';
+			endPollButton.disabled = false;
 			resetPollButton.style.display = 'inline-block';
 		}
 	}
@@ -245,17 +285,28 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 			interfaceCandidates[index].setLeaderState(isLeader);
 			interfaceCandidates[index].updateVotes();
 		});
+		poll.getCandidates().forEach(function (candidate, index) {
+			updateServer(index,candidate.getVotes());
+		});
+		winnerDeclaration.removeChild(winnerDeclaration.firstChild);
+		interfaceCandidates.forEach(function (candidate, index) {
+			candidate.showOnUi(width);
+		});
 		undoButton.style.display = 'none';
 		endPollButton.style.display = 'none';
 		resetPollButton.style.display = 'none';
+		nextPollButton.style.display = 'none';
 	};
 
 	this.end = function () {
 		endPollButton.style.display = 'none';
 		endPollButton.disabled = true;
 		undoButton.style.display = 'none';
-		resetPollButton.style.display = 'none';
+		resetPollButton.style.display = 'inline-block';
 		declareResults();
+		poll.getCandidates().forEach(function (candidate, index) {
+			updateServer(index,candidate.getVotes());
+		});
 	};
 
 	titleBox = document.createElement('h1');
@@ -389,7 +440,7 @@ function FirstInterface(givenDumpId) {
 		officeNameTd,
 		winnerTd,
 		votesTd;
-
+	
 	function setNavColorsAndContents() {
 		navBar.style.color = slides[currentSlide].style.backgroundColor;
 		navBar.style.backgroundColor = slides[currentSlide].style.color;
@@ -482,7 +533,7 @@ function FirstInterface(givenDumpId) {
 		tempInterfacePoll.getEndPollButton().addEventListener('click', function () {
 			this.disabled = true;
 			confirm('This will end this election and no further votes will be registered. This cannot be undone. Continue?', function () {
-				tempInterfacePoll.end();
+				tempInterfacePoll.end();// <----------------------<--------------------
 				if (currentSlide !== slides.length - 2) {
 					tempInterfacePoll.getNextPollButton().style.display = 'inline-block';
 				} else {
