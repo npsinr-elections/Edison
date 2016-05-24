@@ -52,7 +52,7 @@ def returnimages(filename):
 def returncimages(filename):
 	return static_file(filename, root='savedimages')
 
-@app.get('/candidates')
+@app.get('/customize')
 def candidate():
 	return open('templates/candidates.html').read()
 
