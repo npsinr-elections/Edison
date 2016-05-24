@@ -66,9 +66,25 @@ def uploadimage():
 	name, ext = os.path.splitext(image.filename)
 	if ext not in ('.png','.jpg','.jpeg','.gif'):
 		return 'File extension not allowed.'
-	save_path = 'savedimages'
-	image.save(save_path, overwrite = True)
-	return '/savedimages/' + str(image.filename)
+	save_path = 'savedimages/'
+	full_path = '/savedimages/' + str(image.filename)
+	new_name = os.path.join(save_path,name + ext)
+	if os.path.exists(new_name):
+		i = 1
+		while True:
+			new_name = os.path.join(save_path,name + "_" + str(i) + ext)
+			if os.path.exists(new_name):
+				i += 1
+			else:
+				break
+	image.save(new_name)
+	return "/" + new_name
+
+def delete_image(img_path):
+	try:
+		os.remove(img_path[1:])
+	except OSError:
+		print "File for deletion wasn't found. Ignoring deletion"
 
 @app.post('/candidateAction')
 def candidateAction():
@@ -88,6 +104,7 @@ def candidateAction():
 		data = json.load(data_file)
 		
 		if action == 'delete':
+			delete_image(data['polls'][pollIndex]['candidates'][candidateIndex]['image'])
 			del data['polls'][pollIndex]['candidates'][candidateIndex]
 				
 		elif action == 'update':
@@ -123,6 +140,8 @@ def pollAction():
 			data['polls'][pollIndex][update] = value
 			
 		elif action == 'delete':
+			for candidate in data['polls'][pollIndex]['candidates']:
+				delete_image(candidate['image'])
 			del data['polls'][pollIndex]
 		
 		elif action == 'create':
