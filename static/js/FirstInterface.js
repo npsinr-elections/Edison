@@ -49,9 +49,9 @@ function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, gi
 	
 	this.showOnUi = function (width) {
 		candidateButton.disabled = false;
+			candidateButton.style.display = 'inline-block';
 			candidateButton.style.opacity = 1;
 			candidateButton.style.width = width;
-			candidateButton.style.display = 'inline-block';
 	};
 
 	this.updateVotes = function () {
@@ -115,6 +115,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		foreColor = pollValue.foreColor,
 		backColor = pollValue.backColor,
 		candidates = pollValue.candidates,
+		ended = pollValue.ended,
 
 		interfaceCandidates = [],
 		votes = 0,
@@ -156,12 +157,12 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		xhr.send(JSON.stringify(instruction));
 	}
 	
-	function updateEnded(givenInstruction) {
+	function updateEnded(value) {
 		var xhr,
 			instruction = {
 			'action': 'update',
 			'update': 'ended',
-			'value': true
+			'value': value
 		};
 
 		instruction.pollIndex = pollIndex;
@@ -288,7 +289,9 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		poll.getCandidates().forEach(function (candidate, index) {
 			updateServer(index,candidate.getVotes());
 		});
+		if (winnerDeclaration.firstChild) {
 		winnerDeclaration.removeChild(winnerDeclaration.firstChild);
+		}
 		interfaceCandidates.forEach(function (candidate, index) {
 			candidate.showOnUi(width);
 		});
@@ -296,10 +299,12 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		endPollButton.style.display = 'none';
 		resetPollButton.style.display = 'none';
 		nextPollButton.style.display = 'none';
+		updateEnded(false);
 	};
 
 	this.end = function () {
 		endPollButton.style.display = 'none';
+		nextPollButton.style.display = 'inline-block';
 		endPollButton.disabled = true;
 		undoButton.style.display = 'none';
 		resetPollButton.style.display = 'inline-block';
@@ -307,8 +312,13 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		poll.getCandidates().forEach(function (candidate, index) {
 			updateServer(index,candidate.getVotes());
 		});
+		updateEnded(true);
 	};
-
+	
+	poll.getCandidates().forEach(function (candidate, index) {
+		candidate.setVotes(candidates[index].votes);
+	});
+	
 	titleBox = document.createElement('h1');
 	titleBox.appendChild(document.createTextNode(name.concat(' Election')));
 
@@ -404,6 +414,10 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 	centerElements();
 	window.addEventListener('resize', centerElements);
+	
+	if (ended === true) {
+		this.end();
+	}
 }
 
 function FirstInterface(givenDumpId) {

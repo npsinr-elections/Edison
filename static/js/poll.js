@@ -18,6 +18,9 @@ function Candidate() {
 	this.reset = function () {
 		votes = 0;
 	};
+	this.setVotes = function (voteCount) {
+		votes = voteCount;
+	};
 }
 
 function Poll(noOfCandidates) {
@@ -34,7 +37,7 @@ function Poll(noOfCandidates) {
 	this.getCandidates = function () {
 		return candidates;
 	};
-
+	
 	this.addToVotes = function (i) {
 		votes.push(candidates[i]);
 	};
