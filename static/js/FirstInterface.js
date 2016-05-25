@@ -585,13 +585,7 @@ function FirstInterface(givenDumpId) {
 				if (currentSlide !== slides.length - 2) {
 					tempInterfacePoll.getNextPollButton().style.display = 'inline-block';
 				} else {
-						var resultHide = document.getElementById('resultsButton');
-				if (resultHide === null) {
 					tempInterfacePoll.getControls().appendChild(resultsButton);
-				} else {
-					resultHide.style.display = 'inline-block';
-					resultHide.disabled = false;
-				}
 				}
 			}, function () {
 				tempInterfacePoll.getEndPollButton().disabled = false;
@@ -606,8 +600,7 @@ function FirstInterface(givenDumpId) {
 				if (currentSlide == slides.length - 2) {
 				var resultHide = document.getElementById('resultsButton');
 				if (resultHide !== null) {
-					resultHide.style.display = 'none';
-					resultHIde.disabled = true;
+					resultsButton.parentElement.removeChild(resultsButton);
 				}
 			}
 			}, function () {
@@ -727,12 +720,18 @@ function FirstInterface(givenDumpId) {
 		resetElectionsButton.disabled = true;
 		confirm('This action will reset all votes for every office. This cannot be undone. Continue?', function () {
 		var xhr;
-		console.log("RAN");
 		xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function () {
 		if (xhr.readyState === 4 && xhr.status === 200) {
-			interfacePolls.forEach(function (interfacePoll) {
+			interfacePolls.forEach(function (interfacePoll,index) {
 				interfacePoll.reset(false);
+				if ((index+2) == (slides.length-1)) {
+					var resultHide = document.getElementById('resultsButton');
+					console.log("RAN");
+				if (resultHide !== null) {
+					resultsButton.parentElement.removeChild(resultsButton);
+				}
+				}
 			});
 			if (resetElectionsButton.firstChild) {
 				resetElectionsButton.removeChild(resetElectionsButton.firstChild);
