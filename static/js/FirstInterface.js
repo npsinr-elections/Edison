@@ -585,7 +585,13 @@ function FirstInterface(givenDumpId) {
 				if (currentSlide !== slides.length - 2) {
 					tempInterfacePoll.getNextPollButton().style.display = 'inline-block';
 				} else {
+						var resultHide = document.getElementById('resultsButton');
+				if (resultHide === null) {
 					tempInterfacePoll.getControls().appendChild(resultsButton);
+				} else {
+					resultHide.style.display = 'inline-block';
+					resultHide.disabled = false;
+				}
 				}
 			}, function () {
 				tempInterfacePoll.getEndPollButton().disabled = false;
@@ -597,6 +603,13 @@ function FirstInterface(givenDumpId) {
 			confirm('This will reset all progress in the election for this office. This action cannot be undone. Continue?', function () {
 				tempInterfacePoll.reset(true);
 				tempInterfacePoll.getResetPollButton().disabled = false;
+				if (currentSlide == slides.length - 2) {
+				var resultHide = document.getElementById('resultsButton');
+				if (resultHide !== null) {
+					resultHide.style.display = 'none';
+					resultHIde.disabled = true;
+				}
+			}
 			}, function () {
 				tempInterfacePoll.getResetPollButton().disabled = false;
 			});
