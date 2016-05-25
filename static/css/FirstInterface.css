@@ -18,6 +18,11 @@ div#nav {
 	bottom: auto;
 }
 
+#nav a {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}
+
 div#navBarButtonGroup {
 	position: float;
 	float: right;

@@ -466,6 +466,7 @@ function FirstInterface(givenDumpId) {
 		parentElement,
 		navBar,
 		navBarHeading,
+		navBarHomeLink,
 		pollNameHeading,
 		pollName,
 		navBarButtonGroup,
@@ -672,7 +673,12 @@ function FirstInterface(givenDumpId) {
 
 	navBarHeading = document.createElement('h3');
 	navBarHeading.className = 'navBarHeading';
-	navBarHeading.appendChild(document.createTextNode('Edison'));
+	
+	navBarHomeLink = document.createElement('a');
+	navBarHomeLink.href = "/";
+	navBarHomeLink.appendChild(document.createTextNode('Edison'));
+	
+	navBarHeading.appendChild(navBarHomeLink);
 
 	pollName = document.createTextNode('');
 
