@@ -269,6 +269,10 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	this.getBackColor = function () {
 		return backColor;
 	};
+	
+	this.getEnded = function () {
+		return ended;
+	};
 
 	this.getWinnerDetails = function () {
 		var indexes = poll.getWinnerIndexes(),
@@ -309,18 +313,20 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		}
 	};
 
-	this.end = function () {
+	this.end = function (update) {
 		endPollButton.style.display = 'none';
-		nextPollButton.style.display = 'inline-block';
 		endPollButton.disabled = true;
 		undoButton.style.display = 'none';
-		resetPollButton.style.display = 'inline-block';
 		declareResults();
+		if (update) {
 		poll.getCandidates().forEach(function (candidate, index) {
 			updateServer(index,candidate.getVotes());
 		});
+		}
 		ended = true;
+		if (update) {
 		updateEnded(true);
+		}
 	};
 	
 	poll.getCandidates().forEach(function (candidate, index) {
@@ -344,12 +350,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		this.disabled = true;
 		
 		if (ended === true) {
-			endPollButton.style.display = 'none';
-			nextPollButton.style.display = 'inline-block';
-			endPollButton.disabled = true;
-			undoButton.style.display = 'none';
 			resetPollButton.style.display = 'inline-block';
-			declareResults();
 		} else {
 			var started = false;
 			candidates.forEach(function (candidate, index) {
@@ -573,12 +574,13 @@ function FirstInterface(givenDumpId) {
 		var tempInterfacePoll = new InterfacePoll(dumpId, pollValue, index);
 
 		slides.push(tempInterfacePoll.getHeadingSlide());
+
 		tempInterfacePoll.getNextPollButton().addEventListener('click', nextSlide);
 
 		tempInterfacePoll.getEndPollButton().addEventListener('click', function () {
 			this.disabled = true;
 			confirm('This will end this election and no further votes will be registered. This cannot be undone. Continue?', function () {
-				tempInterfacePoll.end();// <----------------------<--------------------
+				tempInterfacePoll.end(true);// <----------------------<--------------------
 				if (currentSlide !== slides.length - 2) {
 					tempInterfacePoll.getNextPollButton().style.display = 'inline-block';
 				} else {
@@ -791,6 +793,16 @@ function FirstInterface(givenDumpId) {
 			data = JSON.parse(xhr.responseText);
 			data.polls.forEach(function (poll, index) {
 				createNewInterfacePoll(poll, index);
+			});
+			interfacePolls.forEach(function (tempInterfacePoll,index) {
+			if (tempInterfacePoll.getEnded()) {
+				tempInterfacePoll.end(false);// <----------------------<--------------------
+				if (index !== slides.length - 1) {
+					tempInterfacePoll.getNextPollButton().style.display = 'inline-block';
+				} else {
+					tempInterfacePoll.getControls().appendChild(resultsButton);
+				}
+			}
 			});
 			prepSlidesAndNav();
 		}
