@@ -287,6 +287,11 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 	this.reset = function (update) {
 		votes = 0;
+		undoButton.style.display = 'none';
+		endPollButton.style.display = 'none';
+		resetPollButton.style.display = 'none';
+		nextPollButton.style.display = 'none';
+		ended = false;
 		poll.reset();
 		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
 			interfaceCandidates[index].setLeaderState(isLeader);
@@ -298,16 +303,11 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		});
 		}
 		if (winnerDeclaration.firstChild) {
-		winnerDeclaration.removeChild(winnerDeclaration.firstChild);
+			winnerDeclaration.removeChild(winnerDeclaration.firstChild);
 		}
 		interfaceCandidates.forEach(function (candidate, index) {
 			candidate.showOnUi(width);
 		});
-		undoButton.style.display = 'none';
-		endPollButton.style.display = 'none';
-		resetPollButton.style.display = 'none';
-		nextPollButton.style.display = 'none';
-		ended = false;
 		if (update) {
 			updateEnded(false);
 		}
@@ -325,7 +325,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		}
 		ended = true;
 		if (update) {
-		updateEnded(true);
+			updateEnded(true);
 		}
 	};
 	
@@ -581,7 +581,7 @@ function FirstInterface(givenDumpId) {
 		tempInterfacePoll.getEndPollButton().addEventListener('click', function () {
 			this.disabled = true;
 			confirm('This will end this election and no further votes will be registered. This cannot be undone. Continue?', function () {
-				tempInterfacePoll.end(true);// <----------------------<--------------------
+				tempInterfacePoll.end(true);
 				if (currentSlide !== slides.length - 2) {
 					tempInterfacePoll.getNextPollButton().style.display = 'inline-block';
 				} else {
@@ -741,7 +741,7 @@ function FirstInterface(givenDumpId) {
 		};
 		xhr.open('POST', '/resetVotes', true);
 		xhr.send();
-		},function () {
+		}, function () {
 			resetElectionsButton.disabled = false;
 		});
 	
@@ -814,7 +814,7 @@ function FirstInterface(givenDumpId) {
 			});
 			interfacePolls.forEach(function (tempInterfacePoll,index) {
 			if (tempInterfacePoll.getEnded()) {
-				tempInterfacePoll.end(false);// <----------------------<--------------------
+				tempInterfacePoll.end(false);
 				if (index !== slides.length - 1) {
 					tempInterfacePoll.getNextPollButton().style.display = 'inline-block';
 				} else {
