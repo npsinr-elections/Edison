@@ -52,10 +52,6 @@ def returnimages(filename):
 def returncimages(filename):
 	return static_file(filename, root='savedimages')
 
-@app.get('/customize')
-def candidate():
-	return open('templates/candidates.html').read()
-
 @app.get('/elections')
 def elections():
 	return open('templates/elections.html').read()
