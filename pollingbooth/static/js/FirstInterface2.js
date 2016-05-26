@@ -99,21 +99,12 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 		parentElement,
 
-		headingSlide,
-		centeredContainer,
-		titleBox,
-		messageBox,
-		startButton,
-
 		started = false,
 
 		electionSlide,
-		winnerDeclaration,
 		candidateButtonGroup,
 
 		controls,
-		resetPollButton,
-		endPollButton,
 		previousButton,
 		nextButton,
 
@@ -154,11 +145,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 			interfaceCandidates[index].setLeaderState(isLeader);
 		});
 		votes += 1;
-		if (votes === 1) {
-			endPollButton.style.display = 'inline-block';
-			endPollButton.disabled = false;
-			resetPollButton.style.display = 'inline-block';
-		}
 	}
 
 	function undoVote() {
@@ -168,12 +154,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 			interfaceCandidates[index].updateVotes();
 		});
 		votes -= 1;
-		if (votes === 0) {
-			if (started) {
-				endPollButton.style.display = 'none';
-				resetPollButton.style.display = 'none';
-			}
-		}
 	}
 
 	function centerElements() {
@@ -194,23 +174,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		interfaceCandidates.push(tempInterfaceCandidate);
 	}
 
-	function declareResults() {
-		poll.getWhetherLeaders(false).forEach(function (isLeader, index) {
-			interfaceCandidates[index].setLeaderState(isLeader);
-			interfaceCandidates[index].removeIfNotLeader(isLeader);
-		});
-		if (poll.getWinnerIndexes().length === 1) {
-			winnerDeclaration.appendChild(document.createTextNode('We have our winner!'));
-		} else {
-			winnerDeclaration.appendChild(document.createTextNode('We have our winners!'));
-		}
-		winnerDeclaration.style.opacity = 1;
-	}
-
-	this.getHeadingSlide = function () {
-		return headingSlide;
-	};
-
 	this.getCandidateButtons = function () {
 		var candidateButtons = [];
 		interfaceCandidates.forEach(function (interfaceCandidate) {
@@ -223,10 +186,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		return electionSlide;
 	};
 
-	this.getStartButton = function () {
-		return startButton;
-	};
-
 	this.getEnded = function () {
 		return ended;
 	};
@@ -237,14 +196,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 	this.getBackColor = function () {
 		return backColor;
-	};
-
-	this.getEndPollButton = function () {
-		return endPollButton;
-	};
-
-	this.getResetPollButton = function () {
-		return resetPollButton;
 	};
 
 	this.getControls = function () {
@@ -274,51 +225,9 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		return winnerDetails;
 	};
 
-	this.reset = function (update) {
-		votes = 0;
-		endPollButton.style.display = 'none';
-		resetPollButton.style.display = 'none';
-		nextButton.style.display = 'none';
-		ended = false;
-		poll.reset();
-		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
-			interfaceCandidates[index].setLeaderState(isLeader);
-			interfaceCandidates[index].updateVotes();
-		});
-		if (winnerDeclaration.firstChild) {
-			winnerDeclaration.removeChild(winnerDeclaration.firstChild);
-		}
-		if (update) {
-			updateEnded(false);
-		}
-	};
-
-	this.end = function (update) {
-		endPollButton.style.display = 'none';
-		endPollButton.disabled = true;
-		declareResults();
-		ended = true;
-		if (update) {
-			updateEnded(true);
-		}
-	};
-
 	candidateButtonGroup = document.createElement('div');
 	candidateButtonGroup.className = 'candidateButtonGroup';
 	candidateButtonGroup.id = id;
-
-	resetPollButton = document.createElement('button');
-	resetPollButton.style.backgroundColor = backColor;
-	resetPollButton.style.color = foreColor;
-	resetPollButton.style.display = 'none';
-	resetPollButton.appendChild(document.createTextNode('Reset This Election'));
-
-	endPollButton = document.createElement('button');
-	endPollButton.className = 'endPollButton';
-	endPollButton.style.backgroundColor = backColor;
-	endPollButton.style.color = foreColor;
-	endPollButton.style.display = 'none';
-	endPollButton.appendChild(document.createTextNode('End This Election'));
 
 	nextButton = document.createElement('button');
 	nextButton.appendChild(document.createTextNode('Next'));
@@ -327,7 +236,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	nextButton.style.display = 'none';
 	nextButton.addEventListener('click', function () {
 		electionSlide.style.left = '-100%';
-		this.disabled = true;
 	});
 
 	previousButton = document.createElement('button');
@@ -337,7 +245,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	previousButton.style.display = 'none';
 	previousButton.addEventListener('click', function () {
 		electionSlide.style.left = '100%';
-		this.disabled = true;
 	});
 
 	controls = document.createElement('div');
@@ -397,13 +304,13 @@ function FirstInterface(givenDumpId) {
 	function setNavColorsAndContents() {
 		navBar.style.color = slides[currentSlide].style.backgroundColor;
 		navBar.style.backgroundColor = slides[currentSlide].style.color;
-		if (currentSlide > 0) {
-			pollNameHeading.removeChild(pollName);
-			interfacePolls[currentSlide].getPreviousButton().style.display = 'inline-block';
-		}
+		pollNameHeading.removeChild(pollName);
 		pollName = document.createTextNode('- ' + interfacePolls[currentSlide].getName());
 		pollNameHeading.appendChild(pollName);
 
+		if (currentSlide > 0) {
+			interfacePolls[currentSlide].getPreviousButton().style.display = 'inline-block';
+		}
 		if (currentSlide === slides.length - 1) {
 			interfacePolls[currentSlide].getControls().removeChild(interfacePolls[currentSlide].getNextButton());
 			interfacePolls[currentSlide].getControls().appendChild(submitButton);
@@ -492,25 +399,6 @@ function FirstInterface(givenDumpId) {
 		tempInterfacePoll.getNextButton().addEventListener('click', nextSlide);
 		tempInterfacePoll.getPreviousButton().addEventListener('click', previousSlide);
 
-		tempInterfacePoll.getEndPollButton().addEventListener('click', function () {
-			this.disabled = true;
-			confirm('This will end this election and no further votes will be registered. This cannot be undone. Continue?', function () {
-				tempInterfacePoll.end(true);
-			}, function () {
-				tempInterfacePoll.getEndPollButton().disabled = false;
-			});
-		});
-
-		tempInterfacePoll.getResetPollButton().addEventListener('click', function () {
-			this.disabled = true;
-			confirm('This will reset all progress in the election for this office. This action cannot be undone. Continue?', function () {
-				tempInterfacePoll.reset(true);
-				tempInterfacePoll.getResetPollButton().disabled = false;
-			}, function () {
-				tempInterfacePoll.getResetPollButton().disabled = false;
-			});
-		});
-
 		interfacePolls.push(tempInterfacePoll);
 	}
 
@@ -542,6 +430,7 @@ function FirstInterface(givenDumpId) {
 
 	pollNameHeading = document.createElement('h3');
 	pollNameHeading.className = 'pollNameHeading';
+	pollNameHeading.appendChild(pollName);
 
 	navBarButtonGroup = document.createElement('div');
 	navBarButtonGroup.id = 'navBarButtonGroup';
@@ -551,7 +440,6 @@ function FirstInterface(givenDumpId) {
 	navBar.appendChild(navBarHeading);
 	navBar.appendChild(pollNameHeading);
 	navBar.appendChild(navBarButtonGroup);
-
 
 	jsonDownload = document.createElement('a');
 	jsonDownload.href = "#";
