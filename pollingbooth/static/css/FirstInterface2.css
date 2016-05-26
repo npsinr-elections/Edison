@@ -113,6 +113,14 @@ button.startButton {
 	margin:0.5em;
 }
 
+.postvotebutton {
+	border:none;
+	font-size:0.5em;
+	padding: 0.2em 1em;
+	margin:0.5em;
+	color:#FFF;
+}
+
 div.candidateButtonGroup {
 	text-align: center;
 	position: absolute;
