@@ -587,148 +587,155 @@ function Interface(givenDumpId) {
 
 		polls.push(tempPoll);
 	}
-	function createNameMessage(givenValue,givenDumpId) {
+
+	function createNameMessage(givenValue, givenDumpId) {
 		var value = givenValue,
 
-		parentElement,
-		containerElement,
+			parentElement,
+			containerElement,
 
-		img,
-		imageBox,
-		fileInput,
-		backgroundTextBox,
-		errorBox,messageTextBox,textBox,panel,panelBody,panelHeading;
+			img,
+			imageBox,
+			fileInput,
+			backgroundTextBox,
+			errorBox,
+			messageTextBox,
+			textBox,
+			panel,
+			panelBody,
+			panelHeading;
+
 		function updateServer(givenInstruction) {
-		var xhr,
-			instruction = givenInstruction;
-		xhr = new XMLHttpRequest();
-		xhr.open('POST', '/electionAction', true);
-		xhr.setRequestHeader('Content-type', 'application/json');
-		xhr.send(JSON.stringify(instruction));
-	}
-
-	function clearErrors() {
-		while (errorBox.lastChild) {
-			errorBox.removeChild(errorBox.lastChild);
+			var xhr,
+				instruction = givenInstruction;
+			xhr = new XMLHttpRequest();
+			xhr.open('POST', '/electionAction', true);
+			xhr.setRequestHeader('Content-type', 'application/json');
+			xhr.send(JSON.stringify(instruction));
 		}
-	}
 
-	img = document.createElement('img');
-	img.className = 'candidateImg';
-	img.src = value.image || '/savedimages/default.gif';
-
-	backgroundTextBox = document.createElement('button');
-	backgroundTextBox.className = 'backgroundTextBox';
-	if (!value.image) {
-		backgroundTextBox.style.opacity = 1;
-	}
-
-	fileInput = document.createElement('input');
-	fileInput.type = 'file';
-	fileInput.className = 'fileInput';
-	fileInput.addEventListener('change', function () {
-		var formData,
-			xhr,
-			image,
-			imagePath;
-
-		image = this.files[0];
-
-		formData = new FormData();
-		formData.append('file', image);
-
-		xhr = new XMLHttpRequest();
-		xhr.open('POST', '/uploadimage', true);
-		xhr.onreadystatechange = function () {
-			if (xhr.readyState === 4 && xhr.status === 200) {
-				imagePath = xhr.responseText;
-				value.image = imagePath;
-				img.src = imagePath;
-				backgroundTextBox.removeAttribute('style');
-				backgroundTextBox.removeChild(backgroundTextBox.lastChild);
-				backgroundTextBox.appendChild(document.createTextNode('Update Image'));
-				fileInput.title = 'Update Image';
-
-				updateServer({
-					'update': 'image',
-					'value': imagePath
-				});
+		function clearErrors() {
+			while (errorBox.lastChild) {
+				errorBox.removeChild(errorBox.lastChild);
 			}
-		};
-		xhr.send(formData);
-	});
-
-	if (value.image) {
-		backgroundTextBox.appendChild(document.createTextNode('Update Image'));
-		fileInput.title = 'Update Image';
-	} else {
-		backgroundTextBox.appendChild(document.createTextNode('Upload Image'));
-		fileInput.title = 'Upload Image';
-	}
-
-	imageBox = document.createElement('div');
-	imageBox.className = 'imageBox';
-	imageBox.appendChild(img);
-	imageBox.appendChild(backgroundTextBox);
-	imageBox.appendChild(fileInput);
-
-	errorBox = document.createElement('p');
-	errorBox.className = 'errorBox';
-
-	textBox = document.createElement('input');
-	textBox.className = 'textBox';
-	textBox.type = 'text';
-	textBox.placeholder = 'Enter a name.';
-	textBox.value = value.name || '';
-	textBox.addEventListener('input', function () {
-		var text = this.value.replace(' ', '');
-
-		if (text === '') {
-			clearErrors();
-			errorBox.appendChild(document.createTextNode('Please do not leave this field empty. Otherwise, the election name may not be stored correctly.'));
-		} else if (!(/[\d\f\n\r\t\v_]/gi.test(text))) {
-			updateServer({
-				'update': 'name',
-				'value': this.value.trim()
-			});
-			clearErrors();
-		} else {
-			clearErrors();
-			errorBox.appendChild(document.createTextNode('Please enter only Latin letters, periods and spaces. Otherwise, the name will not be stored correctly.'));
 		}
-	});
-	
-	messageTextBox = document.createElement('input');
-	messageTextBox.className = 'textBox';
-	messageTextBox.placeholder = 'Enter an optional message';
-	messageTextBox.value = value.message;
-	messageTextBox.addEventListener('input', function () {
-		updateServer({
-			'update': 'message',
-			'value': this.value
+
+		img = document.createElement('img');
+		img.className = 'candidateImg';
+		img.src = value.image || '/savedimages/default.gif';
+
+		backgroundTextBox = document.createElement('button');
+		backgroundTextBox.className = 'backgroundTextBox';
+		if (!value.image) {
+			backgroundTextBox.style.opacity = 1;
+		}
+
+		fileInput = document.createElement('input');
+		fileInput.type = 'file';
+		fileInput.className = 'fileInput';
+		fileInput.addEventListener('change', function () {
+			var formData,
+				xhr,
+				image,
+				imagePath;
+
+			image = this.files[0];
+
+			formData = new FormData();
+			formData.append('file', image);
+
+			xhr = new XMLHttpRequest();
+			xhr.open('POST', '/uploadimage', true);
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === 4 && xhr.status === 200) {
+					imagePath = xhr.responseText;
+					value.image = imagePath;
+					img.src = imagePath;
+					backgroundTextBox.removeAttribute('style');
+					backgroundTextBox.removeChild(backgroundTextBox.lastChild);
+					backgroundTextBox.appendChild(document.createTextNode('Update Image'));
+					fileInput.title = 'Update Image';
+
+					updateServer({
+						'update': 'image',
+						'value': imagePath
+					});
+				}
+			};
+			xhr.send(formData);
 		});
-	});
-	containerElement = document.createElement('div');
-	containerElement.appendChild(imageBox);
-	containerElement.appendChild(errorBox);
-	containerElement.appendChild(textBox);
-	containerElement.appendChild(messageTextBox);
-	
-	panelHeading = document.createElement('div');
-	panelHeading.className = 'panel-heading';
-	panelHeading.appendChild(document.createTextNode('Election Details'));
-	
-	panelBody = document.createElement('div');
-	panelBody.className = 'panel-body';
-	panelBody.appendChild(containerElement);
 
-	panel = document.createElement('div');
-	panel.className = 'panel panel-primary';
-	panel.appendChild(panelHeading);
-	panel.appendChild(panelBody);
+		if (value.image) {
+			backgroundTextBox.appendChild(document.createTextNode('Update Image'));
+			fileInput.title = 'Update Image';
+		} else {
+			backgroundTextBox.appendChild(document.createTextNode('Upload Image'));
+			fileInput.title = 'Upload Image';
+		}
 
-	parentElement = document.getElementById(givenDumpId);
-	parentElement.insertBefore(panel, parentElement.lastChild);
+		imageBox = document.createElement('div');
+		imageBox.className = 'imageBox';
+		imageBox.appendChild(img);
+		imageBox.appendChild(backgroundTextBox);
+		imageBox.appendChild(fileInput);
+
+		errorBox = document.createElement('p');
+		errorBox.className = 'errorBox';
+
+		textBox = document.createElement('input');
+		textBox.className = 'textBox';
+		textBox.type = 'text';
+		textBox.placeholder = 'Enter a name.';
+		textBox.value = value.name || '';
+		textBox.addEventListener('input', function () {
+			var text = this.value.replace(' ', '');
+
+			if (text === '') {
+				clearErrors();
+				errorBox.appendChild(document.createTextNode('Please do not leave this field empty. Otherwise, the election name may not be stored correctly.'));
+			} else if (!(/[\d\f\n\r\t\v_]/gi.test(text))) {
+				updateServer({
+					'update': 'name',
+					'value': this.value.trim()
+				});
+				clearErrors();
+			} else {
+				clearErrors();
+				errorBox.appendChild(document.createTextNode('Please enter only Latin letters, periods and spaces. Otherwise, the name will not be stored correctly.'));
+			}
+		});
+
+		messageTextBox = document.createElement('input');
+		messageTextBox.className = 'textBox';
+		messageTextBox.placeholder = 'Enter an optional message';
+		messageTextBox.value = value.message;
+		messageTextBox.addEventListener('input', function () {
+			updateServer({
+				'update': 'message',
+				'value': this.value
+			});
+		});
+		containerElement = document.createElement('div');
+		containerElement.appendChild(imageBox);
+		containerElement.appendChild(errorBox);
+		containerElement.appendChild(textBox);
+		containerElement.appendChild(messageTextBox);
+
+		panelHeading = document.createElement('div');
+		panelHeading.className = 'panel-heading';
+		panelHeading.appendChild(document.createTextNode('Election Details'));
+
+		panelBody = document.createElement('div');
+		panelBody.className = 'panel-body';
+		panelBody.appendChild(containerElement);
+
+		panel = document.createElement('div');
+		panel.className = 'panel panel-primary';
+		panel.appendChild(panelHeading);
+		panel.appendChild(panelBody);
+
+		parentElement = document.getElementById(givenDumpId);
+		parentElement.insertBefore(panel, parentElement.lastChild);
 	}
 
 	addNewPollButton = document.createElement('button');
@@ -738,7 +745,7 @@ function Interface(givenDumpId) {
 	addNewPollButton.addEventListener('click', function () {
 		addNewPoll({});
 	});
-	
+
 	parentElement = document.getElementById(dumpId);
 	parentElement.appendChild(addNewPollButton);
 
@@ -746,7 +753,7 @@ function Interface(givenDumpId) {
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === 4 && xhr.status === 200) {
 			data = JSON.parse(xhr.responseText);
-			createNameMessage(data,givenDumpId);
+			createNameMessage(data, givenDumpId);
 			data.polls.forEach(function (pollValue, index) {
 				addNewPoll(pollValue);
 			});
