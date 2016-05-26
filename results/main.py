@@ -193,6 +193,8 @@ def mergeJSON():
 							
 	with open('candidates.json', 'w') as data_file:
 		data_file.write(json.dumps(merge_data))
+	
+	return "Success! Files have been successfully merged."
 
 @app.get('/setup')
 def setup():
