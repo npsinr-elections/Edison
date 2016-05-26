@@ -16,6 +16,7 @@ div#nav {
 	padding: 1em 1.5em;
 	z-index: 999;
 	bottom: auto;
+	text-align:center;
 }
 
 button:active,
@@ -189,6 +190,7 @@ div.controls>button {
 	border-width: 1px;
 	padding: 0.5em 1em;
 	margin-left: 0.5em;
+	font-size: 25px;
 }
 
 div#resultsSlide {
@@ -218,7 +220,7 @@ table#resultsTable>tr#headerRow {
 table#resultsTable>tr>td {
 	padding: 0.5em;
 	border: 1px solid #000000;
-	font-size: 1.5em;
+	font-size: 2em;
 }
 
 table#resultsTable>tr>td>img {
