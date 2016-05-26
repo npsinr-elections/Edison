@@ -58,7 +58,15 @@ def candidate():
 
 @app.get('/elections')
 def elections():
-	return open('templates/elections.html').read()
+	return open('templates/elections2.html').read()
+
+@app.get('/downloadComplete')
+def downloadComplete():
+	return open('templates/instructions.html').read()
+
+@app.get('/json/download')
+def jsonDownload():
+	return static_file("candidates.json",root='',download=True)
 
 @app.post('/uploadimage')
 def uploadimage():
@@ -112,6 +120,58 @@ def candidateAction():
 		
 	with open('candidates.json', 'w') as data_file:
 		data_file.write(json.dumps(data))
+		
+@app.post('/voteCandidates')
+def voteCandidate():
+	instruction = request.json
+	
+	with open("candidates.json",'r') as data_file:
+		pollIndex = instruction['pollIndex']
+		candidateIndex = instruction['candidateIndex']
+		
+		data = json.load(data_file)
+		
+		data['polls'][pollIndex]['candidates'][candidateIndex]['votes'] += 1
+		
+	with open('candidates.json', 'w') as data_file:
+		data_file.write(json.dumps(data))
+
+
+@app.post('/uploadjson')
+def uploadjson():
+	json_file = request.files.get('file')
+	name, ext = os.path.splitext(json_file.filename)
+	if ext not in ('.json'):
+		return 'File extension not allowed.'
+	json_file.save("datafiles/", overwrite=True)
+
+@app.post('/mergeJSONFiles')
+def mergeJSON():
+	merge_data = None
+	for fn in os.listdir('datafiles/'):
+		print fn
+		with open('datafiles/'+fn) as data_file:
+			if merge_data == None:
+				merge_data = json.load(data_file)
+			else:
+				data = json.load(data_file)
+				for i in range(len(data['polls'])):
+					for k in range(len(merge_data['polls'])):
+						if merge_data["polls"][k]["name"] == data['polls'][i]['name']:
+							for j in range(len(data['polls'][i]['candidates'])):
+								for l in range(len(merge_data["polls"][k]["candidates"])):
+									if merge_data["polls"][k]["candidates"][l]["name"] == data['polls'][i]["candidates"][j]["name"]:
+										merge_data["polls"][k]["candidates"][l]["votes"] += data['polls'][i]["candidates"][j]["votes"]
+										break
+								else:
+									merge_data['polls'][k]['candidates'].append(data['polls'][i]['candidates'][j])
+							break
+					else:
+						merge_data['polls'].append(data['polls'][i])
+							
+							
+	with open('candidates.json', 'w') as data_file:
+		data_file.write(json.dumps(merge_data))
 
 @app.post('/pollAction')
 def pollAction():
@@ -167,7 +227,7 @@ def electionAction():
 	with open('candidates.json', 'w') as data_file:
 		data_file.write(json.dumps(data))
 
-@app.post('/resetVotes')
+@app.get('/resetVotes')
 def resetVotes():
 	with open('candidates.json','r') as data_file:
 		data = json.load(data_file)
