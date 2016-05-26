@@ -258,7 +258,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	messageBox.appendChild(document.createTextNode(message));
 
 	startButton = document.createElement('button');
-	startButton.appendChild(document.createTextNode('Start Election'));
+	startButton.appendChild(document.createTextNode('Show Result'));
 	startButton.className = 'startButton';
 	startButton.style.backgroundColor = foreColor;
 	startButton.style.color = backColor;
@@ -581,6 +581,8 @@ function FirstInterface(givenDumpId) {
 	resultsButton.addEventListener('click', function () {
 		displayResults();
 		nextSlide();
+		pollNameHeading.removeChild(pollName);
+		pollNameHeading.appendChild(document.createTextNode("All results"));
 		interfacePolls[interfacePolls.length - 1].getElectionSlide().style.left = '-100%';
 	});
 
