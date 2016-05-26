@@ -453,12 +453,14 @@ function FirstInterface(givenDumpId) {
 	reloadPage = document.createElement('button');
 	reloadPage.className = "postvotebutton";
 	reloadPage.style.backgroundColor = "#00cc66";
-	reloadPage.addEventListener('click', function () {location.href='/elections'});
+	reloadPage.addEventListener('click', function () {
+		location.href = '/elections'
+	});
 	reloadPage.appendChild(document.createTextNode("Next Candidate"));
 
 	nextPersonHeading = document.createElement('h1');
 	nextPersonHeading.style.color = '#00cc66';
-	nextPersonHeading.appendChild(document.createTextNode("Thank You for voting :)."));
+	nextPersonHeading.appendChild(document.createTextNode("Thank You for voting :)"));
 	nextPersonHeading.appendChild(document.createElement('br'));
 	nextPersonHeading.appendChild(document.createTextNode("Next Voter Please."));
 	nextPersonHeading.appendChild(document.createElement('br'));
