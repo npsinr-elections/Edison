@@ -492,6 +492,7 @@ function FirstInterface(givenDumpId) {
 	submitButton.appendChild(document.createTextNode('Submit'));
 	submitButton.style.backgroundColor = '#000000';
 	submitButton.style.display = 'none';
+	submitButton.style.float = 'right';
 	submitButton.addEventListener('click', function () {
 		confirm('Are you sure you want to submit your votes?', function () {
 			nextPersonDiv.style.display = 'block';

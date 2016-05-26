@@ -184,7 +184,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		}
 		setTimeout(function () {
 			winnerDeclaration.style.opacity = 1;
-		}, 1000);
+		}, 1500);
 		setTimeout(function () {
 			interfaceCandidates.forEach(function (candidate) {
 				candidate.showVotes();
@@ -192,12 +192,12 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 			poll.getWhetherLeaders(false).forEach(function (isLeader, index) {
 				interfaceCandidates[index].setLeaderState(isLeader);
 			});
-		}, 2000);
+		}, 2500);
 		setTimeout(function () {
 			poll.getWhetherLeaders(false).forEach(function (isleader, index) {
 				interfaceCandidates[index].removeIfNotLeader(isleader);
 			});
-		}, 3000);
+		}, 7500);
 	}
 
 	this.getHeadingSlide = function () {
