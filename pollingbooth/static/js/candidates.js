@@ -333,7 +333,7 @@ function Poll(givenIndex, givenDumpId, givenValue) {
 		if (text === '') {
 			clearErrors();
 			officeErrorBox.appendChild(document.createTextNode('Please do not leave this field empty. Otherwise, this office may not be stored correctly.'));
-		} else if (!(/[\d\f\n\r\t\v_]/gi.test(text))) {
+		} else if (!(/[\f\n\r\t\v_]/gi.test(text))) {
 			updateServer({
 				'action': 'update',
 				'update': 'name',
