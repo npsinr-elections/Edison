@@ -1,6 +1,24 @@
 /*jslint browser: true*/
 /*globals Poll*/
 
+function getBackColor(name) {
+	'use strict';
+
+	if (/prefect/gi.test(name)) {
+		return '#404040';
+	} else if (/challenger/gi.test(name)) {
+		return '#6D0019';
+	} else if (/explorer/gi.test(name)) {
+		return '#4B0082';
+	} else if (/pioneer/gi.test(name)) {
+		return '#ff5f11';
+	} else if (/voyager/gi.test(name)) {
+		return '#3eb7ff';
+	}
+
+	return '#000000';
+}
+
 function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, givenForeColor, givenBackColor, maxLength) {
 	'use strict';
 
@@ -35,21 +53,13 @@ function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, gi
 		if (isLeader) {
 			candidateText.style.color = backColor;
 			candidateText.style.backgroundColor = foreColor;
-			setTimeout(function () {
-				candidateButton.style.opacity = "1";
-			}, fadeTimeMax);
 		} else {
 			candidateText.style.color = foreColor;
 			candidateText.style.backgroundColor = backColor;
-			setTimeout(function () {
-				candidateButton.style.opacity = "1";
-			}, fadeTimeGap);
-			fadeTimeGap += 1000;
 		}
 	};
 
 	this.removeIfNotLeader = function (isLeader) {
-		candidateButton.disabled = true;
 		if (!isLeader) {
 			candidateButton.style.opacity = 0;
 			candidateButton.style.width = '0em';
@@ -57,13 +67,6 @@ function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, gi
 				candidateButton.style.display = 'none';
 			}, 500);
 		}
-	};
-
-	this.showOnUi = function (width) {
-		candidateButton.disabled = false;
-		candidateButton.style.display = 'inline-block';
-		candidateButton.style.opacity = 1;
-		candidateButton.style.width = width;
 	};
 
 	this.updateVotes = function () {
@@ -102,13 +105,8 @@ function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, gi
 	candidateButton.style.backgroundColor = foreColor;
 	candidateButton.style.backgroundImage = 'url(\'' + image + '\')';
 	candidateButton.style.borderColor = foreColor;
+	candidateButton.style.opacity = '1';
 	candidateButton.appendChild(candidateText);
-	candidateButton.addEventListener('click', function () {
-		candidate.vote();
-		candidateVotes.removeChild(displayedVotes);
-		displayedVotes = document.createTextNode(candidate.getVotes());
-		candidateVotes.appendChild(displayedVotes);
-	});
 
 	parentElement = document.getElementById(dumpId);
 	parentElement.appendChild(candidateButton);
@@ -125,8 +123,8 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 		name = pollValue.name,
 		message = pollValue.message,
-		foreColor = pollValue.foreColor,
-		backColor = pollValue.backColor,
+		foreColor = '#ffffff',
+		backColor = getBackColor(name),
 		candidates = pollValue.candidates,
 		ended = pollValue.ended,
 
@@ -146,8 +144,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		candidateButtonGroup,
 
 		controls,
-		endPollButton,
-		undoButton,
 		nextPollButton,
 
 		width;
@@ -169,50 +165,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		xhr.send(JSON.stringify(instruction));
 	}
 
-	function updateEnded(value) {
-		var xhr,
-			instruction = {
-				'action': 'update',
-				'update': 'ended',
-				'value': value
-			};
-
-		instruction.pollIndex = pollIndex;
-
-		xhr = new XMLHttpRequest();
-		xhr.open('POST', '/pollAction', true);
-		xhr.setRequestHeader('Content-type', 'application/json');
-		xhr.send(JSON.stringify(instruction));
-	}
-
-	function vote(givenIndex) {
-		poll.addToVotes(givenIndex);
-		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
-			interfaceCandidates[index].setLeaderState(isLeader);
-		});
-		votes += 1;
-		updateServer(givenIndex, poll.getCandidateVotes(givenIndex));
-		if (votes === 1) {
-			undoButton.style.display = 'inline-block';
-			endPollButton.style.display = 'inline-block';
-			endPollButton.disabled = false;
-		}
-	}
-
-	function undoVote() {
-		poll.undo();
-		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
-			interfaceCandidates[index].setLeaderState(isLeader);
-			interfaceCandidates[index].updateVotes();
-			updateServer(index, poll.getCandidateVotes(index));
-		});
-		votes -= 1;
-		if (votes === 0) {
-			undoButton.style.display = 'none';
-			endPollButton.style.display = 'none';
-		}
-	}
-
 	function centerElements() {
 		centeredContainer.style.bottom = (window.innerHeight - centeredContainer.offsetHeight) / 2 + "px";
 		candidateButtonGroup.style.bottom = (window.innerHeight - candidateButtonGroup.offsetHeight) / 2 + "px";
@@ -221,22 +173,10 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	function createNewInterfaceCandidate(givenCandidateValue, index) {
 		var tempInterfaceCandidate = new InterfaceCandidate(id, givenCandidateValue, poll.getCandidates()[index], foreColor, backColor, candidates.length);
 
-		tempInterfaceCandidate.getCandidateButton().addEventListener('click', function () {
-			vote(index);
-		});
-
 		interfaceCandidates.push(tempInterfaceCandidate);
 	}
 
 	function declareResults() {
-		setTimeout(function () {
-			interfaceCandidates.forEach(function (candidate) {
-				candidate.showVotes();
-			});
-			poll.getWhetherLeaders(false).forEach(function (isLeader, index) {
-				interfaceCandidates[index].setLeaderState(isLeader);
-			});
-		}, 2000);
 		if (poll.getWinnerIndexes().length === 1) {
 			winnerDeclaration.appendChild(document.createTextNode('We have our winner!'));
 		} else {
@@ -245,6 +185,14 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		setTimeout(function () {
 			winnerDeclaration.style.opacity = 1;
 		}, 1000);
+		setTimeout(function () {
+			interfaceCandidates.forEach(function (candidate) {
+				candidate.showVotes();
+			});
+			poll.getWhetherLeaders(false).forEach(function (isLeader, index) {
+				interfaceCandidates[index].setLeaderState(isLeader);
+			});
+		}, 2000);
 		setTimeout(function () {
 			poll.getWhetherLeaders(false).forEach(function (isleader, index) {
 				interfaceCandidates[index].removeIfNotLeader(isleader);
@@ -262,10 +210,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 	this.getStartButton = function () {
 		return startButton;
-	};
-
-	this.getEndPollButton = function () {
-		return endPollButton;
 	};
 
 	this.getControls = function () {
@@ -303,48 +247,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		return winnerDetails;
 	};
 
-	this.reset = function (update) {
-		votes = 0;
-		undoButton.style.display = 'none';
-		endPollButton.style.display = 'none';
-		ended = false;
-		poll.reset();
-		poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
-			interfaceCandidates[index].setLeaderState(isLeader);
-			interfaceCandidates[index].updateVotes();
-		});
-		if (update) {
-			poll.getCandidates().forEach(function (candidate, index) {
-				updateServer(index, candidate.getVotes());
-			});
-		}
-		if (winnerDeclaration.firstChild) {
-			winnerDeclaration.removeChild(winnerDeclaration.firstChild);
-		}
-		interfaceCandidates.forEach(function (candidate, index) {
-			candidate.showOnUi(width);
-		});
-		if (update) {
-			updateEnded(false);
-		}
-	};
-
-	function end(update) {
-		endPollButton.style.display = 'none';
-		endPollButton.disabled = true;
-		undoButton.style.display = 'none';
-		declareResults();
-		if (update) {
-			poll.getCandidates().forEach(function (candidate, index) {
-				updateServer(index, candidate.getVotes());
-			});
-		}
-		ended = true;
-		if (update) {
-			updateEnded(true);
-		}
-	}
-
 	poll.getCandidates().forEach(function (candidate, index) {
 		candidate.setVotes(candidates[index].votes);
 	});
@@ -364,24 +266,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		headingSlide.style.left = '-100%';
 		electionSlide.style.left = '0em';
 		this.disabled = true;
-		end();
-
-		if (ended !== true) {
-			var started = false;
-			candidates.forEach(function (candidate, index) {
-				if (candidate.votes !== 0) {
-					started = true;
-				}
-			});
-
-			if (started) {
-				poll.getWhetherLeaders(true).forEach(function (isLeader, index) {
-					interfaceCandidates[index].setLeaderState(isLeader);
-				});
-				endPollButton.style.display = 'inline-block';
-				endPollButton.disabled = false;
-			}
-		}
+		declareResults();
 	});
 
 	centeredContainer = document.createElement('div');
@@ -404,20 +289,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	candidateButtonGroup.id = id;
 	candidateButtonGroup.appendChild(winnerDeclaration);
 
-	endPollButton = document.createElement('button');
-	endPollButton.className = 'endPollButton';
-	endPollButton.style.backgroundColor = backColor;
-	endPollButton.style.color = foreColor;
-	endPollButton.style.display = 'none';
-	endPollButton.appendChild(document.createTextNode('End This Election'));
-
-	undoButton = document.createElement('button');
-	undoButton.appendChild(document.createTextNode('Undo'));
-	undoButton.style.backgroundColor = backColor;
-	undoButton.style.borderColor = foreColor;
-	undoButton.style.display = 'none';
-	undoButton.addEventListener('click', undoVote);
-
 	nextPollButton = document.createElement('button');
 	nextPollButton.appendChild(document.createTextNode('Next Election'));
 	nextPollButton.style.backgroundColor = backColor;
@@ -429,7 +300,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 	controls = document.createElement('div');
 	controls.className = 'controls';
-	controls.appendChild(undoButton);
 	controls.appendChild(nextPollButton);
 
 	electionSlide = document.createElement('div');
@@ -455,7 +325,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 	centerElements();
 	window.addEventListener('resize', centerElements);
-
 }
 
 function FirstInterface(givenDumpId) {
@@ -477,15 +346,12 @@ function FirstInterface(givenDumpId) {
 		pollNameHeading,
 		pollName,
 		navBarButtonGroup,
-		resetThisElectionButton,
-		endThisElectionButton,
 
 		introSlide,
 		centeredContainer,
 		welcomeHeading,
 		messageHeading,
 		startElectionsButton,
-		resetElectionsButton,
 
 		resultsButton,
 		resultsSlide,
@@ -499,13 +365,7 @@ function FirstInterface(givenDumpId) {
 		navBar.style.color = slides[currentSlide].style.backgroundColor;
 		navBar.style.backgroundColor = slides[currentSlide].style.color;
 
-		if (endThisElectionButton !== undefined) {
-			pollNameHeading.removeChild(pollName);
-		}
 		if (currentSlide > 0 && currentSlide < slides.length - 1) {
-			endThisElectionButton = interfacePolls[currentSlide - 1].getEndPollButton();
-			navBarButtonGroup.appendChild(endThisElectionButton);
-
 			pollName = document.createTextNode('- ' + interfacePolls[currentSlide - 1].getName() + ' Elections');
 			pollNameHeading.appendChild(pollName);
 		}
@@ -668,7 +528,7 @@ function FirstInterface(givenDumpId) {
 
 	navBarHomeLink = document.createElement('a');
 	navBarHomeLink.href = "/";
-	navBarHomeLink.appendChild(document.createTextNode('Edison'));
+	navBarHomeLink.appendChild(document.createTextNode('NPS Indiranagar Elections'));
 
 	navBarHeading.appendChild(navBarHomeLink);
 

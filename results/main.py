@@ -52,10 +52,6 @@ def returnimages(filename):
 def returncimages(filename):
 	return static_file(filename, root='savedimages')
 
-@app.get('/customize')
-def candidate():
-	return open('templates/candidates.html').read()
-
 @app.get('/elections')
 def elections():
 	return open('templates/elections.html').read()
@@ -202,7 +198,7 @@ def mergeJSON():
 def setup():
 	return open('templates/setup.html').read()
 
-@app.post('/resetVotes')
+@app.get('/resetVotes')
 def resetVotes():
 	with open('candidates.json','r') as data_file:
 		data = json.load(data_file)
