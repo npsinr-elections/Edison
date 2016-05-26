@@ -441,22 +441,30 @@ function FirstInterface(givenDumpId) {
 	navBar.appendChild(pollNameHeading);
 	navBar.appendChild(navBarButtonGroup);
 
-	jsonDownload = document.createElement('a');
-	jsonDownload.href = "#";
+	jsonDownload = document.createElement('button');
+	jsonDownload.className = "postvotebutton";
+	jsonDownload.style.backgroundColor = "#000";
 	jsonDownload.addEventListener('click', function () {
 		window.open('/json/download');
 		window.location = "http://localhost:8080/downloadComplete";
 	});
-	jsonDownload.appendChild(document.createTextNode("Download Data or "));
+	jsonDownload.appendChild(document.createTextNode("Download Data"));
 
-	reloadPage = document.createElement('a');
-	reloadPage.href = '/elections';
-	reloadPage.appendChild(document.createTextNode("Reload to continue"));
+	reloadPage = document.createElement('button');
+	reloadPage.className = "postvotebutton";
+	reloadPage.style.backgroundColor = "#00cc66";
+	reloadPage.addEventListener('click', function () {location.href='/elections'});
+	reloadPage.appendChild(document.createTextNode("Next Candidate"));
 
 	nextPersonHeading = document.createElement('h1');
-	nextPersonHeading.style.color = '#000000';
-	nextPersonHeading.appendChild(jsonDownload);
+	nextPersonHeading.style.color = '#00cc66';
+	nextPersonHeading.appendChild(document.createTextNode("Thank You for voting :)."));
+	nextPersonHeading.appendChild(document.createElement('br'));
+	nextPersonHeading.appendChild(document.createTextNode("Next Voter Please."));
+	nextPersonHeading.appendChild(document.createElement('br'));
 	nextPersonHeading.appendChild(reloadPage);
+	nextPersonHeading.appendChild(document.createElement('br'));
+	nextPersonHeading.appendChild(jsonDownload);
 
 	nextPersonDiv = document.createElement('div');
 	nextPersonDiv.style.backgroundColor = '#ffffff';
