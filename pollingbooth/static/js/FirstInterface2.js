@@ -250,6 +250,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	nextButton.style.backgroundColor = backColor;
 	nextButton.style.borderColor = foreColor;
 	nextButton.style.display = 'none';
+	nextButton.style.float = 'right';
 	nextButton.addEventListener('click', function () {
 		electionSlide.style.left = '-100%';
 	});
@@ -259,6 +260,7 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 	previousButton.style.backgroundColor = backColor;
 	previousButton.style.borderColor = foreColor;
 	previousButton.style.display = 'none';
+	previousButton.style.float = 'left';
 	previousButton.addEventListener('click', function () {
 		electionSlide.style.left = '100%';
 	});
@@ -307,7 +309,6 @@ function FirstInterface(givenDumpId) {
 		parentElement,
 		navBar,
 		navBarHeading,
-		navBarHomeLink,
 		pollNameHeading,
 		pollName,
 		navBarButtonGroup,
@@ -435,12 +436,7 @@ function FirstInterface(givenDumpId) {
 
 	navBarHeading = document.createElement('h3');
 	navBarHeading.className = 'navBarHeading';
-
-	navBarHomeLink = document.createElement('a');
-	navBarHomeLink.href = "/";
-	navBarHomeLink.appendChild(document.createTextNode('NPS Indiranagar Elections'));
-
-	navBarHeading.appendChild(navBarHomeLink);
+	navBarHeading.appendChild(document.createTextNode('NPS Indiranagar Elections'));
 
 	pollName = document.createTextNode('');
 

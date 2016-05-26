@@ -558,8 +558,6 @@ function FirstInterface(givenDumpId) {
 		this.disabled = true;
 	});
 
-
-
 	welcomeHeading = document.createElement('h1');
 
 	messageHeading = document.createElement('h2');
