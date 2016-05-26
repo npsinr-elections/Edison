@@ -1,6 +1,24 @@
 /*jslint browser: true*/
 /*globals Poll*/
 
+function getBackColor(name) {
+	'use strict';
+
+	if (/prefect/gi.test(name)) {
+		return '#404040';
+	} else if (/challenger/gi.test(name)) {
+		return '#6D0019';
+	} else if (/explorer/gi.test(name)) {
+		return '#4B0082';
+	} else if (/pioneer/gi.test(name)) {
+		return '#ff5f11';
+	} else if (/voyager/gi.test(name)) {
+		return '#3eb7ff';
+	}
+
+	return '#000000';
+}
+
 function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, givenForeColor, givenBackColor) {
 	'use strict';
 
@@ -89,8 +107,8 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 		name = pollValue.name,
 		message = pollValue.message,
-		foreColor = pollValue.foreColor,
-		backColor = pollValue.backColor,
+		foreColor = '#ffffff',
+		backColor = getBackColor(pollValue.name),
 		candidates = pollValue.candidates,
 		ended = pollValue.ended,
 
@@ -98,8 +116,6 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 		votes = 0,
 
 		parentElement,
-
-		started = false,
 
 		electionSlide,
 		candidateButtonGroup,
@@ -454,9 +470,9 @@ function FirstInterface(givenDumpId) {
 	reloadPage.className = "postvotebutton";
 	reloadPage.style.backgroundColor = "#00cc66";
 	reloadPage.addEventListener('click', function () {
-		location.href = '/elections'
+		location.href = '/elections';
 	});
-	reloadPage.appendChild(document.createTextNode("Next Candidate"));
+	reloadPage.appendChild(document.createTextNode("Next Voter"));
 
 	nextPersonHeading = document.createElement('h1');
 	nextPersonHeading.style.color = '#00cc66';
@@ -469,14 +485,7 @@ function FirstInterface(givenDumpId) {
 	nextPersonHeading.appendChild(jsonDownload);
 
 	nextPersonDiv = document.createElement('div');
-	nextPersonDiv.style.backgroundColor = '#ffffff';
-	nextPersonDiv.style.position = 'fixed';
-	nextPersonDiv.style.top = '0em';
-	nextPersonDiv.style.bottom = '0em';
-	nextPersonDiv.style.left = '0em';
-	nextPersonDiv.style.right = '0em';
-	nextPersonDiv.style.zIndex = 999999;
-	nextPersonDiv.style.display = 'none';
+	nextPersonDiv.id = 'nextPersonDiv';
 	nextPersonDiv.appendChild(nextPersonHeading);
 
 	parentElement = document.getElementById(dumpId);
@@ -493,7 +502,6 @@ function FirstInterface(givenDumpId) {
 			interfacePolls.forEach(function (interfacePoll, index) {
 				interfacePoll.updateServer();
 			});
-
 		});
 	});
 

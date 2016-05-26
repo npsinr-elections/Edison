@@ -8,6 +8,12 @@ body {
 	font-family: 'Product Sans', 'Helvetica Neue', Helvetica, Arial;
 }
 
+button:active,
+button:hover,
+button {
+	outline: none;
+}
+
 div#nav {
 	position: fixed;
 	top: 0px;
@@ -17,12 +23,14 @@ div#nav {
 	z-index: 999;
 	bottom: auto;
 	font-size: 2em;
-	text-align:center;
+	text-align: center;
 }
 
 #nav a {
-  color: inherit; /* blue colors for links too */
-  text-decoration: inherit; /* no underline */
+	color: inherit;
+	/* blue colors for links too */
+	text-decoration: inherit;
+	/* no underline */
 }
 
 div#navBarButtonGroup {
@@ -82,19 +90,6 @@ h2 {
 	font-weight: normal;
 }
 
-h2.winnerDeclaration {
-	position: absolute;
-	text-align: center;
-	margin: 0px;
-	margin-bottom: 0.5em;
-	bottom: 100%;
-	right: 0em;
-	left: 0em;
-	width: 100%;
-	opacity: 0;
-	transition: opacity 0.5s;
-}
-
 h3 {
 	margin: 0em;
 	padding: 0.25em;
@@ -111,15 +106,15 @@ button.startButton {
 	font-size: 1.5em;
 	border: none;
 	padding: 0.5em 1.5em;
-	margin:0.5em;
+	margin: 0.5em;
 }
 
 .postvotebutton {
-	border:none;
-	font-size:0.5em;
+	border: none;
+	font-size: 0.5em;
 	padding: 0.2em 1em;
-	margin:0.5em;
-	color:#FFF;
+	margin: 0.5em;
+	color: #FFF;
 }
 
 div.candidateButtonGroup {
@@ -191,46 +186,6 @@ div.controls>button {
 	margin-left: 0.5em;
 }
 
-div#resultsSlide {
-	overflow-y: scroll;
-	left: 100%;
-}
-
-button#resultsButton {
-	background-color: #000000;
-	color: #FFFFFF;
-}
-
-table#resultsTable {
-	background-color: #FFFFFF;
-	color: #000000;
-	margin: 6em auto 1em;
-	text-align: center;
-	width: 90%;
-	border-collapse: collapse;
-}
-
-table#resultsTable>tr#headerRow {
-	background-color: #000000;
-	color: #FFFFFF;
-}
-
-table#resultsTable>tr>td {
-	padding: 0.5em;
-	border: 1px solid #000000;
-	font-size: 1.5em;
-}
-
-table#resultsTable>tr>td>img {
-	width: 25%;
-	margin-right: 2em;
-	vertical-align: middle;
-}
-
-table#resultsTable>tr>td.imageAndNameTd {
-	text-align: left;
-}
-
 div.confirmContainer {
 	position: fixed;
 	top: 0px;
@@ -276,4 +231,15 @@ div.confirmControls>button {
 	font-weight: 400;
 	src: local('Product Sans'), local('ProductSans-Regular'), url("/static/fonts/ProductSans.woff2") format('woff2');
 	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+div#nextPersonDiv {
+	background-color: #ffffff;
+	position: fixed;
+	top: 0em;
+	bottom: 0em;
+	left: 0em;
+	right: 0em;
+	z-index: 999999;
+	display: none;
 }

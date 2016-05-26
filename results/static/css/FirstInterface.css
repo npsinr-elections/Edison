@@ -18,6 +18,12 @@ div#nav {
 	bottom: auto;
 }
 
+button:active,
+button:hover,
+button {
+	outline: none;
+}
+
 #nav a {
 	color: inherit;
 	/* blue colors for links too */

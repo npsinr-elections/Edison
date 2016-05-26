@@ -1,6 +1,24 @@
 /*jslint browser: true*/
 /*globals Poll*/
 
+function getBackColor(name) {
+	'use strict';
+
+	if (/prefect/gi.test(name)) {
+		return '#404040';
+	} else if (/challenger/gi.test(name)) {
+		return '#6D0019';
+	} else if (/explorer/gi.test(name)) {
+		return '#4B0082';
+	} else if (/pioneer/gi.test(name)) {
+		return '#ff5f11';
+	} else if (/voyager/gi.test(name)) {
+		return '#3eb7ff';
+	}
+
+	return '#000000';
+}
+
 function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, givenForeColor, givenBackColor, maxLength) {
 	'use strict';
 
@@ -42,10 +60,8 @@ function InterfaceCandidate(givenDumpId, givenCandidateValue, givenCandidate, gi
 	};
 
 	this.removeIfNotLeader = function (isLeader) {
-		console.log(isLeader);
 		if (!isLeader) {
 			candidateButton.style.opacity = 0;
-			console.log(candidateButton.style.opacity);
 			candidateButton.style.width = '0em';
 			setTimeout(function () {
 				candidateButton.style.display = 'none';
@@ -107,8 +123,8 @@ function InterfacePoll(givenDumpId, givenPollValue, givenIndex) {
 
 		name = pollValue.name,
 		message = pollValue.message,
-		foreColor = pollValue.foreColor,
-		backColor = pollValue.backColor,
+		foreColor = '#ffffff',
+		backColor = getBackColor(name),
 		candidates = pollValue.candidates,
 		ended = pollValue.ended,
 
