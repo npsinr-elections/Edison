@@ -366,6 +366,7 @@ function FirstInterface(givenDumpId) {
 		navBar.style.backgroundColor = slides[currentSlide].style.color;
 
 		if (currentSlide > 0 && currentSlide < slides.length - 1) {
+			pollNameHeading.removeChild(pollName);
 			pollName = document.createTextNode('- ' + interfacePolls[currentSlide - 1].getName() + ' Elections');
 			pollNameHeading.appendChild(pollName);
 		}
